@@ -10,6 +10,7 @@ const router = createRouter({
     history: createWebHistory(),  // history 模式
     routes: [
 
+        //登录注册页面路由
         {
             path:'/administrator',
             name:'administrator',
@@ -20,11 +21,20 @@ const router = createRouter({
         },
         //学者搜索页面路由
         {
-            path: '/scholarSearch/:input/:select',
+            path: '/scholarSearch',
             name: 'scholarSearch',
             component: defineAsyncComponent(() => import(`../page/scholarSearch/index.vue`)),
             meta: {
                 title: '学者搜索',
+            },
+        },
+        //学者搜索页面路由
+        {
+            path: '/favourite',
+            name: 'favourite',
+            component: defineAsyncComponent(() => import(`../page/favourite/index.vue`)),
+            meta: {
+                title: '个人图书馆',
             },
         },
         //学者搜索引导页

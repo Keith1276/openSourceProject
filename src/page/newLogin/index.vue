@@ -5,7 +5,7 @@
   <div class="login-area">
     <div class="login-content">
 <!--      来插入一个矩形色块-->
-<!--      <div class="color-block"></div>-->
+      <div class="color-block"></div>
 
       <div class="select-area">
         <div class="select-set">
@@ -29,7 +29,7 @@
         </div>
         <div class="spaceBlock"></div>
         <div class="input-frame" v-if="situation !== 2 && situation !== 4">
-          <el-input v-model="account" style="width: 80%; height: 40px" placeholder="请输入帐号">
+          <el-input v-model="studentNum" style="width: 80%; height: 40px" placeholder="请输入帐号">
             <template #prepend>帐号</template>
           </el-input>
         </div>
@@ -75,8 +75,7 @@
 </template>
 
 <script>
-import { register} from "@/api/login";
-import store from "@/store";
+
 export default {
   name: "newLogin",
   data()
@@ -86,18 +85,13 @@ export default {
       isCool:false,
       buttonName:"登录",
       userName:"",
-      account:"",
+      studentNum:"",
       password:"",
       situation: 1, // 默认情况
       coolCount:0,
     };
   },
   methods: {
-    async login()
-    {
-      const credential={"name": this.userName,"password":this.password};
-      await store.dispatch('login',credential);
-    },
     setSituation(newSituation)
     {
       this.situation = newSituation;
@@ -136,26 +130,16 @@ export default {
     sendEmailFunc()
     {
       /*调用一个发送邮件的接口*/
-
       this.handleCool();
     },
 
     transit()
     {
       if(this.situation==1||this.situation==2) {
-        this.login()
         console.log("log in successfully")
       }
       else if(this.situation==3)
       {
-        const credient= {
-          userAccount:this.account,
-          // email: string,
-          // verificationCode: string,
-          userPassword: this.password,
-          checkPassword:this.password,
-        }
-        register(credient)
         console.log("register successfully");
       }
       else

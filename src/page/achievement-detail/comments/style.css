@@ -1,0 +1,80 @@
+.comment-container {
+    width: 100%;
+    /*max-width: 800px;*/
+    margin: 10px;
+}
+
+.comment {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    width: 90%;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-info {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-body p {
+    margin: 0;
+}
+
+.image {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin: 5px;
+}
+
+.image:hover {
+    transform: scale(1.2);
+}
+
+.small-image {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin: 5px;
+}
+
+.small-image:hover {
+    transform: scale(1.2);
+}
+
+.user {
+    font-weight: bold;
+}
+
+.likes {
+    font-weight: bold;
+}
+
+.replies {
+    font-weight: bold;
+}
+
+.time {
+    color: #6c757d;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* 可选：添加一些顶部间距 */
+}
