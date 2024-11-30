@@ -3,6 +3,7 @@
     <div class="left-topbar">
       <img src="@/asset/search/search_icon.png" alt="Logo" class="logo" />
     </div>
+    <div class="button-container"></div>
     <div class="search-container">
       <input type="text" placeholder="Search..." class="search-input" />
       <button class="search-button">搜索一下</button>
