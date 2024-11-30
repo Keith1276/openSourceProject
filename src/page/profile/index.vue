@@ -1,22 +1,23 @@
 <template>
-  <div class="bg"/>
+  <div class="bg" />
   <div class="common-layout">
     <el-container>
       <el-header>
         <div class="header-co1">
-          <el-avatar
-            :size="130"
-            src="https://s2.loli.net/2024/10/31/SjOP7wGIo1Qn8zR.jpg"
-          />
+          <el-avatar :size="130" src="https://s2.loli.net/2024/10/31/SjOP7wGIo1Qn8zR.jpg" />
         </div>
         <div class="header-co2">
           <div class="header1">{{ profile.name }}</div>
           <div class="organization">
-            <el-icon :size="23"><OfficeBuilding /></el-icon>
+            <el-icon :size="23">
+              <OfficeBuilding />
+            </el-icon>
             {{ profile.organization }}
           </div>
           <div class="areas">
-            <el-icon :size="23"><CollectionTag /></el-icon>
+            <el-icon :size="23">
+              <CollectionTag />
+            </el-icon>
             {{ profile.areas }}
           </div>
         </div>
@@ -32,9 +33,9 @@
           </div>
         </div>
         <div class="header-co4">
-          <el-button v-if="!isCurrentUser"
-            ><el-icon><Phone /></el-icon>认领</el-button
-          >
+          <el-button v-if="!isCurrentUser"><el-icon>
+              <Phone />
+            </el-icon>认领</el-button>
         </div>
       </el-header>
       <el-container>
@@ -43,37 +44,39 @@
             <template #header>
               <div class="header2">
                 <a>联系方式</a>
-                <el-button
-                  v-if="isCurrentUser && !editing"
-                  @click="editProfile"
-                  class="edit-botton"
-                  ><el-icon><EditPen /></el-icon>编辑资料</el-button
-                >
-                <el-button
-                  v-if="isCurrentUser && editing"
-                  @click="confirmEdit"
-                  class="edit-botton"
-                  ><el-icon><CircleCheck /></el-icon>完成编辑</el-button
-                >
+                <el-button v-if="isCurrentUser && !editing" @click="editProfile" class="edit-botton"><el-icon>
+                    <EditPen />
+                  </el-icon>编辑资料</el-button>
+                <el-button v-if="isCurrentUser && editing" @click="confirmEdit" class="edit-botton"><el-icon>
+                    <CircleCheck />
+                  </el-icon>完成编辑</el-button>
               </div>
             </template>
             <div v-if="!editing">
               <div class="contact-item">
-                <el-icon :size="23"><Message /></el-icon>
+                <el-icon :size="23">
+                  <Message />
+                </el-icon>
                 {{ profile.email != null ? profile.email : "missing..." }}
               </div>
               <div class="contact-item">
-                <el-icon :size="23"><HomeFilled /></el-icon>
+                <el-icon :size="23">
+                  <HomeFilled />
+                </el-icon>
                 {{ profile.website != null ? profile.website : "missing..." }}
               </div>
             </div>
             <div v-else>
               <div class="contact-item">
-                <el-icon :size="23"><Message /></el-icon>
+                <el-icon :size="23">
+                  <Message />
+                </el-icon>
                 <input type="text" v-model="profile.email" />
               </div>
               <div class="contact-item">
-                <el-icon :size="23"><HomeFilled /></el-icon>
+                <el-icon :size="23">
+                  <HomeFilled />
+                </el-icon>
                 <input type="text" v-model="profile.website" />
               </div>
             </div>
@@ -82,15 +85,13 @@
             <template #header>
               <div class="header2">合著作者</div>
             </template>
-            <div
-              v-for="author in coauthors"
-              :key="author.name"
-              class="coauthor-item"
-            >
+            <div v-for="author in coauthors" :key="author.name" class="coauthor-item">
               <el-avatar :size="45" class="coauthor-avatar"> user </el-avatar>
               <span>{{ author.name }}</span>
               <el-link class="jump-1" :href="author.href">
-                <el-icon><ArrowRightBold /></el-icon>
+                <el-icon>
+                  <ArrowRightBold />
+                </el-icon>
               </el-link>
             </div>
           </el-card>
@@ -173,19 +174,19 @@ function confirmEdit() {
 /* 
   整体布局
  */
-.bg{
+ .bg {
   background-color: #f4f4f4;
   position: fixed;
   height: 100vh;
   width: 100vw;
   z-index: -3;
 }
+
 .common-layout {
   padding: 5vh 8vw;
   word-break: break-all;
   word-wrap: break-word;
 }
-
 /* 
   HEADER部分
  */
@@ -193,10 +194,12 @@ function confirmEdit() {
   0% {
     box-shadow: 0 0 0 0 rgba(215, 241, 252, 0.8);
   }
+
   100% {
     box-shadow: 0 0 0 60px rgba(215, 241, 252, 0.2);
   }
 }
+
 .el-header {
   animation: animated-border 1.5s infinite;
   background-color: white;
@@ -208,34 +211,41 @@ function confirmEdit() {
   margin-bottom: 50px;
   margin-top: 50px;
 }
+
 .header-co1 {
   flex-basis: 20%;
   align-content: center;
 }
+
 .header-co2 {
   flex-basis: 30%;
   padding: 2vw;
   display: flex;
   flex-flow: column;
 }
+
 .header1,
 .organization,
 .areas {
   display: flex;
   align-items: center;
 }
+
 .header1 {
   font-size: 32px;
   font-weight: bold;
   flex-basis: 50%;
 }
+
 .organization,
 .areas {
   flex-basis: 25%;
 }
+
 .el-icon {
   margin-right: 20px;
 }
+
 .header-co3 {
   flex-basis: 35%;
   display: flex;
@@ -243,21 +253,26 @@ function confirmEdit() {
   align-items: center;
   justify-content: space-around;
 }
+
 .divider {
   width: 2px;
   height: 50px;
-  background-color: rgba(0, 0, 0, 0.15); /* 可以根据需要调整颜色 */
-  margin: 0 10px; /* 设置左右间距 */
+  background-color: rgba(0, 0, 0, 0.15);
+  margin: 0 10px;
 }
+
 .data {
   align-content: center;
 }
+
 .data-type {
   color: rgba(0, 0, 0, 0.5);
 }
+
 .data-number {
   font-size: 24px;
 }
+
 .header-co4 {
   flex-basis: 15%;
   align-content: center;
@@ -272,16 +287,19 @@ function confirmEdit() {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
+
 /* 一级tab部分 */
 ::v-deep .el-tabs__item {
   font-size: medium;
   font-weight: 800;
 }
-::v-deep .tabs > .el-tabs__header {
+
+::v-deep .tabs>.el-tabs__header {
   display: flex;
   justify-content: center;
   border-bottom: 3px solid #82C5E9;
 }
+
 /*
   侧边栏
   */
@@ -290,30 +308,37 @@ function confirmEdit() {
   width: 25%;
   background-color: #f4f4f4;
 }
+
 .edit-botton {
   margin-left: auto;
 }
+
 .el-card.is-always-shadow {
   /* 去阴影 */
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.12);
 }
+
 .el-card {
   background-color: rgba(215, 241, 252, 0.6);
 }
+
 .header2 {
   font-size: 18px;
   font-weight: bold;
   display: flex;
   align-items: center;
 }
+
 .contact-card {
   margin-bottom: 12px;
 }
+
 .contact-item {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 }
+
 .coauthor-item {
   height: 70px;
   margin-bottom: 5px;
@@ -321,9 +346,11 @@ function confirmEdit() {
   align-items: center;
   border-bottom: 1px solid #e9eef3;
 }
+
 .coauthor-avatar {
   margin-right: 12px;
 }
+
 .jump-1 {
   margin-left: auto;
 }

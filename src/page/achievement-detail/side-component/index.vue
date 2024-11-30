@@ -95,5 +95,46 @@ export default {
 </script>
 
 <style scoped>
-@import "style.css";
+.stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    align-items: center;
+}
+.stat {
+    text-align: center;
+    line-height: 1.5;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.small-title {
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+}
+.field-list {
+    padding: 5px;
+}
+.field {
+    margin: 5px 0;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+    color: #6e9bc5;
+    transition: color 0.3s;
+}
+.field:hover {
+    color: #106898;
+}
+hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+}
+
 </style>

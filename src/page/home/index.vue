@@ -212,6 +212,7 @@ export default {
 
         onMounted(() => {
             window.addEventListener("scroll", scrolling);
+            setNav(false);
         })
 
         onUnmounted(() => {

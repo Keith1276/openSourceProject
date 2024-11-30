@@ -33,7 +33,10 @@
     border-left: 1px solid rgba(22, 22, 22, 0.2);
     margin-left: auto; /* 让元素靠右 */
 }
-.login-content{
+
+.login-content
+{
+    top:15%;
     width: 100%;
     /*这个带文字的登录部分之后得手动调一下的*/
     height: 80%;
@@ -44,7 +47,9 @@
     /*align-items: center;*/
     gap: 5px;
 }
-.sosSet{
+
+.sosSet
+{
     width: 80%;
     height: 15%;
     display: flex;
@@ -52,7 +57,9 @@
     margin-left: 10%;
     margin-bottom: 35%;
 }
-.select-set{
+
+.select-set
+{
     width: 100%;
     height: 80px;
     display: flex;
