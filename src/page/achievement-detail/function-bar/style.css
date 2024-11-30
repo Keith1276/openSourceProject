@@ -1,0 +1,15 @@
+.image-container {
+    display: inline-block;
+}
+
+.image {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin: 5px;
+}
+
+.image:hover {
+    transform: scale(1.2);
+}

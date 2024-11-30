@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'rage';
+    src: url('RAGE.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: '微软雅黑';
+    src: url('msyh.ttc') format('truetype');
+}
+
+@font-face {
+    font-family: '微软雅黑';
+    font-weight: bold;
+    src: url('msyhbd.ttc') format('truetype');
+}
+
+@font-face {
+    font-family: 'modern';
+    src: url("RAGE.TTF") format('truetype');
+}
