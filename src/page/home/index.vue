@@ -2,14 +2,32 @@
     <div class="bg-container"/>
 
     <div :class="{'root-set': !notHead, 'root-set-change': notHead}">
-        <div :class="{'bar-set': !notHead, 'bar-set-change': notHead}">
-            <search_title :cond="notHead"/>
 
-<!--            <div style="">-->
+        <div style="width: 100%; height: 100%; display: flex; position: absolute"
+        :class="{'zind': notHead, 'zind2': !notHead}">
+            <div :class="{'bar-set': !notHead, 'bar-set-change': notHead}">
+                <search_title :cond="notHead"/>
+            </div>
+        </div>
 
-<!--            </div>-->
+        <div :class="{'layer-set': !notHead, 'layer-set-change': notHead}">
+
+            <div style="margin-top: auto; margin-left: auto; height: 150px;
+            display: flex; flex-direction: row; align-items: center;"
+            :class="{'msg-set': !notHead, 'msg-set-change': notHead}">
+
+                <fade-box>
+                    <home-msg name="学术成果总数" value="197942" photo="book-cover"/>
+                </fade-box>
+
+                <fade-box>
+                    <home-msg name="门户总数" value="2076748" photo="histogram"/>
+                </fade-box>
+
+            </div>
 
         </div>
+
     </div>
 
     <div class="view-set-margin">
@@ -66,10 +84,13 @@ import fadeBox from "@/page/home/component/fadeBox/index.vue";
 import logo from "@/page/home/component/logo/index.vue"
 import homeBottom from "@/page/home/component/homeBottom/index.vue"
 import leftPin from "@/page/home/component/leftPin/index.vue";
+import homeMsg from "@/page/home/component/homeMsg/index.vue";
+import store from "@/store/index.js";
+import {reverseNav, setNav} from "@/nav/set";
 
 export default {
     name: "home",
-    components: {Search_title, articleBox, fadeBox, logo, homeBottom, leftPin},
+    components: {Search_title, articleBox, fadeBox, logo, homeBottom, leftPin, homeMsg},
     setup(){
 
         const currentPos = ref(1);
@@ -170,20 +191,28 @@ export default {
             if (scrollStep < 0) {
                 //向上滚动
                 step.value = true;
+                setNav(true);
             } else {
                 //向下滚动
                 step.value = false;
-                if (!notHead.value) notHead.value = true;
+                if (!notHead.value) {
+                    notHead.value = true;
+                    setNav(true);
+                }else {
+                    setNav(false);
+                }
             }
             // 判断是否到了最顶部
             if (scrollTop <= 0) {
                 notHead.value = false;
+                setNav(false);
             }
 
         }
 
         onMounted(() => {
             window.addEventListener("scroll", scrolling);
+            setNav(false);
         })
 
         onUnmounted(() => {
@@ -214,7 +243,7 @@ export default {
 
 .bg-container {
     background: url('@/asset/home/bg.png');
-    /*opacity: 0.5;*/
+    /*opacity: 0.8;*/
     background-size: cover;
     position: fixed;
     height: 100vh;
@@ -227,15 +256,26 @@ export default {
 .root-set{
     height: 100vh;
     width: 100%;
-    display: flex;
+    /*display: flex;*/
     transition: height 0.8s;
+    position: relative;
 }
 
 .root-set-change{
     height: 0;
     width: 100%;
-    display: flex;
+    /*display: flex;*/
     transition: height 0.8s;
+}
+
+.msg-set{
+    transition: opacity 0.3s;
+}
+
+.msg-set-change{
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -2;
 }
 
 .bar-set{
@@ -270,4 +310,29 @@ export default {
 .pagination-style{
     justify-content: center;
 }
+
+.layer-set{
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex
+}
+
+.layer-set-change{
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex
+}
+
+.zind{
+    z-index: -2;
+}
+
+.zind2{
+    z-index: 2;
+}
+
 </style>

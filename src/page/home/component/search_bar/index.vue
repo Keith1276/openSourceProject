@@ -53,12 +53,14 @@ export default {
 <style scoped>
 
 .el-input-style {
+    font-family: 'Meiryo',sans-serif;
     width: 600px;
     transition: width 0.3s ease;
     height: 40px;
 }
 
 .el-input-style:hover{
+    font-family: 'Meiryo',sans-serif;
     width: 700px;
     transition: width 0.3s ease;
 }
@@ -72,6 +74,7 @@ export default {
 
 :deep(.el-input__inner) {
     margin-left: 25px;
+    font-family: 'Meiryo',sans-serif;
     color: #414141;
 }
 

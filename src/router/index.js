@@ -2,6 +2,7 @@ import { createRouter,createWebHashHistory, createWebHistory } from "vue-router"
 import {computed, defineAsyncComponent} from 'vue'
 import store from "@/store";
 import {callSuccess, callError, callInfo, callWarning} from "@/call";
+import {setNav} from "@/nav/set";
 //路由设置
 
 const router = createRouter({
@@ -28,11 +29,20 @@ const router = createRouter({
         },
         //学者搜索页面路由
         {
-            path: '/scholarSearch',
+            path: '/scholarSearch/:input/:select',
             name: 'scholarSearch',
             component: defineAsyncComponent(() => import(`../page/scholarSearch/index.vue`)),
             meta: {
                 title: '学者搜索',
+            },
+        },
+        //学者搜索引导页
+        {
+            path: '/scholarAccess',
+            name: 'scholarAccess',
+            component: defineAsyncComponent(() => import(`../page/scholarAccess/index.vue`)),
+            meta: {
+                title: '学者搜索引导',
             },
         },
 
@@ -44,7 +54,6 @@ const router = createRouter({
                 title: '登录'
             }
         },
-
         {
             path: '/search',
             name: 'search',
@@ -60,6 +69,17 @@ const router = createRouter({
                 title: 'Welcome to SSSR',
             },
         },
+
+        //  注册信息填写路由
+        {
+            path: '/register-info',
+            name: 'register-info',
+            component: defineAsyncComponent(() => import(`../page/register-info/index.vue`)),
+            meta: {
+                title: '注册信息填写',
+            },
+        },
+
         //  个人门户页面路由
         {
             path: '/profile',
@@ -89,7 +109,6 @@ const router = createRouter({
                 title: '个人-分析',
             },
         },
-
         {
             path: '/:catchAll(.*)',
             redirect: '/scholarSearch',
@@ -132,8 +151,6 @@ router.beforeEach((to, from, next)=>{
     //     }
     // }
 
-    next();
-
     // }else{
     //     //没有登录
     //     if (to.path === '/login'){
@@ -145,12 +162,13 @@ router.beforeEach((to, from, next)=>{
     //         next('/login');
     //     }
     // }
+    setNav(false); // 切换时先隐藏导航条
     next()
 })
 
 router.afterEach((to, from)=>{
     //切换路由成功
-    //console.log('change page succeed');
+    //console.log('change page succeed')
 })
 
 export default router

@@ -37,6 +37,8 @@ export default createStore({
         courseMap: new Map(),
         classMap: new Map(),
 
+        navOpen: false
+
     },
 
 
@@ -117,12 +119,20 @@ export default createStore({
 
         getMapClass: (state) => (classId) => {
             return state.classMap[classId];
+        },
+
+        getNavStat(state) {
+            return state.navOpen;
         }
 
     },
 
 
     mutations: {
+
+        setNavStat(state, stat){
+            state.navOpen = stat;
+        },
 
         //如果想要去除token，执行以下代码，commit('setToken', null);
         setToken(state, token) {

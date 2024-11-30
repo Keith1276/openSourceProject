@@ -38,7 +38,7 @@ export default {
   align-items: center;
   padding: 1% 2% 1% 2%;
   background-color: #003d74;
-  height: 5%;
+  height: 5vh;
 }
 
 .left-topbar {

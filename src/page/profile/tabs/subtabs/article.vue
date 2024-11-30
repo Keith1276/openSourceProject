@@ -1,14 +1,9 @@
 <template>
   <div class="tableContainer">
-    <el-table
-      :data="paginatedData"
-      :default-sort="{ prop: 'date', order: 'descending' }"
-      style="width: 100%"
-    >
+    <el-table :data="paginatedData" :default-sort="{ prop: 'date', order: 'descending' }" style="width: 100%">
       <el-table-column label="文献" min-width="400">
         <template #default="scope">
-          <a :href="`${scope.row.href}`">{{ scope.row.title }}</a
-          ><br />
+          <a :href="`${scope.row.href}`">{{ scope.row.title }}</a><br />
           <span>{{ scope.row.authors }}</span>
         </template>
       </el-table-column>
@@ -16,16 +11,8 @@
       <el-table-column prop="citations" sortable label="引用次数" />
     </el-table>
     <div class="pagination">
-      <el-pagination
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="tableData.length"
-        layout="prev, pager, next"
-        @current-change="handlePageChange"
-        size="small"
-        background
-        
-      />
+      <el-pagination :current-page="currentPage" :page-size="pageSize" :total="tableData.length"
+        layout="prev, pager, next" @current-change="handlePageChange" size="small" background />
     </div>
   </div>
 </template>
@@ -40,7 +27,7 @@ interface Article {
   authors: string;
 }
 const pageSize = 10;
-const currentPage = ref(1); 
+const currentPage = ref(1);
 const tableData = reactive<Article[]>([
   {
     date: "2024-10-26",
@@ -143,7 +130,8 @@ const handlePageChange = (newPage: number) => {
   display: flex;
   flex-direction: column;
 }
-.pagination{
+
+.pagination {
   margin-top: 20px;
   text-align: center;
 }
