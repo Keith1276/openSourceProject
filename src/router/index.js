@@ -21,7 +21,7 @@ const router = createRouter({
         },
         //学者搜索页面路由
         {
-            path: '/scholarSearch/:input/:select',
+            path: '/scholarSearch',
             name: 'scholarSearch',
             component: defineAsyncComponent(() => import(`../page/scholarSearch/index.vue`)),
             meta: {
@@ -56,7 +56,7 @@ const router = createRouter({
             }
         },
         {
-            path: '/search/:input',
+            path: '/search',
             name: 'search',
             component: defineAsyncComponent(() => import(`../page/search/index.vue`)),
         },

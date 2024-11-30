@@ -1,6 +1,6 @@
 <template>
   <div class="main-contanier">
-    <div style="height: 70px;"</div>
+    <search></search>
     <div class="result-container">
       <p style="margin-left: 5%; color: #5976ba; font-size: 18px">
         为您查询到 <b style="font-weight: bold">{{ resultCnt }}</b> 条结果
@@ -457,7 +457,6 @@ export default {
       curPapers.value=timeFilterRule();
       updateTotal();
       handleCurrentChange(1);
-      console.log(route.params.input)
     });
 
     onUnmounted(() =>{
