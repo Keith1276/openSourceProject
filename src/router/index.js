@@ -9,15 +9,6 @@ const router = createRouter({
     history: createWebHistory(),  // history 模式
     routes: [
 
-        //登录注册页面路由
-        {
-            path: '/login',
-            name: 'login',
-            component: defineAsyncComponent(() => import(`../page/login/index.vue`)),
-            meta: {
-                title: '登录',
-            },
-        },
         {
             path:'/administrator',
             name:'administrator',
