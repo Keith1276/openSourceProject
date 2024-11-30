@@ -1,16 +1,27 @@
 <template>
   <div class="main-contanier">
     <div style="height: 70px;"</div>
-    <div class="result-container">
-      <p style="margin-left: 5%; color: #5976ba; font-size: 18px">
-        为您查询到 <b style="font-weight: bold">{{ resultCnt }}</b> 条结果
-      </p>
-    </div>
     <div class="content-container">
       <!-- 左侧筛选栏 -->
       <div class="sidebar">
         <div class="sidebar-block">
-          <p style="color: #5976ba">筛选</p>
+          <p style="color: #5976ba">收藏夹</p>
+          <el-card style="width: 100%">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <p style="text-align: left; font-weight: bold">我的收藏夹</p>
+              <el-button plain @click="open">添加收藏夹</el-button>
+            </div>
+            
+            <div style="width: 100%" v-for="(button, index) in FavoritesList">
+              <el-button
+                class="button-box"
+                :key="index"
+                text
+              >
+                {{ button.text }}
+              </el-button>
+            </div>
+          </el-card>
           <el-card style="width: 100%">
             <p style="text-align: left; font-weight: bold">时间</p>
             <div style="width: 100%" v-for="(button, index) in timeButtons">
@@ -45,22 +56,7 @@
           <!-- 两个小选择 -->
           <div class="content-top">
             <div class="content-top-left">
-              <p style="color: #5976ba">文章({{ resultCnt }})</p>
-            </div>
-            <div class="content-top-right">
-              <p style="color: #5976ba">排序</p>
-              <el-select
-                v-model="value"
-                placeholder="按相关性"
-                style="width: 240px; padding-left: 20px"
-              >
-                <el-option
-                  v-for="(item, index) in options"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
+              <p style="color: #5976ba">收藏成果({{ resultCnt }})</p>
             </div>
           </div>
           <!-- 文章块 -->
@@ -103,26 +99,10 @@
                   <img :src="getCitationIcon(paper)" alt="" class="citation-icon">
                   <span>引用</span>
                 </div>
-                <div class="citation" @click="toggleCollection(paper),dialogVisible = true">
+                <div class="citation" @click="toggleCollection(paper)">
                   <img :src="getCollection(paper)" alt="" class="citation-icon">
                   <span>收藏</span>
                 </div>
-                <el-dialog v-model="dialogVisible" title="Shipping address" width="30%" :modal="false">
-                  <el-radio-group v-model="radio3" style="margin-bottom: 15px">
-                    <div style="width: 100%" v-for="(button, index) in FavoritesList">
-                      <el-radio :label="index" size="large">{{ button.text }}</el-radio>
-                    </div>
-                  </el-radio-group>
-
-                  <el-input v-model="newFavourite" style="width: 240px" placeholder="输入名称" />
-                  <el-button type="primary" @click="addFavorite(newFavourite)">新建收藏夹</el-button>
-                  <template #footer>
-                    <el-button @click="dialogVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">
-                      Confirm
-                    </el-button>
-                  </template>
-                </el-dialog>
                 <span>被引量: {{ paper.citations }}</span>
               </div>
             </el-card>
@@ -145,11 +125,12 @@
   </div>
 </template>
 <script lang="ts">
+import { text } from "stream/consumers";
 import search from "./search.vue";
-import { ref, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
+import { List } from "echarts";
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { setNav } from "@/nav/set";
-import { ElMessageBox, ElMessage } from 'element-plus'
 export default {
   methods:{
     getCitationIcon(paper) {
@@ -184,6 +165,11 @@ export default {
       { value: "Option2", label: "按被引量" },
       { value: "Option3", label: "按时间降序" },
     ];
+    const FavoritesList = ref<{ text: string }[]>([
+      { text: "收藏夹1" },
+      { text: "收藏夹2" },
+      { text: "收藏夹3" },
+    ]);
     const timeButtons = [
       { text: "2024以来" },
       { text: "2023以来" },
@@ -194,16 +180,6 @@ export default {
       { text: "cs.AI" },
       { text: "cs.LG" },
     ];
-    const FavoritesList = ref<{ text: string }[]>([
-      { text: "收藏夹1" },
-      { text: "收藏夹2" },
-      { text: "收藏夹3" },
-    ]);
-    const dialogVisible = ref(false)
-    const radio3 = ref('1')
-    const newFavourite = ref('')
-
-    const route=useRoute();
     
 
     const papers=[
@@ -333,31 +309,9 @@ export default {
 
     const toggleCollection = (paper): void =>{
       paper.collectionClicked = !paper.collectionClicked;
-      if(paper.collectionClicked==true){
-      }
       console.log(paper.collectionClicked)
     }
 
-    const changeCollection = (message: string) => {
-      ElMessage({
-        message: message,
-        type: 'success',
-      })
-    }
-
-    // 触发函数，添加收藏夹
-    const addFavorite = (value: string) => {
-      if (value.trim() === '' || FavoritesList.value.some(item => item.text === value)) {
-        ElMessage({
-          type: 'error',
-          message: '收藏夹名字不能为空且不能重复',
-        });
-        return;
-      }
-      FavoritesList.value.push({ text: value });
-      console.log('更新后的收藏夹列表:', FavoritesList);
-    };
-    
     const getCitationIcon = (paper): string =>{
       return paper.citationClicked
       ? require('@/asset/search/yinyong_1.png')
@@ -441,6 +395,43 @@ export default {
       pagination.value.currentPage = e;
     };
 
+    // 添加收藏夹弹框
+    const open = () => {
+      ElMessageBox.prompt('输入收藏夹名字', '添加收藏夹', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        inputPattern:
+          /^[A-Za-z\u4e00-\u9fa5]{1,20}$/,
+        inputErrorMessage: '不合法的名字',
+      })
+      .then(({ value }) => {
+        ElMessage({
+          type: 'success',
+          message: `成功创建收藏夹:${value}`,
+        })
+        addFavorite(value)
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'info',
+          message: 'Input canceled',
+        })
+      })
+    }
+    
+    // 触发函数，添加收藏夹
+    const addFavorite = (value: string) => {
+      if (value.trim() === '' || FavoritesList.value.some(item => item.text === value)) {
+        ElMessage({
+          type: 'error',
+          message: '收藏夹名字不能为空且不能重复',
+        });
+        return;
+      }
+      FavoritesList.value.push({ text: value });
+      console.log('更新后的收藏夹列表:', FavoritesList);
+    };
+
     // Receive message from searchbar
     const receivedMessage = ref('');
     const handleinputSend = (message) => {
@@ -451,24 +442,19 @@ export default {
         // update papers
     };
 
-    
-
     onMounted(() => {
       curPapers.value=timeFilterRule();
       updateTotal();
       handleCurrentChange(1);
-      console.log(route.params.input)
+      setNav(true);
     });
-
-    onUnmounted(() =>{
-      setNav(false);
-    })
 
     return {
       resultCnt,
       value,
       checkList,
       options,
+      FavoritesList,
       timeButtons,
       curPapers,
       fieldButtons,
@@ -485,306 +471,12 @@ export default {
       handleinputSend,
       fieldFilter,
       pagedRegions,
-      dialogVisible,
-      radio3,
-      newFavourite,
-      addFavorite,
-      FavoritesList,
+      open
     };
   },
   
 };
 </script>
 <style scoped>
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1% 2% 1% 2%;
-  background-color: #003d74;
-  height: 5%;
-}
-
-.left-topbar {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  height: 30px;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  width: 350px;
-  height: 20px;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-.search-button {
-  padding: 10px 20px;
-  height: 40px;
-  background-color: #4f6ef2;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.search-button:hover {
-  background-color: #4662d9;
-}
-
-.profile {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px; 
-  height: 40px;
-  border-radius: 50%;
-  background-color: #aed0ee;
-  border: none;
-  cursor: pointer;
-}
-
-.button-image {
-  width: 20px; /* Adjust the size as needed */
-  height: 20px;
-}
-
-
-.main-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.sidebar {
-  min-width: 30%; 
-  background-color: #f4f4f4; 
-  min-height: 100vh;
-}
-
-.sidebar-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-left: 17%;
-  padding-right: 6%;
-}
-
-.content {
-  flex-grow: 1; /* 内容区域占据剩余空间 */
-  background-color: #f4f4f4;
-  overflow-y: auto; /* 允许垂直滚动 */
-}
-
-.content-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-left: 3%;
-  padding-right: 9%;
-}
-.content-container {
-  display: flex;
-  flex-direction: row;
-  width:100%;
-}
-.result-container{
-  display: flex;
-  height:80px;
-  align-items: center;
-  background-color: #f4f4f4;
-}
-.content-top{
-  width:100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* 如果需要垂直居中 */
-}
-.content-top-right{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.check-box{
-  width:100%;
-  display: flex;
-  flex-direction: column;
-}
-.el-card {
-  display: flex;
-  flex-direction: column;
-  width:100%;
-}
-.region{
-  height:20vh;
-  width:100%;
-  display: flex;
-  flex-direction: column;
-}
-.region-top{
-  width:100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height:100%;
-}
-.el-divider{
-  margin-top: auto;
-}
-.avatar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 65px; 
-  height: 65px;
-  border-radius: 50%;
-  background-color: #aed0ee;
-  border: none;
-  cursor: pointer;
-  margin-left:3%;
-  margin-right:3%;
-}
-.region-top-middle{
-  width:60%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.fields{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.region-top-end{
-  display: flex;
-  flex-direction: row;
-}
-.paper-card {
-  width: 100%;
-  margin: 10px auto;
-}
-
-.title b,
-.authors b,
-.submitted b {
-  font-weight: bold;
-}
-
-.title,
-.authors,
-.abstract,
-.abstract-content,
-.submitted{
-  text-align: left;
-  margin: 5px auto;
-}
-
-.title{
-  text-align: left;
-  font-size: 20px;
-  margin: 5px auto;
-}
-
-.author {
-  color: #2e59a7;
-  margin-left: 5px;
-}
-
-.abstract {
-  overflow: hidden;
-}
-
-.abstract-content {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.submitted b{
-  font-weight: bold;
-  text-align: left;
-}
-
-.open .abstract-content {
-  text-overflow: initial;
-  white-space: normal;
-  overflow: visible;
-}
-.button-box{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width:100%;
-}
-
-.label-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.block {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin: 5px;
-}
-
-.first-block {
-  background-color: #003d74;
-  color: white;
-  font-size: 12px;
-}
-
-.info-box {
-  background-color: #d4e5ef;
-  color: black;
-  font-size: 12px;
-}
-
-.info-box-content {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 5px;
-  border-radius: 5px;
-  font-size: 0.8em;
-  white-space: nowrap;
-}
-
-.line {
-  border-bottom: 1px solid #eaecef; /* 添加底部边框作为线 */
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.citation-container {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  justify-content: space-between;
-}
-
-.citation-icon{
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-}
-
-.citation{
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-}
-
+@import "style.css";
 </style>

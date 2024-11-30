@@ -16,7 +16,6 @@ export default createStore({
 
     state: { //存储内容
         token: null,
-        //设置登录过期
         tokenExpire: null,
         id: null,
         name: null,
@@ -36,6 +35,8 @@ export default createStore({
         replyMap: new Map(),
         courseMap: new Map(),
         classMap: new Map(),
+
+        navOpen: false
 
     },
 
@@ -117,12 +118,20 @@ export default createStore({
 
         getMapClass: (state) => (classId) => {
             return state.classMap[classId];
+        },
+
+        getNavStat(state) {
+            return state.navOpen;
         }
 
     },
 
 
     mutations: {
+
+        setNavStat(state, stat){
+            state.navOpen = stat;
+        },
 
         //如果想要去除token，执行以下代码，commit('setToken', null);
         setToken(state, token) {
@@ -156,8 +165,7 @@ export default createStore({
         },
 
         //存放私信
-        addEvent(state, newEvent)
-        {
+        addEvent(state, newEvent){
             state.eventList.push(newEvent);
         },
 
@@ -219,30 +227,25 @@ export default createStore({
 
     actions: {
         //用户名登录
-        async login( { commit, state }, credentials) {
+        async login({ commit, state }, credentials) {
             try {
                 const response = await axios.post('/user/login', credentials);
-                console.log(response.data);
+                //console.log(response.data);
                 if (response.status === 200){
                     if (response.data.code == 1){
                         commit('setToken', response.data.data.token);
                         commit('setData', response.data.data);
                         callSuccess('登录成功');
                         setTimeout(()=>{
-                            router.push('/administrator');
+                            router.push('/blog');
                         }, 1000);
-                    }else callError(response.data.message);
+                    }else callError(response.data.msg);
                 }else callError('网络错误');
             } catch (error) {
                 //console.log('there are some errors in login');
                 callError('密码错误或用户不存在');
             }
             return 1;
-        },
-        async register()
-        {
-
-
         },
 
 

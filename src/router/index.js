@@ -9,6 +9,7 @@ const router = createRouter({
     history: createWebHistory(),  // history 模式
     routes: [
 
+        //登录注册页面路由
         {
             path:'/administrator',
             name:'administrator',
@@ -26,7 +27,15 @@ const router = createRouter({
                 title: '学者搜索',
             },
         },
-
+        //学者搜索页面路由
+        {
+            path: '/favourite',
+            name: 'favourite',
+            component: defineAsyncComponent(() => import(`../page/favourite/index.vue`)),
+            meta: {
+                title: '个人图书馆',
+            },
+        },
         {
             path:'/newLogin',
             name:'newLogin',
@@ -35,9 +44,8 @@ const router = createRouter({
                 title: '登录'
             }
         },
-
         {
-            path: '/search',
+            path: '/search/:input',
             name: 'search',
             component: defineAsyncComponent(() => import(`../page/search/index.vue`)),
         },
@@ -80,7 +88,6 @@ const router = createRouter({
                 title: '个人-分析',
             },
         },
-
         {
             path: '/:catchAll(.*)',
             redirect: '/scholarSearch',
@@ -122,8 +129,6 @@ router.beforeEach((to, from, next)=>{
     //         next();
     //     }
     // }
-
-    next();
 
     // }else{
     //     //没有登录

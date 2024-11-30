@@ -52,7 +52,7 @@
                                 <citing/>
                             </el-tab-pane>
                             <el-tab-pane label="评论" name="third">
-<!--                                <comments/>-->
+                                <comments/>
                             </el-tab-pane>
                         </el-tabs>
                     </div>

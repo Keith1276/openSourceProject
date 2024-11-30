@@ -66,31 +66,16 @@
                 :default-sort="{ prop: 'date', order: 'descending' }"
                 style="width: 100%"
             >
-              <el-table-column label="文献" min-width="250">
+              <el-table-column label="文献" min-width="400">
                 <template #default="scope">
-                  <a :href="`${scope.row.href}`">{{ scope.row.title }}</a>
-                  <br />
+                  <a :href="`${scope.row.href}`">{{ scope.row.title }}</a
+                  ><br />
                   <span>{{ scope.row.authors }}</span>
                 </template>
               </el-table-column>
 
-              <el-table-column prop="user" sortable label="申请人(ID)" />
-              <el-table-column prop="id" sortable label="申请号" />
-
-              <el-table-column label="操作" width="180">
-                <template #default="scope">
-                  <el-button
-                      type="primary"
-                      size="small"
-                      @click="approve(scope.row.id)"
-                  >认证</el-button>
-                  <el-button
-                      type="danger"
-                      size="small"
-                      @click="reject(scope.row.id)"
-                  >拒绝</el-button>
-                </template>
-              </el-table-column>
+              <el-table-column prop="date" sortable label="日期" />
+              <el-table-column prop="citations" sortable label="引用次数" />
             </el-table>
 
             <div class="pagination">
@@ -111,34 +96,21 @@
         <div v-show="activeMenu === 'residentScholars'">
           <h1>入驻学者</h1>
           <el-table
-            :data="residentScholars"
+            :data="paginatedData"
             :default-sort="{ prop: 'date', order: 'descending' }"
             style="width: 100%"
             >
-            <el-table-column label="学者名称" min-width="400">
+            <el-table-column label="文献" min-width="400">
               <template #default="scope">
-                <span>{{ scope.row.name }}</span>
-                <br />
-<!--                <span>{{ scope.row.date }}</span>-->
+                <span>{{ scope.row.title }}</span>
+                ><br />
+                <span>{{ scope.row.authors }}</span>
               </template>
             </el-table-column>
 
             <el-table-column prop="date" sortable label="日期" />
-
-            <el-table-column prop="passages" sortable label="文章数目" />
+            <el-table-column prop="citations" sortable label="引用次数" />
           </el-table>
-
-          <div class="pagination">
-            <el-pagination
-                :current-page="currentPage"
-                :page-size="pageSize"
-                :total="5"
-                layout="prev, pager, next"
-                @current-change="handlePageChange"
-                size="big"
-                background
-            />
-          </div>
 
         </div>
       </el-main>
@@ -157,33 +129,53 @@ export default {
     return {
       pageSize:5,
       currentPage:1,
-      residentScholars:[
-        {
-          name:"RoisyL",
-          date:"2023-11-15",
-          passages:5,
-        },
-      ],
 
-      paginatedData: [
+      paginatedData:[
         {
           date: "2023-11-15",
-          user:"我是申请人",
-          id: 1,
+          citations: 323,
           title: "Image-based vehicle searching method based on deep learning",
           authors: "RoisyL, Yu J, Wang X, Liu H",
         },
         {
           date: "2023-11-15",
-          user:"我是申请人",
-          id: 2,
+          citations: 323,
           title: "Image-based vehicle searching method based on deep learning",
           authors: "RoisyL, Yu J, Wang X, Liu H",
         },
         {
           date: "2023-11-15",
-          user:"我是申请人",
-          id: 3,
+          citations: 323,
+          title: "Image-based vehicle searching method based on deep learning",
+          authors: "RoisyL, Yu J, Wang X, Liu H",
+        },
+        {
+          date: "2023-11-15",
+          citations: 323,
+          title: "Image-based vehicle searching method based on deep learning",
+          authors: "RoisyL, Yu J, Wang X, Liu H",
+        },
+        {
+          date: "2023-11-15",
+          citations: 323,
+          title: "Image-based vehicle searching method based on deep learning",
+          authors: "RoisyL, Yu J, Wang X, Liu H",
+        },
+        {
+          date: "2023-11-15",
+          citations: 323,
+          title: "Image-based vehicle searching method based on deep learning",
+          authors: "RoisyL, Yu J, Wang X, Liu H",
+        },
+        {
+          date: "2023-11-15",
+          citations: 323,
+          title: "Image-based vehicle searching method based on deep learning",
+          authors: "RoisyL, Yu J, Wang X, Liu H",
+        },
+        {
+          date: "2023-11-15",
+          citations: 323,
           title: "Image-based vehicle searching method based on deep learning",
           authors: "RoisyL, Yu J, Wang X, Liu H",
         },
@@ -220,12 +212,10 @@ export default {
           address: 'No. 189, Grove St, Los Angeles',
         },
       ],
-
       activityData: {
         dates: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
         values: [120, 200, 150, 80, 70, 110, 130]
       },
-
       userCompositionData: [
         { value: 400, name: '学生' },
         { value: 300, name: '高校研究人员' },
@@ -237,18 +227,6 @@ export default {
     };
   },
   methods: {
-    approve(row)
-    {
-      // 处理认证逻辑
-      console.log('认证:', row);
-      // 可以执行后端请求或更新数据等操作
-    },
-    reject(row) {
-      // 处理拒绝逻辑
-      console.log('拒绝:', row);
-      // 可以执行后端请求或更新数据等操作
-    },
-
     handlePageChange(newPage)
     {
       this.currentPage=newPage;
@@ -313,107 +291,5 @@ export default {
 </script>
 
 <style scoped>
-.admin-container {
-  display: flex;
-}
-
-
-/*.blue-block {*/
-/*    height: 150px;*/
-/*    background-color: #409EFF;*/
-/*    margin-bottom: 10px;*/
-/*    top: 0;*/
-/*}*/
-
-.custom-menu .el-menu-item {
-  height: 60px;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-}
-
-.custom-menu .el-menu-item i {
-  margin-right: 10px;
-}
-
-.overview-summary {
-  margin-bottom: 20px;
-}
-
-.stat-box {
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-}
-
-.overview-details .el-col {
-  margin-top: 10px;
-}
-
-.stopwatch {
-  padding: 20px;
-  background-color: #f3f4f6;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-}
-
-.response-time {
-  font-size: 24px;
-  font-weight: bold;
-  margin-left: 10px;
-}
-
-.chart-container {
-  height: 400px;
-}
-
-.echart {
-  width: 100%;
-  height: 400px;
-}
-
-/*调整菜单的高度*/
-.menu
-{
-  height: auto;
-  padding-top: 20px;
-}
-.custom-menu {
-  height: auto;
-}
-.menu .el-menu-item
-{
-  height: 80px; /* 调整菜单项高度 */
-}
-.admin-container {
-  height: 100vh;
-}
-
-.chart-container {
-  width: 100%;
-  height: 450px; /* 可以根据需求调整 */
-}
-
-.tableContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.pagination{
-  margin-top: 20px;
-  text-align: center;
-}
-.el-table th,
-.el-table td {
-  text-align: center;
-  font-size: 20px;
-  height: 100px;
-  line-height: 60px;
-  line-height: 60px;
-}
-
-
-
+@import "style.css";
 </style>

@@ -2,7 +2,9 @@
     <div class="references">
         <ul>
             <li v-for="paper in papers" :key="paper.id">
-                [{{ paper.id }}] {{ paper.title }}
+                [{{ paper.id }}] <a :href="paper.url" @click.prevent="navigateTo(paper.url)" class="paper-link">
+                    {{ paper.title }}
+                </a>
                 <br>
                 {{ paper.authors }}
             </li>
@@ -14,30 +16,35 @@
 export default {
     name: "references",
     methods: {
-
+        navigateTo(url) {
+            // window.open(url, '_blank');
+        }
     },
     setup() {
-        const views = 99, likes = 824, comments = 4353, favorites = 1e9+7;
         const papers = [
             {
                 id: 1,
                 title: 'Advanced Characterization Techniques for Thin Film Solar Cells',
-                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau'
+                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau',
+                url: 'www.baidu.com',
             },
             {
                 id: 2,
                 title: 'Advanced Characterization Techniques for Thin Film Solar Cells',
-                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau'
+                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau',
+                url: 'www.baidu.com',
             },
             {
                 id: 3,
                 title: 'Advanced Characterization Techniques for Thin Film Solar Cells',
-                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau'
+                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau',
+                url: 'www.baidu.com',
             },
             {
                 id: 4,
                 title: 'Advanced Characterization Techniques for Thin Film Solar Cells',
-                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau'
+                authors: 'Daniel Abou-Ras, Thomas Kirchartz, Uwe Rau',
+                url: 'www.baidu.com',
             },
             // ... 其余文献
         ];

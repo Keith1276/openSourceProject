@@ -1,15 +1,36 @@
 <template>
     <div id="app">
-        <router-view/>
+
+        <div style="width: 100%; height: 100%; position: relative">
+
+            <navigator :class="{'nav-open': navOpen, 'nav-close': !navOpen}"/>
+
+            <router-view style="width: 100%; height: 100%; z-index: 0; position: absolute"/>
+
+        </div>
+
+<!--        <router-view/>-->
+
     </div>
 </template>
 
 <script>
 
-//根组件
+import navigator from "@/nav/index.vue";
+import {computed} from "vue";
+import store from "@/store";
+
 export default {
-    name: 'App'
+    name: 'App',
+    components: {navigator},
+    setup() {
+        const navOpen = computed(() => store.state.navOpen);
+        return {
+            navOpen
+        }
+    }
 }
+
 </script>
 
 <style>
@@ -34,5 +55,19 @@ export default {
     background-color: #0fb2ff;
     opacity: 0.7;
     border-radius: 5px;
+}
+
+.nav-open{
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    transition: top 0.5s;
+}
+
+.nav-close{
+    z-index: 10;
+    position: fixed;
+    top: -80px;
+    transition: top 0.5s;
 }
 </style>
