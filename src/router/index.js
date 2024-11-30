@@ -28,15 +28,6 @@ const router = createRouter({
                 title: '学者搜索',
             },
         },
-        //学者搜索页面路由
-        {
-            path: '/favourite',
-            name: 'favourite',
-            component: defineAsyncComponent(() => import(`../page/favourite/index.vue`)),
-            meta: {
-                title: '个人图书馆',
-            },
-        },
         //学者搜索引导页
         {
             path: '/scholarAccess',
