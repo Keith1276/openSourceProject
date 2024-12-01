@@ -1,15 +1,16 @@
-import {createApp} from 'vue'
-import App from './App.vue'
+import store from "@/store"
+import * as Icons from '@element-plus/icons-vue'
+import axios from "axios"
+import vClickOutside from "click-outside-vue3"
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import router from './router'
-import axios from "axios";
-import store from "@/store";
-import vClickOutside from "click-outside-vue3"
-import * as Icons from '@element-plus/icons-vue'
+import { createApp } from 'vue'
 import vuetyped from 'vue3typed'
+import App from './App.vue'
+import router from './router'
 
-axios.defaults.baseURL = '/api' //axios请求默认URL
+axios.defaults.baseURL = 'https://api.github.com' //axios请求默认URL
+// 这里的token应该要改一下，改成github令牌
 axios.interceptors.request.use(config => {
     config.headers['token'] = store.getters.getToken; //有效
     config.headers.Authorization = `Bearer ${store.getters.getToken}`; //无效
