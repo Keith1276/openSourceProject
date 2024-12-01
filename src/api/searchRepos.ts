@@ -1,23 +1,31 @@
 import axios from "axios";
 import {callSuccess, callError, callInfo, callWarning} from "@/call";
 
-// https://docs.github.com/zh/search-github/searching-on-github/searching-users
-export async function searchUser(data : {
+// https://docs.github.com/zh/search-github/searching-on-github/searching-for-repositories
+export async function searchRepos(data : {
     name: string,
-    type: string,   // user, org
-    in: string,     // login, name, email
-    repos: string,  // <10, >10, 10..20
-    location: string,
+    in: string,     // name, description, topic, readme
+    repo: string,   // owner/name
+    user: string,
+    org: string,
     followers: string,  // <10, >10, 10..20
+    fork: string,   // >100, <100, 100..200
+    stars: string,   // >100, <100, 100..200
+    language: string,
+    license: string,
     sort: string    // e.g. followers, followers-asc
 } ) : Promise<void> {
     try {
         let q: string = `name:${data.name}`;
-        if (data.type) q += ` type:${data.type}`;
         if (data.in) q += ` in:${data.in}`;
-        if (data.repos) q += ` repos:${data.repos}`;
-        if (data.location) q += ` location:${data.location}`;
+        if (data.repo) q += ` repo:${data.repo}`;
+        if (data.user) q += ` user:${data.user}`;
+        if (data.org) q += ` org:${data.org}`;
         if (data.followers) q += ` followers:${data.followers}`;
+        if (data.fork) q += ` fork:${data.fork}`;
+        if (data.stars) q += ` stars:${data.stars}`;
+        if (data.language) q += ` language:${data.language}`;
+        if (data.license) q += ` license:${data.license}`;
         if (data.sort) q += ` sort:${data.sort}`;
         const params = new URLSearchParams({ q });
         const response = await axios.get('https://api.github.com/search/users', { params });

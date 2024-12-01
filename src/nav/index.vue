@@ -48,6 +48,7 @@ import {computed, provide, ref} from "vue";
 import { callSuccess, callError, callInfo, callWarning } from "@/call";
 import { Search } from '@element-plus/icons-vue'
 import store from "@/store";
+import router from "@/router"
 
 const searchInput = ref('');
 
@@ -60,10 +61,11 @@ const callSearchPage = () => {
         callInfo('搜索内容不得为空');
         return;
     }
-    // this.$router.push(`/blog/`);
-    // setTimeout(()=>{
-    //     this.$router.push(`/blog/find/${this.searchInput}`);
-    // }, 100);
+    // router.push(`/search/${searchInput.value}`);
+    router.push(`/newLogin/`);
+    setTimeout(()=>{
+        router.push(`/search/${searchInput.value}`);
+    }, 100);
 }
 
 </script>
