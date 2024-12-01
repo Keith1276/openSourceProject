@@ -1,7 +1,7 @@
 <template>
   <div class="top-bar">
     <div class="left-topbar">
-      <img src="@/asset/search/search_icon.png" alt="Logo" class="logo" />
+      <img src="@/asset/search/开源.png" alt="Logo" class="logo" />
       <button style="margin-right: 10%" @click="jumpSearch" class="jumpButton">
         <p style="color: aliceblue">成果搜索</p>
       </button>

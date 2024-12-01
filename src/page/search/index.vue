@@ -2,7 +2,7 @@
   <div class="main-contanier">
     <search></search>
     <div class="result-container">
-      <p style="margin-left: 5%; color: #5976ba; font-size: 18px">
+      <p style="margin-left: 5%; color: #657166; font-size: 18px">
         为您查询到 <b style="font-weight: bold">{{ resultCnt }}</b> 条结果
       </p>
     </div>
@@ -10,7 +10,7 @@
       <!-- 左侧筛选栏 -->
       <div class="sidebar">
         <div class="sidebar-block">
-          <p style="color: #5976ba">筛选</p>
+          <p style="color: #657166">筛选</p>
           <el-card style="width: 100%">
             <p style="text-align: left; font-weight: bold">时间</p>
             <div style="width: 100%" v-for="(button, index) in timeButtons">
@@ -25,14 +25,15 @@
             </div>
           </el-card>
           <el-card style="width: 100%">
-            <p style="text-align: left; font-weight: bold">领域</p>
-            <div style="width: 100%" v-for="(button, index) in fieldButtons">
+            <p style="text-align: left; font-weight: bold">语言</p>
+            <div style="width: 100%" v-for="(button, index) in languages">
               <el-button
                 class="button-box"
                 :key="index"
-                @click="fieldFilter(index)"
+                @click="timeFilter(index)"
                 text
               >
+                <span :style="{'background-color': button.color}" class="square"></span>
                 {{ button.text }}
               </el-button>
             </div>
@@ -45,10 +46,10 @@
           <!-- 两个小选择 -->
           <div class="content-top">
             <div class="content-top-left">
-              <p style="color: #5976ba">文章({{ resultCnt }})</p>
+              <p style="color: #657166">开源项目({{ resultCnt }})</p>
             </div>
             <div class="content-top-right">
-              <p style="color: #5976ba">排序</p>
+              <p style="color: #657166">排序</p>
               <el-select
                 v-model="value"
                 placeholder="按相关性"
@@ -66,65 +67,23 @@
           <!-- 文章块 -->
           <el-card style="width: 100%" shadow="always">
             <el-card class="paper-card" shadow="hover" v-for="paper in pagedRegions()" :key="paper.id">
-              <div class="title">
-                <b>{{ paper.title }}</b>
+              <div class="paper-header">
+              <div class="source-icon" v-if="paper.source === 'github'">
+                <img src="@/asset/search/github.png">
               </div>
-              <div class="authors">
-                <b>Authors:</b>
-                <a class="author">{{ paper.authors }}</a>
+              <div class="source-icon" v-if="paper.source === 'gitee'">
+                <img src="@/asset/search/gitee-copy.png">
               </div>
-              <div class="abstract">
-                <b style="background-color: #d4e5ef; color: #003d74">Abstract:</b>
-                <div class="abstract-content">
-                  {{ paper.abstract }}
-                </div>
+              <div class="project-name" :style="{ color: '#657166' }">
+                {{ paper.name }}
               </div>
-              <div class="submitted">
-                <b>Submitted:</b>
-                {{ paper.submitted }}
-              </div>
-              <div class="submitted">
-                <b>Comments:</b>
-                {{ paper.comments }}
-              </div>
-              <div class="label-container">
-                <div
-                  v-for="(item, index) in paper.type"
-                  :key="index"
-                  class="block"
-                  :class="{ 'first-block': index === 0, 'info-box': index !== 0 }"
-                >
-                  {{ item }}
-                </div>
-              </div>
-              <div class="line"></div>
-              <div class="citation-container">
-                <div class="citation" @click="toggleCitation(paper)">
-                  <img :src="getCitationIcon(paper)" alt="" class="citation-icon">
-                  <span>引用</span>
-                </div>
-                <div class="citation" @click="toggleCollection(paper),dialogVisible = true">
-                  <img :src="getCollection(paper)" alt="" class="citation-icon">
-                  <span>收藏</span>
-                </div>
-                <el-dialog v-model="dialogVisible" title="Shipping address" width="30%" :modal="false">
-                  <el-radio-group v-model="radio3" style="margin-bottom: 15px">
-                    <div style="width: 100%" v-for="(button, index) in FavoritesList">
-                      <el-radio :label="index" size="large">{{ button.text }}</el-radio>
-                    </div>
-                  </el-radio-group>
-
-                  <el-input v-model="newFavourite" style="width: 240px" placeholder="输入名称" />
-                  <el-button type="primary" @click="addFavorite(newFavourite)">新建收藏夹</el-button>
-                  <template #footer>
-                    <el-button @click="dialogVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">
-                      Confirm
-                    </el-button>
-                  </template>
-                </el-dialog>
-                <span>被引量: {{ paper.citations }}</span>
-              </div>
+            </div>
+            <div class="project-description">
+              {{ paper.abstract }}
+            </div>
+            <div class="project-languages">
+              {{ paper.language }}
+            </div>
             </el-card>
 
             <div class="page">
@@ -150,6 +109,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { setNav } from "@/nav/set";
 import { ElMessageBox, ElMessage } from 'element-plus'
+import { color } from "echarts";
 export default {
   methods:{
     getCitationIcon(paper) {
@@ -189,11 +149,16 @@ export default {
       { text: "2023以来" },
       { text: "2022以来" },
     ];
-    const fieldButtons = [
-      { text: "cs.AR" },
-      { text: "cs.AI" },
-      { text: "cs.LG" },
-    ];
+    const languages=[
+      {text:"Python",color:"#3572a5"},
+      {text:"Java",color:"#b07219"},
+      {text:"C",color:"#555555"},
+      {text:"C++",color:"#f34b7d"},
+      {text:"HTML",color:"#e34c26"},
+      {text:"Verilog",color:"#b2b7f8"},
+      {text:"JavaScript",color:"#f1e05a"},
+      {text:"Vue",color:"#41b883"},
+    ]
     const FavoritesList = ref<{ text: string }[]>([
       { text: "收藏夹1" },
       { text: "收藏夹2" },
@@ -206,124 +171,34 @@ export default {
     const route=useRoute();
     
 
-    const papers=[
+    const projects=[
       {
         id: 1,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.AI"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
+        source:"github",
+        name: "项目名称",
+        license:"Apache",
+        abstract:"这里是简介",
+        language:"python",
+        updated:"2024-01-02"
       },
       {
         id: 2,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
+        source:"github",
+        name: "项目名称",
+        license:"Apache",
+        abstract:"这里是简介",
+        language:"python",
+        updated:"2024-01-02"
       },
       {
         id: 3,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AI","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
+        source:"gitee",
+        name: "项目名称",
+        license:"Apache",
+        abstract:"这里是简介",
+        language:"python",
+        updated:"2024-01-02"
       },
-      {
-        id: 4,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.AI"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 5,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 6,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AI","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 7,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.AI"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 8,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 9,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AI","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      }
     ];
 
     const toggleCitation = (paper): void => {
@@ -382,42 +257,26 @@ export default {
     const timeFilterRule = (): Array<any> => {
       if(timeIndex.value!=-1){
         if(timeIndex.value==0){
-          return papers.filter(paper => {
-            const submittedYear = new Date(paper.submitted).getFullYear();
+          return projects.filter(paper => {
+            const submittedYear = new Date(paper.updated).getFullYear();
             console.log(submittedYear);
             return submittedYear >= 2024;
           });
         }
         else if(timeIndex.value==1){
-          return papers.filter(paper => {
-            const submittedYear = new Date(paper.submitted).getFullYear();
+          return projects.filter(paper => {
+            const submittedYear = new Date(paper.updated).getFullYear();
             return submittedYear >= 2023;
           });
         }
         else if(timeIndex.value==2){
-          return papers.filter(paper => {
-            const submittedYear = new Date(paper.submitted).getFullYear();
+          return projects.filter(paper => {
+            const submittedYear = new Date(paper.updated).getFullYear();
             return submittedYear >= 2022;
           });
         }
       }
-      return papers;
-    };
-
-    // 筛选领域
-    const fieldFilter = (index): void =>{
-      filedIndex.value=index;
-      curPapers.value=fieldFilterRule();
-      console.log(curPapers.value);
-    }
-
-    const fieldFilterRule = (): Array<any> => {
-      if(filedIndex.value!=-1){
-        return papers.filter(paper=>{
-          return paper.type.includes(fieldButtons[filedIndex.value].text);
-        })
-      }
-      return papers;
+      return projects;
     };
     
     let curPapers = ref<any>([]);
@@ -432,10 +291,7 @@ export default {
     };
 
     const pagedRegions = () => {
-      const start =
-        (pagination.value.currentPage - 1) * pagination.value.pageSize;
-      const end = start + pagination.value.pageSize;
-      return curPapers.value.slice(start, end);
+      return projects;
     };
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
@@ -470,8 +326,8 @@ export default {
       options,
       timeButtons,
       curPapers,
-      fieldButtons,
-      papers,
+      languages,
+      projects,
       toggleCitation,
       toggleCollection,
       getCitationIcon,
@@ -482,7 +338,6 @@ export default {
       pagination,
       receivedMessage,
       handleinputSend,
-      fieldFilter,
       pagedRegions,
       dialogVisible,
       radio3,
@@ -500,7 +355,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1% 2% 1% 2%;
-  background-color: #003d74;
+  background-color: #dd7050;
   height: 5%;
 }
 
@@ -564,7 +419,7 @@ export default {
 }
 
 .sidebar {
-  min-width: 30%; 
+  min-width: 25%; 
   background-color: #f4f4f4; 
   min-height: 100vh;
 }
@@ -668,45 +523,37 @@ export default {
 }
 .paper-card {
   width: 100%;
-  margin: 10px auto;
+  margin: 10px 0;
+}
+.paper-card {
+  display: flex;
+  flex-direction: column;
 }
 
-.title b,
-.authors b,
-.submitted b {
-  font-weight: bold;
+.paper-header {
+  display: flex;
+  align-items: center;
 }
 
-.title,
-.authors,
-.abstract,
-.abstract-content,
-.submitted{
-  text-align: left;
-  margin: 5px auto;
+.source-icon img {
+  width: 50px;
+  height: 50px; 
+  border-radius: 50%;
 }
 
-.title{
-  text-align: left;
-  font-size: 20px;
-  margin: 5px auto;
+.project-name {
+  margin-left: 10px;
 }
 
-.author {
-  color: #2e59a7;
-  margin-left: 5px;
+.project-description {
+  padding: 0 10px;
+  margin: 5px 0;
 }
 
-.abstract {
-  overflow: hidden;
+.project-languages {
+  padding: 0 10px;
+  margin-bottom: 10px;
 }
-
-.abstract-content {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .submitted b{
   font-weight: bold;
   text-align: left;
@@ -740,7 +587,7 @@ export default {
 }
 
 .first-block {
-  background-color: #003d74;
+  background-color: #936735;
   color: white;
   font-size: 12px;
 }
@@ -786,4 +633,14 @@ export default {
   font-size: 14px;
 }
 
+.button-box {
+  display: inline-flex;
+}
+
+.square {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
 </style>

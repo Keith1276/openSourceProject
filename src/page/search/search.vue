@@ -1,12 +1,12 @@
 <template>
   <div class="top-bar">
     <div class="left-topbar">
-      <img src="@/asset/search/search_icon.png" alt="Logo" class="logo" />
+      <img src="@/asset/search/开源.png" alt="Logo" class="logo" />
       <button style="margin-right: 10%" @click="jumpSearch" class="jumpButton">
-        <p style="color: aliceblue">成果搜索</p>
+        <p style="color: aliceblue">项目搜索</p>
       </button>
       <button class="jumpButton" @click="jumpScholar">
-        <p style="color: aliceblue">学者搜索</p>
+        <p style="color: aliceblue">作者搜索</p>
       </button>
     </div>
     <div class="search-container">
@@ -57,7 +57,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1% 2% 1% 2%;
-  background-color: #003d74;
+  background-color: #dd7050;
   height: 5%;
 }
 
@@ -92,7 +92,7 @@ export default {
 .search-button {
   padding: 10px 20px;
   height: 40px;
-  background-color: #4f6ef2;
+  background-color: #f3c382;
   color: white;
   border: none;
   border-radius: 5px;
@@ -100,7 +100,8 @@ export default {
 }
 
 .search-button:hover {
-  background-color: #4662d9;
+  background-color: #fde8d3;
+  color:black;
 }
 
 .profile {
