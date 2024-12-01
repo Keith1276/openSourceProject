@@ -2,10 +2,16 @@
   <div class="top-bar">
     <div class="left-topbar">
       <img src="@/asset/search/search_icon.png" alt="Logo" class="logo" />
+      <button style="margin-right: 10%" @click="jumpSearch" class="jumpButton">
+        <p style="color: aliceblue">成果搜索</p>
+      </button>
+      <button class="jumpButton" @click="jumpScholar">
+        <p style="color: aliceblue">学者搜索</p>
+      </button>
     </div>
     <div class="search-container">
-      <input type="text" placeholder="Search..." class="search-input" v-model="inputValue" />
-      <button class="search-button" @click="printInputValue">搜索一下</button>
+      <input type="text" placeholder="Search..." class="search-input" />
+      <button class="search-button">搜索一下</button>
     </div>
     <div class="right-topbar">
       <button class="profile">
@@ -19,20 +25,30 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import { useStore } from "vuex";
 import { register, resetPassword, sendEmail } from "@/api/example";
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import { callSuccess, callError, callInfo, callWarning } from "@/call";
+import router from "@/router/index.js";
 
-// send message
-const emit = defineEmits(['inputSend']);
-var inputValue = ref(null);
-const printInputValue = (): void => {
-  emit('inputSend', inputValue.value);
-  inputValue.value=null;
+export default {
+  name: "search",
+  setup() {
+    const jumpSearch = () => {
+      console.log("jumpSearch click success");
+      router.push("/search");
+    };
+    const jumpScholar = () => {
+      console.log("jumpScholar click success");
+      router.push("/scholarSearch");
+    };
+    return {
+      jumpSearch,
+      jumpScholar,
+    };
+  },
 };
-
 </script>
 
 <style scoped>
@@ -47,11 +63,18 @@ const printInputValue = (): void => {
 
 .left-topbar {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  width: 250px;
 }
-
+.right-topbar {
+  width: 250px;
+  display: flex;
+  justify-content: end;
+}
 .logo {
   height: 30px;
+  margin-right: 20%;
 }
 
 .search-container {
@@ -84,7 +107,7 @@ const printInputValue = (): void => {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px; 
+  width: 40px;
   height: 40px;
   border-radius: 50%;
   background-color: #aed0ee;
@@ -96,5 +119,19 @@ const printInputValue = (): void => {
   width: 20px; /* Adjust the size as needed */
   height: 20px;
 }
-
+.button-container {
+  display: flex;
+  flex-direction: row;
+}
+.jumpButton {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  color: aliceblue;
+  font-family: inherit;
+  font-size: inherit;
+}
 </style>

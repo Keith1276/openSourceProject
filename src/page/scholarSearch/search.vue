@@ -2,8 +2,13 @@
   <div class="top-bar">
     <div class="left-topbar">
       <img src="@/asset/search/search_icon.png" alt="Logo" class="logo" />
+      <button style="margin-right: 10%" @click="jumpSearch" class="jumpButton">
+        <p style="color: aliceblue">成果搜索</p>
+      </button>
+      <button class="jumpButton" @click="jumpScholar">
+        <p style="color: aliceblue">学者搜索</p>
+      </button>
     </div>
-    <div class="button-container"></div>
     <div class="search-container">
       <input type="text" placeholder="Search..." class="search-input" />
       <button class="search-button">搜索一下</button>
@@ -25,10 +30,24 @@ import { useStore } from "vuex";
 import { register, resetPassword, sendEmail } from "@/api/example";
 import { ref } from "vue";
 import { callSuccess, callError, callInfo, callWarning } from "@/call";
+import router from "@/router/index.js";
 
 export default {
   name: "search",
-  setup() {},
+  setup() {
+    const jumpSearch = () => {
+      console.log("jumpSearch click success");
+      router.push("/search");
+    };
+    const jumpScholar = () => {
+      console.log("jumpScholar click success");
+      router.push("/scholarSearch");
+    };
+    return {
+      jumpSearch,
+      jumpScholar,
+    };
+  },
 };
 </script>
 
@@ -44,11 +63,18 @@ export default {
 
 .left-topbar {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  width: 250px;
 }
-
+.right-topbar {
+  width: 250px;
+  display: flex;
+  justify-content: end;
+}
 .logo {
   height: 30px;
+  margin-right: 20%;
 }
 
 .search-container {
@@ -92,5 +118,20 @@ export default {
 .button-image {
   width: 20px; /* Adjust the size as needed */
   height: 20px;
+}
+.button-container {
+  display: flex;
+  flex-direction: row;
+}
+.jumpButton {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  color: aliceblue;
+  font-family: inherit;
+  font-size: inherit;
 }
 </style>
