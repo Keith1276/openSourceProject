@@ -2,11 +2,9 @@ import axios from "axios";
 import {callSuccess, callError, callInfo, callWarning} from "@/call";
 
 // https://docs.github.com/zh/search-github/searching-on-github/searching-users
-interface SearchUserResponse {
-    items: any[];
-    total_count: number;
-    incomplete_results: boolean;
-}
+
+//这个里边就是最后返回值可以用的字段
+const fieldsToKeep = ['id', 'name', 'description', 'stargazers_count', 'forks_count'];
 
 export async function searchUser(data : {
     name: string,
@@ -34,9 +32,21 @@ export async function searchUser(data : {
         if (data.followers) q += ` followers:${data.followers}`;
         if (data.sort) q += ` sort:${data.sort}`;
         const params = new URLSearchParams({ q });
-        const response = await axios.get<SearchUserResponse>('https://api.github.com/search/users', { params });
-        if (response.status === 200) {
+        const response = await axios.get('https://api.github.com/search/users', { params });
+        if (response.status === 200)
+        {
+            //对response进行筛选
+            //再看一眼，感觉有点问题
+            const filteredItems = response.data.items.map(item => {
+                return fieldsToKeep.reduce((acc, field) => {
+                    acc[field] = item[field];
+                    return acc;
+                }, {});
+            });
+            return filteredItems;
+
             callSuccess('请求成功');
+
         } else {
             callError('网络错误');
         }

@@ -8,19 +8,15 @@ import {callSuccess, callError, callInfo, callWarning} from "@/call";
     调用接口返回数据实例，searchUser同
     比如想用totalCount 就调用data.total_count
 
-           searchRepos(someData).then(filteredData =>
+           searchRepos(someData).then(filteredItems =>
            {
-             console.log(filteredData); // 处理筛选后的数组
+             console.log(filteredItems); // 处理筛选后的数组
             }).catch(error => {
           console.error(error); // 处理错误
           });
  */
 
-interface SearchReposResponse {
-    items: any[];
-    total_count: number;
-    incomplete_results: boolean;
-}
+const fieldsToKeep = ['id', 'name', 'description', 'stargazers_count', 'forks_count'];
 
 export async function searchRepos(data :
                                       {
@@ -50,17 +46,22 @@ export async function searchRepos(data :
         if (data.license) q += ` license:${data.license}`;
         if (data.sort) q += ` sort:${data.sort}`;
         const params = new URLSearchParams({ q });
-        const response = await axios.get<SearchReposResponse>('https://api.github.com/search/repositories', { params });
+        const response = await axios.get('https://api.github.com/search/repositories', { params });
 
         //感觉下边不太像写错了，我这会儿不太想动脑子我先注释了）
         //const response = await axios.get('https://api.github.com/search/users', { params });
+
+
         if (response.status === 200) {
             callSuccess('请求成功');
-
-            /*
-            应该在这里添加筛选逻辑并且return 一个fitereddata
-                return filteredItems;
-             */
+            //再看一眼，感觉有点问题
+            const filteredItems = response.data.items.map(item => {
+                return fieldsToKeep.reduce((acc, field) => {
+                    acc[field] = item[field];
+                    return acc;
+                }, {});
+            });
+            return filteredItems;
 
         }
         else {
