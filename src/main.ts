@@ -9,7 +9,7 @@ import vClickOutside from "click-outside-vue3"
 import * as Icons from '@element-plus/icons-vue'
 import vuetyped from 'vue3typed'
 
-axios.defaults.baseURL = '/api' //axios请求默认URL
+axios.defaults.baseURL = 'https://api.github.com' //axios请求默认URL
 axios.interceptors.request.use(config => {
     config.headers['token'] = store.getters.getToken; //有效
     config.headers.Authorization = `Bearer ${store.getters.getToken}`; //无效

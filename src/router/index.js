@@ -100,13 +100,15 @@ const router = createRouter({
                 title: '个人-分析',
             },
         },
+
         {
             path: '/:catchAll(.*)',
             redirect: '/scholarSearch',
         },
+
         {
             path: '/',
-            redirect: '/newLogin',
+            redirect: '/scholarSearch',
         }
 
     ]

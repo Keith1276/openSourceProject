@@ -229,7 +229,8 @@ export default createStore({
 
     actions: {
         //用户名登录
-        async login( { commit, state }, credentials) {
+        async login( { commit, state }, credentials)
+        {
             try {
                 const response = await axios.post('/user/login', credentials);
                 console.log(response.data);
@@ -238,7 +239,8 @@ export default createStore({
                         commit('setToken', response.data.data.token);
                         commit('setData', response.data.data);
                         callSuccess('登录成功');
-                        setTimeout(()=>{
+                        setTimeout(()=>
+                        {
                             router.push('/administrator');
                         }, 1000);
                     }else callError(response.data.message);
@@ -249,15 +251,15 @@ export default createStore({
             }
             return 1;
         },
+
         async register()
         {
 
-
         },
 
-
         //邮箱登录
-        async eLogin({commit, state}, credentials) {
+        async eLogin({commit, state}, credentials)
+        {
             try {
                 const response = await axios.post('/user/eLogin', credentials);
                 if (response.status === 200){
