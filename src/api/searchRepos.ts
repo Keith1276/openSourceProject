@@ -8,11 +8,12 @@ import {callSuccess, callError, callInfo, callWarning} from "@/call";
     调用接口返回数据实例，searchUser同
     比如想用totalCount 就调用data.total_count
 
-    searchRepos(someData).then(data => {
-      console.log(data); // 处理返回的数据
-    }).catch(error => {
-      console.error(error); // 处理错误
-    });
+           searchRepos(someData).then(filteredData =>
+           {
+             console.log(filteredData); // 处理筛选后的数组
+            }).catch(error => {
+          console.error(error); // 处理错误
+          });
  */
 
 interface SearchReposResponse {
@@ -55,6 +56,12 @@ export async function searchRepos(data :
         //const response = await axios.get('https://api.github.com/search/users', { params });
         if (response.status === 200) {
             callSuccess('请求成功');
+
+            /*
+            应该在这里添加筛选逻辑并且return 一个fitereddata
+                return filteredItems;
+             */
+
         }
         else {
             callError('网络错误');
@@ -64,7 +71,5 @@ export async function searchRepos(data :
     {
         //console.log('there are some errors in register');
     }
-
-
 
 }
