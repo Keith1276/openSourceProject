@@ -1,6 +1,6 @@
 <template>
   <div class="main-contanier">
-    <search></search>
+    <search @handleSearch="clickEven"></search>
     <div class="result-container">
       <p style="margin-left: 5%; color: #657166; font-size: 18px">
         为您查询到 <b style="font-weight: bold">{{ resultCnt }}</b> 条结果
@@ -51,8 +51,8 @@
             <div class="content-top-right">
               <p style="color: #657166">排序</p>
               <el-select
-                v-model="value"
-                placeholder="按相关性"
+                v-model="sort"
+                placeholder="按Star数"
                 style="width: 240px; padding-left: 20px"
               >
                 <el-option
@@ -67,22 +67,39 @@
           <!-- 文章块 -->
           <el-card style="width: 100%" shadow="always">
             <el-card class="paper-card" shadow="hover" v-for="paper in pagedRegions()" :key="paper.id">
-              <div class="paper-header">
-              <div class="source-icon" v-if="paper.source === 'github'">
-                <img src="@/asset/search/github.png">
+              <div class="paper-container">
+              <div class="paper-content">
+                <div class="paper-header">
+                  <div class="source-icon" v-if="paper.source === 'github'">
+                    <img src="@/asset/search/github.png">
+                  </div>
+                  <div class="source-icon" v-if="paper.source === 'gitee'">
+                    <img src="@/asset/search/gitee-copy.png">
+                  </div>
+                  <div class="project-name" :style="{ color: '#657166' }">
+                    {{ paper.name }}
+                  </div>
+                </div>
+                <div class="description-license-language-row">
+                  <div class="project-description">
+                    <div class="label">项目简介：</div>
+                    <div class="abstract-text">{{ paper.abstract }}</div>
+                  </div>
+                  <div class="project-license">
+                    <span class="label">License：</span>
+                    <span class="license-block">{{ paper.license }}</span>
+                  </div>
+                  <div class="project-languages">
+                    <span class="label">Language：</span>
+                    <span class="language-block"></span>{{ paper.language }}
+                  </div>
+                </div>
               </div>
-              <div class="source-icon" v-if="paper.source === 'gitee'">
-                <img src="@/asset/search/gitee-copy.png">
+              <div class="paper-image">
+                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/logo.png" alt="Project Logo">
+                </a>
               </div>
-              <div class="project-name" :style="{ color: '#657166' }">
-                {{ paper.name }}
-              </div>
-            </div>
-            <div class="project-description">
-              {{ paper.abstract }}
-            </div>
-            <div class="project-languages">
-              {{ paper.language }}
             </div>
             </el-card>
 
@@ -109,8 +126,9 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { setNav } from "@/nav/set";
 import { ElMessageBox, ElMessage } from 'element-plus'
+import { defineComponent, defineEmits } from 'vue';
 import { color } from "echarts";
-export default {
+export default defineComponent({
   methods:{
     getCitationIcon(paper) {
       return paper.citationClicked
@@ -137,12 +155,13 @@ export default {
   components: { search },
   setup() {
     const resultCnt = ref("3");
-    const value = ref("");
+    const sort = ref("Star");
     const checkList = ref([]);
     const options = [
-      { value: "Option1", label: "按相关性" },
-      { value: "Option2", label: "按被引量" },
-      { value: "Option3", label: "按时间降序" },
+      { value: "Star", label: "按Star数降序" },
+      { value: "Fork", label: "按Fork数降序" },
+      { value: "Issue", label: "按help-wanted-issues个数" },
+      { value: "Updated", label: "按最新updated" },
     ];
     const timeButtons = [
       { text: "2024以来" },
@@ -175,32 +194,50 @@ export default {
       {
         id: 1,
         source:"github",
-        name: "项目名称",
+        name: "项目名称1",
         license:"Apache",
-        abstract:"这里是简介",
+        abstract:"mpchart是一个包含各种类型图表的图表库，主要用于业务数据汇总，例如销售数据走势图，股价走势图等场景中使用，方便开发者快速实现图表UI，mpchart主要包括线形图、柱状图、饼状图、蜡烛图、气泡图、雷达图、瀑布图等自定义图表库。",
         language:"python",
-        updated:"2024-01-02"
+        updated:"2024-01-02",
+        link:"https://gitee.com/explore"
       },
       {
         id: 2,
         source:"github",
-        name: "项目名称",
+        name: "项目名称2",
         license:"Apache",
         abstract:"这里是简介",
         language:"python",
-        updated:"2024-01-02"
+        updated:"2024-01-02",
+        link:"https://gitee.com/explore"
       },
       {
         id: 3,
         source:"gitee",
-        name: "项目名称",
+        name: "项目名称3",
         license:"Apache",
         abstract:"这里是简介",
         language:"python",
-        updated:"2024-01-02"
+        updated:"2024-01-02",
+        link:"https://gitee.com/explore"
       },
     ];
 
+    const license = ref<string[]>([]);
+    const language = ref<string[]>([]);
+    const content = ref<string>('');
+
+    const clickEven=(val)=>{
+      console.log(val.license);// 一个数组，里面放的是license种类的名字
+      console.log(val.language);// 语言
+      console.log(val.content);// 搜索内容
+      license.value=val.license;
+      language.value=val.language;
+      content.value=val.content;
+      console.log(sort.value);
+      // TODO: 在这里发请求，把值赋给projects
+
+    }
     const toggleCitation = (paper): void => {
       paper.citationClicked = !paper.citationClicked;
       console.log(paper.citationClicked)
@@ -321,7 +358,7 @@ export default {
 
     return {
       resultCnt,
-      value,
+      sort,
       checkList,
       options,
       timeButtons,
@@ -344,10 +381,11 @@ export default {
       newFavourite,
       addFavorite,
       FavoritesList,
+      clickEven
     };
   },
   
-};
+});
 </script>
 <style scoped>
 .top-bar {
@@ -523,13 +561,34 @@ export default {
 }
 .paper-card {
   width: 100%;
-  margin: 10px 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 .paper-card {
   display: flex;
   flex-direction: column;
 }
+.paper-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.paper-content {
+  flex: 0 0 80%; /* 左边占比80% */
+}
+
+.paper-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 20%; 
+}
+
+.paper-image img {
+  max-width: 100%;
+  height: auto;
+}
 .paper-header {
   display: flex;
   align-items: center;
@@ -545,14 +604,56 @@ export default {
   margin-left: 10px;
 }
 
-.project-description {
-  padding: 0 10px;
-  margin: 5px 0;
+.project-info {
+  display: flex;
+  flex-wrap: wrap; /* 允许内容换行 */
+  align-items: flex-start; /* 左对齐 */
 }
 
-.project-languages {
-  padding: 0 10px;
-  margin-bottom: 10px;
+.description-license-language-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 垂直居中 */
+}
+
+.project-description, .project-license, .project-languages {
+  margin-right: 20px; 
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.label {
+  font-weight: bold; /* 加粗 */
+  margin-right: 5px; /* 标签和内容之间的间距 */
+}
+.label,
+.abstract-text {
+  text-align: left;
+  margin-top: 5px;
+  width: 600px;
+}
+
+.abstract-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.license-block {
+  display: inline-block;
+  background-color: #936735; /* 黄色背景 */
+  margin-right: 5px; /* 黄色块和文字之间的间距 */
+  padding: 5px 5px;
+  border-radius: 2px;
+  color:white;
+}
+
+.language-block {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: blue; /* 蓝色背景 */
+  margin-right: 5px; /* 蓝色块和文字之间的间距 */
 }
 .submitted b{
   font-weight: bold;
@@ -578,12 +679,12 @@ export default {
 }
 
 .block {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 5px 10px;
   border-radius: 5px;
   margin: 5px;
+  background-color: #936735;
+  color: white;
+  font-size: 12px;
 }
 
 .first-block {
