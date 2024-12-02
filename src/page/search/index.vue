@@ -91,7 +91,7 @@
                   </div>
                   <div class="project-languages">
                     <span class="label">Language：</span>
-                    <span class="language-block"></span>{{ paper.language }}
+                    <span :style="{'background-color': languageColor[paper.language]}" class="square"></span>{{ paper.language }}
                   </div>
                 </div>
               </div>
@@ -99,6 +99,21 @@
                 <a :href="paper.link" target="_blank" rel="noopener noreferrer">
                   <img src="@/asset/search/跳转.png" alt="Project Logo">
                 </a>
+              </div>
+            </div>
+            <div class="line"></div>
+            <div class="citation-container">
+              <div class="citation">
+                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/star-fill.png" alt="" class="citation-icon">
+                </a>
+                <span>Star</span>
+              </div>
+              <div class="citation">
+                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/fork.png" alt="" class="citation-icon">
+                </a>
+                <span>Fork</span>
               </div>
             </div>
             </el-card>
@@ -178,7 +193,17 @@ export default defineComponent({
       {text:"Verilog",color:"#b2b7f8"},
       {text:"JavaScript",color:"#f1e05a"},
       {text:"Vue",color:"#41b883"},
-    ]
+    ];
+    const languageColor = new Map<string, string>([
+      ['Python', '#3572a5'], 
+      ['Java', '#b07219'],
+      ['C', '#555555'], 
+      ['C++', '#f34b7d'],
+      ['HTML', '#e34c26'], 
+      ['Verilog', '#b2b7f8'],
+      ['JavaScript', '#f1e05a'], 
+      ['Vue', '#41b883'],
+    ]);
     const FavoritesList = ref<{ text: string }[]>([
       { text: "收藏夹1" },
       { text: "收藏夹2" },
@@ -195,12 +220,12 @@ export default defineComponent({
       {
         id: 1,
         source:"github",
-        name: "项目名称1",
-        license:"Apache",
-        abstract:"mpchart是一个包含各种类型图表的图表库，主要用于业务数据汇总，例如销售数据走势图，股价走势图等场景中使用，方便开发者快速实现图表UI，mpchart主要包括线形图、柱状图、饼状图、蜡烛图、气泡图、雷达图、瀑布图等自定义图表库。",
-        language:"python",
-        updated:"2024-01-02",
-        link:"https://gitee.com/explore"
+        name: "tolangc: tolang compiler",
+        license:"MIT",
+        abstract:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。tolangc 即 tolang compiler，是 tolang 语言的样例编译器，可以为编译技术的学习者提供对编译器架构的初步认识。",
+        language:"C++",
+        updated:"last week",
+        link:"https://github.com/wokron/tolangc"
       },
       {
         id: 2,
@@ -411,7 +436,8 @@ export default defineComponent({
       newFavourite,
       addFavorite,
       FavoritesList,
-      clickEven
+      clickEven,
+      languageColor
     };
   },
   
@@ -750,7 +776,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   font-size: 14px;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .citation-icon{
