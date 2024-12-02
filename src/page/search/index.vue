@@ -12,19 +12,6 @@
         <div class="sidebar-block">
           <p style="color: #657166">筛选</p>
           <el-card style="width: 100%">
-            <p style="text-align: left; font-weight: bold">时间</p>
-            <div style="width: 100%" v-for="(button, index) in timeButtons">
-              <el-button
-                class="button-box"
-                :key="index"
-                @click="timeFilter(index)"
-                text
-              >
-                {{ button.text }}
-              </el-button>
-            </div>
-          </el-card>
-          <el-card style="width: 100%">
             <p style="text-align: left; font-weight: bold">语言</p>
             <div style="width: 100%" v-for="(button, index) in languages">
               <el-button
@@ -34,6 +21,19 @@
                 text
               >
                 <span :style="{'background-color': button.color}" class="square"></span>
+                {{ button.text }}
+              </el-button>
+            </div>
+          </el-card>
+          <el-card style="width: 100%">
+            <p style="text-align: left; font-weight: bold">时间</p>
+            <div style="width: 100%" v-for="(button, index) in timeButtons">
+              <el-button
+                class="button-box"
+                :key="index"
+                @click="timeFilter(index)"
+                text
+              >
                 {{ button.text }}
               </el-button>
             </div>
