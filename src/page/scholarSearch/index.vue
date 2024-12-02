@@ -2,7 +2,7 @@
   <div class="main-contanier">
     <search></search>
     <div class="top-contanier">
-      <h2 style="color: #5976ba">学者搜索</h2>
+      <h2 style="color: #dd7050">学者搜索</h2>
       <div style="height: 40px">
         <el-input
           v-model="input3"
@@ -27,14 +27,14 @@
       </div>
     </div>
     <div class="result-container">
-      <p style="margin-left: 5%; color: #5976ba; font-size: 18px">
+      <p style="margin-left: 5%; color: #cca663; font-size: 18px">
         为您查询到 <b style="font-weight: bold">{{ resultCnt }}</b> 条结果
       </p>
     </div>
     <div class="content-container">
       <div class="sidebar">
         <div class="sidebar-block">
-          <p style="color: #5976ba">筛选</p>
+          <p style="color: #cca663">筛选</p>
           <el-card style="width: 100%">
             <p style="text-align: left; font-weight: bold">机构</p>
             <div>
@@ -53,10 +53,10 @@
         <div class="content-block">
           <div class="content-top">
             <div class="content-top-left">
-              <p style="color: #5976ba">学者({{ resultCnt }})</p>
+              <p style="color: #cca663">学者({{ resultCnt }})</p>
             </div>
             <div class="content-top-right">
-              <p style="color: #5976ba">排序</p>
+              <p style="color: #cca663">排序</p>
               <el-select
                 v-model="value"
                 placeholder="Select"
@@ -86,9 +86,11 @@
                   />
                 </button>
                 <div class="region-top-middle">
-                  <p style="font-weight: bold; margin-top: 1px">
-                    {{ region.name }}
-                  </p>
+                  <button class="jumpButton" @click="jumpPersonal">
+                    <p style="font-weight: bold; margin-top: 1px">
+                      {{ region.name }}
+                    </p>
+                  </button>
                   <p style="font-size: small; margin-top: 1px">
                     {{ region.organization }}
                   </p>
@@ -98,7 +100,7 @@
                       style="
                         font-size: small;
                         margin-top: 0.1px;
-                        color: #4994c4;
+                        color: #92af83;
                       "
                     >
                       {{ item }}
@@ -109,12 +111,12 @@
 
                 <div class="region-top-end">
                   <p>
-                    文献数量：<b style="font-weight: bold; color: #4994c4">{{
+                    文献数量：<b style="font-weight: bold; color: #cca663">{{
                       region.articleCnt
                     }}</b>
                   </p>
                   <p style="margin-left: 15px">
-                    被引用数：<b style="font-weight: bold; color: #4994c4">{{
+                    被引用数：<b style="font-weight: bold; color: #cca663">{{
                       region.citations
                     }}</b>
                   </p>
@@ -275,6 +277,10 @@ export default {
       handleCurrentChange(1);
       fregions.value = regions.value;
     });
+    const jumpPersonal = () => {
+      console.log("jumpPersonal click success");
+      router.push("/personal");
+    };
     return {
       resultCnt,
       value,
@@ -290,69 +296,14 @@ export default {
       filteredRegions,
       handleSearch,
       fregions,
+      jumpPersonal,
     };
   },
 };
 </script>
 <style scoped>
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1% 2% 1% 2%;
-  background-color: #003d74;
-  height: 5%;
-}
-
-.left-topbar {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  height: 30px;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  width: 350px;
-  height: 20px;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-.search-button {
-  padding: 10px 20px;
-  height: 40px;
-  background-color: #4f6ef2;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.search-button:hover {
-  background-color: #4662d9;
-}
-
-.profile {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #aed0ee;
-  border: none;
-  cursor: pointer;
-}
-
 .button-image {
-  width: 20px; /* Adjust the size as needed */
+  width: 20px;
   height: 20px;
 }
 
@@ -443,7 +394,7 @@ export default {
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  background-color: #aed0ee;
+  background-color: #92af83;
   border: none;
   cursor: pointer;
   margin-left: 3%;
@@ -481,6 +432,17 @@ export default {
   margin-bottom: 5%;
 }
 .el-pagination.is-background .el-pager li:not(.disabled) {
-  background-color: #6e9bc5;
+  background-color: #92af83;
+}
+.jumpButton {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  color: #5a7860;
+  font-family: inherit;
+  font-size: inherit;
 }
 </style>

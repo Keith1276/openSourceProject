@@ -19,6 +19,14 @@ const router = createRouter({
             },
         },
         {
+            path: '/personal',
+            name: 'personal',
+            component: defineAsyncComponent(() => import(`../page/personal/index.vue`)),
+            meta: {
+                title: '学者详情',
+            },
+        },
+        {
             path: '/search',
             name: 'search',
             component: defineAsyncComponent(() => import(`../page/search/index.vue`)),
