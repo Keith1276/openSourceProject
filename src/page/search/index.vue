@@ -97,7 +97,7 @@
               </div>
               <div class="paper-image">
                 <a :href="paper.link" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/logo.png" alt="Project Logo">
+                  <img src="@/asset/search/跳转.png" alt="Project Logo">
                 </a>
               </div>
             </div>
@@ -128,6 +128,7 @@ import { setNav } from "@/nav/set";
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { defineComponent, defineEmits } from 'vue';
 import { color } from "echarts";
+import { searchRepos } from "@/api/searchRepos";
 export default defineComponent({
   methods:{
     getCitationIcon(paper) {
@@ -235,9 +236,38 @@ export default defineComponent({
       language.value=val.language;
       content.value=val.content;
       console.log(sort.value);
+      let param={
+        license:license.value,
+        language:language.value,
+        content:content.value
+      }
+      clickEvent(param);
       // TODO: 在这里发请求，把值赋给projects
 
     }
+    const clickEvent = async (val: { license: string[]; language: string[]; content: string }) => {
+      try {
+        const data = {
+          name: content.value,
+          in: 'name', // 根据需要调整
+          repo: '', // 根据需要调整
+          user: '', // 根据需要调整
+          org: '', // 根据需要调整
+          followers: '', // 根据需要调整
+          fork: '', // 根据需要调整
+          stars: '', // 根据需要调整
+          language: language.value[0],
+          license: license.value.join(','), // 如果GitHub API需要以逗号分隔的字符串
+          sort: sort.value,
+        };
+
+        const results = await searchRepos(data);
+        console.log(results);
+      } catch (error) {
+        console.error('请求失败:', error);
+      }
+    };
+
     const toggleCitation = (paper): void => {
       paper.citationClicked = !paper.citationClicked;
       console.log(paper.citationClicked)
@@ -575,18 +605,19 @@ export default defineComponent({
 }
 
 .paper-content {
-  flex: 0 0 80%; /* 左边占比80% */
+  flex: 0 0 70%; /* 左边占比80% */
 }
 
 .paper-image {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   flex: 0 0 20%; 
+  padding-right: 20px;
 }
 
 .paper-image img {
-  max-width: 100%;
+  max-width: 50%;
   height: auto;
 }
 .paper-header {
