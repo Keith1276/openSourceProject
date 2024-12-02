@@ -91,7 +91,7 @@
                   </div>
                   <div class="project-languages">
                     <span class="label">Language：</span>
-                    <span :style="{'background-color': languageColor[paper.language]}" class="square"></span>{{ paper.language }}
+                    <span :style="{'background-color': languageColor.get(paper.language)}" class="square"></span>{{ paper.language }}
                   </div>
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default defineComponent({
         name: "项目名称2",
         license:"Apache",
         abstract:"这里是简介",
-        language:"python",
+        language:"Python",
         updated:"2024-01-02",
         link:"https://gitee.com/explore"
       },
@@ -243,7 +243,7 @@ export default defineComponent({
         name: "项目名称3",
         license:"Apache",
         abstract:"这里是简介",
-        language:"python",
+        language:"Python",
         updated:"2024-01-02",
         link:"https://gitee.com/explore"
       },
@@ -709,7 +709,6 @@ export default defineComponent({
   display: inline-block;
   width: 10px;
   height: 10px;
-  background-color: blue; /* 蓝色背景 */
   margin-right: 5px; /* 蓝色块和文字之间的间距 */
 }
 .submitted b{
