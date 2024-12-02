@@ -725,7 +725,7 @@ export default defineComponent({
 }
 
 .info-box {
-  background-color: #d4e5ef;
+  background-color: #f68f0a;
   color: black;
   font-size: 12px;
 }
