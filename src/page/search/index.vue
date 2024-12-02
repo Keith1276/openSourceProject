@@ -171,13 +171,13 @@ export default defineComponent({
   components: { search },
   setup() {
     const resultCnt = ref("3");
-    const sort = ref("Star");
+    const sort = ref("star");
     const checkList = ref([]);
     const options = [
-      { value: "Star", label: "按Star数降序" },
-      { value: "Fork", label: "按Fork数降序" },
-      { value: "Issue", label: "按help-wanted-issues个数" },
-      { value: "Updated", label: "按最新updated" },
+      { value: "star", label: "按Star数降序" },
+      { value: "fork", label: "按Fork数降序" },
+      { value: "help-wanted-issues", label: "按help-wanted-issues个数" },
+      { value: "updated", label: "按最新updated" },
     ];
     const timeButtons = [
       { text: "2024以来" },
@@ -261,6 +261,8 @@ export default defineComponent({
       language.value=val.language;
       content.value=val.content;
       console.log(sort.value);
+      if(license.value[0]=='All')
+        license.value=[];
       let param={
         license:license.value,
         language:language.value,

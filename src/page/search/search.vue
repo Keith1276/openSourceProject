@@ -97,18 +97,11 @@ export default defineComponent({
 
     const licenses=[
       {value:"All"},
-      {value:"Apache"},
-      {value:"GPL3"},
-      {value:"MIT"},
-      {value:"BSD2/BSD3"},
-      {value:"BSL"},
-      {value:"CCZ"},
-      {value:"EPL"},
-      {value:"AGPL"},
-      {value:"GPL2"},
-      {value:"LGPL"},
-      {value:"Mozilla"},
-      {value:"Unlicense"},
+      {value:"BSD Zero Clause License"},
+      {value:"MIT License"},
+      {value:"Apache License 2.0"},
+      {value:"Creative Commons"},
+      {value:"GNU General Public License"},
     ]
 
     const togglePopover = () => {
