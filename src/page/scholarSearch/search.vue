@@ -53,7 +53,7 @@
     <div class="right-topbar">
       <button class="profile">
         <img
-          src="@/asset/search/search_icon.png"
+          src="@/asset/search/开源.png"
           alt="Button Image"
           class="button-image"
         />
@@ -200,7 +200,7 @@ export default defineComponent({
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #aed0ee;
+  background-color: #f9bf6d;
   border: none;
   cursor: pointer;
 }

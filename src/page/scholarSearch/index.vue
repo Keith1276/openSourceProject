@@ -2,7 +2,7 @@
   <div class="main-contanier">
     <search></search>
     <div class="top-contanier">
-      <h2 style="color: #dd7050">学者搜索</h2>
+      <h2 style="color: #dd7050">作者搜索</h2>
       <div style="height: 40px">
         <el-input
           v-model="input3"
@@ -21,7 +21,7 @@
             </el-select>
           </template>
           <template #append>
-            <el-icon @click="handleSearch"><Search /></el-icon>
+            <el-icon><Search /></el-icon>
           </template>
         </el-input>
       </div>
@@ -233,49 +233,29 @@ export default {
         citations: "0",
       },
     ]);
-    const filteredRegions = () => {
-      if (select.value === "1") {
-        return regions.value.filter((region) =>
-          region.name.includes(input3.value)
-        );
-      } else if (select.value === "2") {
-        return regions.value.filter((region) =>
-          region.organization.includes(input3.value)
-        );
-      } else {
-        return regions.value;
-      }
-    };
-    const handleSearch = () => {
-      console.log("click success");
-      updateTotal();
-      fregions.value = filteredRegions();
-    };
     const pagination = ref({
       total: 0,
       currentPage: 1,
       pageSize: 5,
     });
     const updateTotal = () => {
-      pagination.value.total = filteredRegions().length;
+      pagination.value.total = regions.value.length;
     };
 
     const pagedRegions = () => {
       const start =
         (pagination.value.currentPage - 1) * pagination.value.pageSize;
       const end = start + pagination.value.pageSize;
-      return fregions.value.slice(start, end);
+      return regions.value.slice(start, end);
     };
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
     };
     onMounted(() => {
-      //window.location.reload();
       input3.value = route.params.input as string;
       select.value = route.params.select as string;
       updateTotal();
       handleCurrentChange(1);
-      fregions.value = regions.value;
     });
     const jumpPersonal = () => {
       console.log("jumpPersonal click success");
@@ -293,8 +273,6 @@ export default {
       pagination,
       pagedRegions,
       handleCurrentChange,
-      filteredRegions,
-      handleSearch,
       fregions,
       jumpPersonal,
     };

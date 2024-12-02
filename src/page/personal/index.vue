@@ -28,7 +28,33 @@
         </div>
       </div>
       <div class="right-container">
-        <h3>Popular repositories</h3>
+        <el-divider />
+        <div v-for="(region, index) in regions" :key="index" class="region">
+          <div class="left-content">
+            <div class="name_and_state">
+              <p style="font-size: larger; color: #cca663">{{ region.name }}</p>
+              <span style="font-size: smaller; color: gray" class="state"
+                >Public</span
+              >
+            </div>
+            <div class="lan_and_time">
+              <span
+                :style="{ 'background-color': region.color }"
+                class="square"
+              ></span>
+              <p style="font-size: smaller; color: gray">
+                {{ region.language }}
+              </p>
+              <p style="font-size: smaller; color: gray; margin-left: 3%">
+                Update {{ region.time }}
+              </p>
+            </div>
+          </div>
+          <!-- <div class="right-content">
+            <button>star</button>
+          </div> -->
+          <el-divider />
+        </div>
       </div>
     </div>
   </div>
@@ -45,11 +71,38 @@ export default {
     const name2 = ref("SpriteWithoutIce");
     const followers = ref("100");
     const followings = ref("100");
+    const regions = ref([
+      {
+        name: "Tutorial-2024",
+        time: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+      },
+      {
+        name: "Dysphagia-Diagnostic",
+        time: "Nov 1",
+        language: "HTML",
+        color: "red",
+      },
+      {
+        name: "Tutorial-2024",
+        time: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+      },
+      {
+        name: "Tutorial-2024",
+        time: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+      },
+    ]);
     return {
       name1,
       name2,
       followers,
       followings,
+      regions,
     };
   },
 };
@@ -75,7 +128,7 @@ export default {
   padding-top: 3%;
   padding-left: 8%;
   background-color: #f4f4f4;
-  border: 1px solid #d3d2d2;
+  /* border: 1px solid #d3d2d2; */
 }
 .right-container {
   display: flex;
@@ -85,6 +138,7 @@ export default {
   background-color: #f4f4f4;
   padding-left: 5%;
   padding-right: 10%;
+  max-height: 100vh;
 }
 .img-container {
   display: flex;
@@ -120,5 +174,42 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.region {
+  min-height: 20%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.name_and_state {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.state {
+  border-radius: 40%;
+  border: 1px solid gray;
+  padding: 5px;
+  margin-left: 1%;
+}
+.lan_and_time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.square {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+.left-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 70%;
 }
 </style>
