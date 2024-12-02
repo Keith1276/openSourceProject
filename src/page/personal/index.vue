@@ -30,29 +30,33 @@
       <div class="right-container">
         <el-divider />
         <div v-for="(region, index) in regions" :key="index" class="region">
-          <div class="left-content">
-            <div class="name_and_state">
-              <p style="font-size: larger; color: #cca663">{{ region.name }}</p>
-              <span style="font-size: smaller; color: gray" class="state"
-                >Public</span
-              >
+          <div class="content">
+            <div class="left-content">
+              <div class="name_and_state">
+                <p style="font-size: larger; color: #cca663">
+                  {{ region.name }}
+                </p>
+                <span style="font-size: smaller; color: gray" class="state"
+                  >Public</span
+                >
+              </div>
+              <div class="lan_and_time">
+                <span
+                  :style="{ 'background-color': region.color }"
+                  class="square"
+                ></span>
+                <p style="font-size: smaller; color: gray">
+                  {{ region.language }}
+                </p>
+                <p style="font-size: smaller; color: gray; margin-left: 3%">
+                  Update {{ region.time }}
+                </p>
+              </div>
             </div>
-            <div class="lan_and_time">
-              <span
-                :style="{ 'background-color': region.color }"
-                class="square"
-              ></span>
-              <p style="font-size: smaller; color: gray">
-                {{ region.language }}
-              </p>
-              <p style="font-size: smaller; color: gray; margin-left: 3%">
-                Update {{ region.time }}
-              </p>
+            <div class="right-content">
+              <el-button type="info" style="width: 20%" text bg>Star</el-button>
             </div>
           </div>
-          <!-- <div class="right-content">
-            <button>star</button>
-          </div> -->
           <el-divider />
         </div>
       </div>
@@ -211,5 +215,16 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   width: 70%;
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.right-content {
+  display: flex;
+  align-items: center;
+  width: 30%;
+  justify-content: flex-end;
 }
 </style>
