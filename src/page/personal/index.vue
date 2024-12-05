@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="right-content">
-              <el-button type="info" style="width: 20%" text bg>Star</el-button>
+              <el-button type="info" style="width: 30%" text bg>Star</el-button>
             </div>
           </div>
           <el-divider />
@@ -63,6 +63,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import search from "./search.vue";
 import { ref, computed, onMounted, watch } from "vue";

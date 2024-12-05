@@ -11,11 +11,20 @@ const router = createRouter({
     routes: [
         //学者搜索页面路由
         {
+            path:'/Board',
+            name:'Board',
+            component: defineAsyncComponent(() => import(`../page/Board/index.vue`)),
+            meta: {
+                title: '主页',
+            }
+        },
+
+        {
             path: '/scholarSearch',
             name: 'scholarSearch',
             component: defineAsyncComponent(() => import(`../page/scholarSearch/index.vue`)),
             meta: {
-                title: '学者搜索',
+                title: '开源开发者搜索',
             },
         },
         {
@@ -23,7 +32,7 @@ const router = createRouter({
             name: 'personal',
             component: defineAsyncComponent(() => import(`../page/personal/index.vue`)),
             meta: {
-                title: '学者详情',
+                title: '开发者详情',
             },
         },
         {

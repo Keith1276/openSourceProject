@@ -6,32 +6,32 @@
         <p style="color: aliceblue">项目搜索</p>
       </button>
       <button class="jumpButton" @click="jumpScholar">
-        <p style="color: aliceblue">开发者搜索</p>
+        <p style="color: aliceblue">作者搜索</p>
       </button>
     </div>
     <div class="search-container">
       <input
-        type="text"
-        placeholder="Search..."
-        class="search-input"
-        v-model="searchQuery"
+          type="text"
+          placeholder="Search..."
+          class="search-input"
+          v-model="searchQuery"
       />
       <button class="search-button" @click="handleSearch">搜索一下</button>
       <el-popover
-        ref="popover"
-        v-model="visible"
-        title="选项"
-        width="400"
-        trigger="click"
-        popper-append-to-body
+          ref="popover"
+          v-model="visible"
+          title="选项"
+          width="400"
+          trigger="click"
+          popper-append-to-body
       >
         <p>License</p>
         <el-checkbox-group v-model="license" label="License">
           <el-checkbox
-            v-for="item in licenses"
-            :key="item.value"
-            :label="item.value"
-            >{{ item.value }}</el-checkbox
+              v-for="item in licenses"
+              :key="item.value"
+              :label="item.value"
+          >{{ item.value }}</el-checkbox
           >
         </el-checkbox-group>
         <p>Language</p>
@@ -45,7 +45,7 @@
         </el-checkbox-group>
         <template #reference>
           <el-button class="advanced-search" @click="togglePopover"
-            >高级搜索</el-button
+          >高级搜索</el-button
           >
         </template>
       </el-popover>
@@ -53,9 +53,9 @@
     <div class="right-topbar">
       <button class="profile">
         <img
-          src="@/asset/search/开源.png"
-          alt="Button Image"
-          class="button-image"
+            src="@/asset/search/开源.png"
+            alt="Button Image"
+            class="button-image"
         />
       </button>
     </div>
@@ -107,11 +107,18 @@ export default defineComponent({
 
     const licenses = [
       { value: "All" },
-      { value: "BSD Zero Clause License" },
-      { value: "MIT License" },
-      { value: "Apache License 2.0" },
-      { value: "Creative Commons" },
-      { value: "GNU General Public License" },
+      { value: "Apache" },
+      { value: "GPL3" },
+      { value: "MIT" },
+      { value: "BSD2/BSD3" },
+      { value: "BSL" },
+      { value: "CCZ" },
+      { value: "EPL" },
+      { value: "AGPL" },
+      { value: "GPL2" },
+      { value: "LGPL" },
+      { value: "Mozilla" },
+      { value: "Unlicense" },
     ];
 
     const togglePopover = () => {
