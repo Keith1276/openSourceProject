@@ -2,7 +2,7 @@
   <div class="main-contanier">
     <search></search>
     <div class="top-contanier">
-      <h2 style="color: #dd7050">作者搜索</h2>
+      <h2 style="color: #dd7050">开发者搜索</h2>
       <div style="height: 40px">
         <el-input
           v-model="input3"
@@ -11,17 +11,12 @@
           class="input-with-select"
         >
           <template #prepend>
-            <el-select
-              v-model="select"
-              placeholder="Select"
-              style="width: 115px"
-            >
+            <el-select v-model="select" placeholder="姓名" style="width: 115px">
               <el-option label="姓名" value="1" />
-              <el-option label="机构" value="2" />
             </el-select>
           </template>
           <template #append>
-            <el-icon><Search /></el-icon>
+            <el-icon @click="handleSearch"><Search /></el-icon>
           </template>
         </el-input>
       </div>
@@ -34,41 +29,41 @@
     <div class="content-container">
       <div class="sidebar">
         <div class="sidebar-block">
-          <p style="color: #cca663">筛选</p>
-          <el-card style="width: 100%">
-            <p style="text-align: left; font-weight: bold">机构</p>
-            <div>
-              <el-checkbox-group v-model="checkList" class="check-box">
-                <el-checkbox
-                  v-for="(item, index) in organizations"
-                  :key="index"
-                  :label="item.label"
-                />
-              </el-checkbox-group>
-            </div>
-          </el-card>
+          <p style="color: #cca663">入驻开发者统计</p>
+          <div class="sidebar-content">
+            <div class="sidebar-bg"></div>
+            <p
+              style="
+                margin: 0;
+                letter-spacing: 2px;
+                color: #dd7050;
+                font-size: x-large;
+              "
+            >
+              德才兼备
+            </p>
+            <p
+              style="
+                margin-top: 5px;
+                margin-bottom: 5px;
+                letter-spacing: 2px;
+                color: #dd7050;
+                font-size: x-large;
+              "
+            >
+              知行合一
+            </p>
+            <el-button round color="#dd7050"
+              ><p style="color: white">查看开发者情况统计</p></el-button
+            >
+          </div>
         </div>
       </div>
       <div class="content">
         <div class="content-block">
           <div class="content-top">
             <div class="content-top-left">
-              <p style="color: #cca663">学者({{ resultCnt }})</p>
-            </div>
-            <div class="content-top-right">
-              <p style="color: #cca663">排序</p>
-              <el-select
-                v-model="value"
-                placeholder="Select"
-                style="width: 240px; padding-left: 20px"
-              >
-                <el-option
-                  v-for="(item, index) in options"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
+              <p style="color: #cca663">开发者({{ resultCnt }})</p>
             </div>
           </div>
           <el-card style="width: 100%">
@@ -86,40 +81,52 @@
                   />
                 </button>
                 <div class="region-top-middle">
-                  <button class="jumpButton" @click="jumpPersonal">
-                    <p style="font-weight: bold; margin-top: 1px">
+                  <button
+                    style="margin-right: 10%"
+                    @click="jumpPersonal"
+                    class="jumpButton"
+                  >
+                    <p
+                      style="
+                        font-weight: bold;
+                        margin-top: 1px;
+                        color: #cca663;
+                        font-size: large;
+                      "
+                    >
                       {{ region.name }}
                     </p>
                   </button>
-                  <p style="font-size: small; margin-top: 1px">
-                    {{ region.organization }}
+                  <p style="margin-top: 1px">
+                    {{ region.email }}
                   </p>
-                  <div class="fields">
-                    <p
-                      v-for="item in region.fields"
-                      style="
-                        font-size: small;
-                        margin-top: 0.1px;
-                        color: #92af83;
-                      "
-                    >
-                      {{ item }}
-                      <el-divider direction="vertical" />
+                  <div class="follow_and_repos">
+                    <p style="margin-top: 1px; margin-right: 10px">
+                      followers:<b
+                        style="
+                          font-weight: bold;
+                          color: #4994c4;
+                          font-size: small;
+                        "
+                        >{{ region.worksCount }}
+                      </b>
+                    </p>
+                    <p style="margin-top: 1px">
+                      popular repositories:<b
+                        style="
+                          font-weight: bold;
+                          color: #4994c4;
+                          font-size: small;
+                        "
+                        >{{ region.citedByCount }}</b
+                      >
                     </p>
                   </div>
                 </div>
-
                 <div class="region-top-end">
-                  <p>
-                    文献数量：<b style="font-weight: bold; color: #cca663">{{
-                      region.articleCnt
-                    }}</b>
-                  </p>
-                  <p style="margin-left: 15px">
-                    被引用数：<b style="font-weight: bold; color: #cca663">{{
-                      region.citations
-                    }}</b>
-                  </p>
+                  <el-button type="info" style="width: 30%" text bg
+                    >Follow</el-button
+                  >
                 </div>
               </div>
               <el-divider>
@@ -158,16 +165,32 @@ export default {
     const select = ref("");
     const route = useRoute();
     const organizations = ref([
-      { value: false, label: "Tsinghua University" },
-      { value: false, label: "Peking University" },
+      { label: "Tsinghua University" },
+      { label: "Peking University" },
     ]);
-    var fregions = ref([
+    const regions = ref([
       {
+        id: 1,
         name: "Zehuan Mo",
-        organization: "Peking University",
-        fields: ["Biology", "Gene"],
-        articleCnt: "1",
-        citations: "0",
+        worksCount: 1,
+        citedByCount: 1,
+        institutionName: "Peking University",
+        email: "skyshipwc@163.com",
+      },
+      {
+        id: 2,
+        name: "Berry",
+        worksCount: 1,
+        citedByCount: 1,
+        institutionName: "Beihang University",
+        email: "skyshipwc@163.com",
+      },
+      {
+        id: 3,
+        name: "RoisyL",
+        worksCount: 1,
+        citedByCount: 1,
+        institutionName: "Beihang University",
       },
     ]);
     const options = ref([
@@ -177,62 +200,13 @@ export default {
       { value: "Option4", label: "按被引用次数递减" },
       { value: "Option5", label: "按被引用次数递增" },
     ]);
-    const regions = ref([
-      {
-        name: "Zehuan Mo",
-        organization: "Peking University",
-        fields: [
-          "Biology",
-          "Gene",
-          "Biology",
-          "Biology",
-          "Biology",
-          "Biology",
-          "Biology",
-          "Biology",
-          "Biology",
-          "Biology",
-          "Biology",
-        ],
-        articleCnt: "1",
-        citations: "0",
-      },
-      {
-        name: "Zehuan Mo",
-        organization: "Peking University",
-        fields: ["Biology", "Gene"],
-        articleCnt: "1",
-        citations: "0",
-      },
-      {
-        name: "Zehuan Mo",
-        organization: "Peking University",
-        fields: ["Biology", "Gene"],
-        articleCnt: "1",
-        citations: "0",
-      },
-      {
-        name: "Zehuan Mo",
-        organization: "Tsinghua University",
-        fields: ["Biology", "Gene"],
-        articleCnt: "1",
-        citations: "0",
-      },
-      {
-        name: "Zehuan Mo",
-        organization: "Tsinghua University",
-        fields: ["Biology", "Gene"],
-        articleCnt: "1",
-        citations: "0",
-      },
-      {
-        name: "Zehuan Mo",
-        organization: "Tsinghua University",
-        fields: ["Biology", "Gene"],
-        articleCnt: "1",
-        citations: "0",
-      },
-    ]);
+    const handleSearch = () => {
+      console.log("click success");
+    };
+    const jumpPersonal = () => {
+      console.log("jumpPersonal click success");
+      router.push("/personal");
+    };
     const pagination = ref({
       total: 0,
       currentPage: 1,
@@ -241,7 +215,6 @@ export default {
     const updateTotal = () => {
       pagination.value.total = regions.value.length;
     };
-
     const pagedRegions = () => {
       const start =
         (pagination.value.currentPage - 1) * pagination.value.pageSize;
@@ -257,10 +230,6 @@ export default {
       updateTotal();
       handleCurrentChange(1);
     });
-    const jumpPersonal = () => {
-      console.log("jumpPersonal click success");
-      router.push("/personal");
-    };
     return {
       resultCnt,
       value,
@@ -273,18 +242,59 @@ export default {
       pagination,
       pagedRegions,
       handleCurrentChange,
-      fregions,
+      handleSearch,
       jumpPersonal,
     };
   },
 };
 </script>
 <style scoped>
+.follow_and_repos {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.jumpButton {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  color: aliceblue;
+  font-family: inherit;
+  font-size: inherit;
+}
+.sidebar-content {
+  /* background: url("@/asset/scholarSearch/statistic.jpg");
+  opacity: 0.7;
+  background-position: bottom left;
+  background-size: cover; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 20vw;
+  height: 20vw;
+  border: 1px solid #cca663;
+}
+.sidebar-bg {
+  height: 100%;
+  width: 100%;
+  background: url("@/asset/scholarSearch/statistic.jpg") no-repeat bottom right /
+    cover;
+  opacity: 0.7;
+}
+.main-contanier {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
 .button-image {
-  width: 20px;
+  width: 20px; /* Adjust the size as needed */
   height: 20px;
 }
-
 .main-container {
   display: flex;
   flex-direction: column;
@@ -294,7 +304,7 @@ export default {
 .sidebar {
   width: 30%;
   background-color: #f4f4f4;
-  min-height: 100vh;
+  max-height: 100vh;
 }
 
 .sidebar-block {
@@ -303,12 +313,13 @@ export default {
   align-items: flex-start;
   padding-left: 17%;
   padding-right: 6%;
+  height: 100%;
 }
 
 .content {
-  flex-grow: 1; /* 内容区域占据剩余空间 */
+  flex-grow: 1;
   background-color: #f4f4f4;
-  overflow-y: auto; /* 允许垂直滚动 */
+  overflow-y: auto;
 }
 
 .content-block {
@@ -321,6 +332,7 @@ export default {
 .content-container {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
   width: 100%;
 }
 .result-container {
@@ -372,7 +384,7 @@ export default {
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  background-color: #92af83;
+  background-color: #f1e0a8;
   border: none;
   cursor: pointer;
   margin-left: 3%;
@@ -391,7 +403,10 @@ export default {
 }
 .region-top-end {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  width: 30%;
+  justify-content: flex-end;
+  margin-right: 5%;
 }
 .top-contanier {
   background-color: #f4f4f4;
@@ -410,17 +425,6 @@ export default {
   margin-bottom: 5%;
 }
 .el-pagination.is-background .el-pager li:not(.disabled) {
-  background-color: #92af83;
-}
-.jumpButton {
-  border: none;
-  background: none;
-  padding: 0;
-  margin: 0;
-  outline: none;
-  cursor: pointer;
-  color: #5a7860;
-  font-family: inherit;
-  font-size: inherit;
+  background-color: #6e9bc5;
 }
 </style>
