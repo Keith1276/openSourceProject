@@ -6,7 +6,7 @@
         <p style="color: aliceblue">项目搜索</p>
       </button>
       <button class="jumpButton" @click="jumpScholar">
-        <p style="color: aliceblue">作者搜索</p>
+        <p style="color: aliceblue">开发者搜索</p>
       </button>
     </div>
     <div class="search-container">

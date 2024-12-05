@@ -94,7 +94,7 @@
                         font-size: large;
                       "
                     >
-                      {{ region.name }}
+                      {{ region.login }}
                     </p>
                   </button>
                   <p style="margin-top: 1px">
@@ -108,17 +108,17 @@
                           color: #4994c4;
                           font-size: small;
                         "
-                        >{{ region.worksCount }}
+                        >{{ region.followers }}
                       </b>
                     </p>
                     <p style="margin-top: 1px">
-                      popular repositories:<b
+                      repositories:<b
                         style="
                           font-weight: bold;
                           color: #4994c4;
                           font-size: small;
                         "
-                        >{{ region.citedByCount }}</b
+                        >{{ region.public_repos }}</b
                       >
                     </p>
                   </div>
@@ -160,45 +160,24 @@ export default {
   setup() {
     const resultCnt = ref("3");
     const value = ref("");
-    const checkList = ref([]);
     const input3 = ref("");
     const select = ref("");
     const route = useRoute();
-    const organizations = ref([
-      { label: "Tsinghua University" },
-      { label: "Peking University" },
-    ]);
     const regions = ref([
       {
         id: 1,
-        name: "Zehuan Mo",
-        worksCount: 1,
-        citedByCount: 1,
-        institutionName: "Peking University",
+        login: "Coke_And_1ce",
         email: "skyshipwc@163.com",
+        followers: 1,
+        public_repos: 1,
       },
       {
         id: 2,
-        name: "Berry",
-        worksCount: 1,
-        citedByCount: 1,
-        institutionName: "Beihang University",
+        login: "Berry",
         email: "skyshipwc@163.com",
+        followers: 1,
+        public_repos: 1,
       },
-      {
-        id: 3,
-        name: "RoisyL",
-        worksCount: 1,
-        citedByCount: 1,
-        institutionName: "Beihang University",
-      },
-    ]);
-    const options = ref([
-      { value: "Option1", label: "按匹配程度递减" },
-      { value: "Option2", label: "按文献数量递减" },
-      { value: "Option3", label: "按文献数量递增" },
-      { value: "Option4", label: "按被引用次数递减" },
-      { value: "Option5", label: "按被引用次数递增" },
     ]);
     const handleSearch = () => {
       console.log("click success");
@@ -233,10 +212,7 @@ export default {
     return {
       resultCnt,
       value,
-      checkList,
-      options,
       regions,
-      organizations,
       input3,
       select,
       pagination,
