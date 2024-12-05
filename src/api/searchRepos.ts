@@ -2,12 +2,30 @@ import axios from "axios";
 import {callSuccess, callError, callInfo, callWarning} from "@/call";
 
 // https://docs.github.com/zh/search-github/searching-on-github/searching-for-repositories
-export async function searchRepos(data : {
+
+
+/*
+    调用接口返回数据实例，searchUser同
+    比如想用totalCount 就调用data.total_count
+
+           searchRepos(someData).then(filteredItems =>
+           {
+             console.log(filteredItems); // 处理筛选后的数组
+            }).catch(error => {
+          console.error(error); // 处理错误
+          });
+ */
+
+const fieldsToKeep = ['id', 'name', 'description', 'stargazers_count', 'forks_count'];
+
+export async function searchRepos(data :
+                                      {
     name: string,
-    in: string,     // name, description, topic, readme
+    in: string,     // name, description, topic
     repo: string,   // owner/name
     user: string,
     org: string,
+
     followers: string,  // <10, >10, 10..20
     fork: string,   // >100, <100, 100..200
     stars: string,   // >100, <100, 100..200
@@ -28,13 +46,31 @@ export async function searchRepos(data : {
         if (data.license) q += ` license:${data.license}`;
         if (data.sort) q += ` sort:${data.sort}`;
         const params = new URLSearchParams({ q });
-        const response = await axios.get('https://api.github.com/search/users', { params });
+        const response = await axios.get('https://api.github.com/search/repositories', { params });
+
+        //感觉下边不太像写错了，我这会儿不太想动脑子我先注释了）
+        //const response = await axios.get('https://api.github.com/search/users', { params });
+
+
         if (response.status === 200) {
             callSuccess('请求成功');
-        } else {
+            //再看一眼，感觉有点问题
+            const filteredItems = response.data.items.map(item => {
+                return fieldsToKeep.reduce((acc, field) => {
+                    acc[field] = item[field];
+                    return acc;
+                }, {});
+            });
+            return filteredItems;
+
+        }
+        else {
             callError('网络错误');
         }
-    } catch (error) {
+    }
+    catch (error)
+    {
         //console.log('there are some errors in register');
     }
+
 }

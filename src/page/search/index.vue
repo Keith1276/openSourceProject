@@ -1,8 +1,8 @@
 <template>
   <div class="main-contanier">
-    <search></search>
+    <search @handleSearch="clickEven"></search>
     <div class="result-container">
-      <p style="margin-left: 5%; color: #5976ba; font-size: 18px">
+      <p style="margin-left: 5%; color: #657166; font-size: 18px">
         为您查询到 <b style="font-weight: bold">{{ resultCnt }}</b> 条结果
       </p>
     </div>
@@ -10,7 +10,21 @@
       <!-- 左侧筛选栏 -->
       <div class="sidebar">
         <div class="sidebar-block">
-          <p style="color: #5976ba">筛选</p>
+          <p style="color: #657166">筛选</p>
+          <el-card style="width: 100%">
+            <p style="text-align: left; font-weight: bold">语言</p>
+            <div style="width: 100%" v-for="(button, index) in languages">
+              <el-button
+                class="button-box"
+                :key="index"
+                @click="timeFilter(index)"
+                text
+              >
+                <span :style="{'background-color': button.color}" class="square"></span>
+                {{ button.text }}
+              </el-button>
+            </div>
+          </el-card>
           <el-card style="width: 100%">
             <p style="text-align: left; font-weight: bold">时间</p>
             <div style="width: 100%" v-for="(button, index) in timeButtons">
@@ -18,19 +32,6 @@
                 class="button-box"
                 :key="index"
                 @click="timeFilter(index)"
-                text
-              >
-                {{ button.text }}
-              </el-button>
-            </div>
-          </el-card>
-          <el-card style="width: 100%">
-            <p style="text-align: left; font-weight: bold">领域</p>
-            <div style="width: 100%" v-for="(button, index) in fieldButtons">
-              <el-button
-                class="button-box"
-                :key="index"
-                @click="fieldFilter(index)"
                 text
               >
                 {{ button.text }}
@@ -45,13 +46,13 @@
           <!-- 两个小选择 -->
           <div class="content-top">
             <div class="content-top-left">
-              <p style="color: #5976ba">文章({{ resultCnt }})</p>
+              <p style="color: #657166">开源项目({{ resultCnt }})</p>
             </div>
             <div class="content-top-right">
-              <p style="color: #5976ba">排序</p>
+              <p style="color: #657166">排序</p>
               <el-select
-                v-model="value"
-                placeholder="按相关性"
+                v-model="sort"
+                placeholder="按Star数"
                 style="width: 240px; padding-left: 20px"
               >
                 <el-option
@@ -66,65 +67,55 @@
           <!-- 文章块 -->
           <el-card style="width: 100%" shadow="always">
             <el-card class="paper-card" shadow="hover" v-for="paper in pagedRegions()" :key="paper.id">
-              <div class="title">
-                <b>{{ paper.title }}</b>
-              </div>
-              <div class="authors">
-                <b>Authors:</b>
-                <a class="author">{{ paper.authors }}</a>
-              </div>
-              <div class="abstract">
-                <b style="background-color: #d4e5ef; color: #003d74">Abstract:</b>
-                <div class="abstract-content">
-                  {{ paper.abstract }}
+              <div class="paper-container">
+              <div class="paper-content">
+                <div class="paper-header">
+                  <div class="source-icon" v-if="paper.source === 'github'">
+                    <img src="@/asset/search/github.png">
+                  </div>
+                  <div class="source-icon" v-if="paper.source === 'gitee'">
+                    <img src="@/asset/search/gitee-copy.png">
+                  </div>
+                  <div class="project-name" :style="{ color: '#657166' }">
+                    {{ paper.name }}
+                  </div>
+                </div>
+                <div class="description-license-language-row">
+                  <div class="project-description">
+                    <div class="label">项目简介：</div>
+                    <div class="abstract-text">{{ paper.abstract }}</div>
+                  </div>
+                  <div class="project-license">
+                    <span class="label">License：</span>
+                    <span class="license-block">{{ paper.license }}</span>
+                  </div>
+                  <div class="project-languages">
+                    <span class="label">Language：</span>
+                    <span :style="{'background-color': languageColor.get(paper.language)}" class="square"></span>{{ paper.language }}
+                  </div>
                 </div>
               </div>
-              <div class="submitted">
-                <b>Submitted:</b>
-                {{ paper.submitted }}
+              <div class="paper-image">
+                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/跳转.png" alt="Project Logo">
+                </a>
               </div>
-              <div class="submitted">
-                <b>Comments:</b>
-                {{ paper.comments }}
+            </div>
+            <div class="line"></div>
+            <div class="citation-container">
+              <div class="citation">
+                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/star-fill.png" alt="" class="citation-icon">
+                </a>
+                <span>Star</span>
               </div>
-              <div class="label-container">
-                <div
-                  v-for="(item, index) in paper.type"
-                  :key="index"
-                  class="block"
-                  :class="{ 'first-block': index === 0, 'info-box': index !== 0 }"
-                >
-                  {{ item }}
-                </div>
+              <div class="citation">
+                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/fork.png" alt="" class="citation-icon">
+                </a>
+                <span>Fork</span>
               </div>
-              <div class="line"></div>
-              <div class="citation-container">
-                <div class="citation" @click="toggleCitation(paper)">
-                  <img :src="getCitationIcon(paper)" alt="" class="citation-icon">
-                  <span>引用</span>
-                </div>
-                <div class="citation" @click="toggleCollection(paper),dialogVisible = true">
-                  <img :src="getCollection(paper)" alt="" class="citation-icon">
-                  <span>收藏</span>
-                </div>
-                <el-dialog v-model="dialogVisible" title="Shipping address" width="30%" :modal="false">
-                  <el-radio-group v-model="radio3" style="margin-bottom: 15px">
-                    <div style="width: 100%" v-for="(button, index) in FavoritesList">
-                      <el-radio :label="index" size="large">{{ button.text }}</el-radio>
-                    </div>
-                  </el-radio-group>
-
-                  <el-input v-model="newFavourite" style="width: 240px" placeholder="输入名称" />
-                  <el-button type="primary" @click="addFavorite(newFavourite)">新建收藏夹</el-button>
-                  <template #footer>
-                    <el-button @click="dialogVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">
-                      Confirm
-                    </el-button>
-                  </template>
-                </el-dialog>
-                <span>被引量: {{ paper.citations }}</span>
-              </div>
+            </div>
             </el-card>
 
             <div class="page">
@@ -150,7 +141,10 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { setNav } from "@/nav/set";
 import { ElMessageBox, ElMessage } from 'element-plus'
-export default {
+import { defineComponent, defineEmits } from 'vue';
+import { color } from "echarts";
+import { searchRepos } from "@/api/searchRepos";
+export default defineComponent({
   methods:{
     getCitationIcon(paper) {
       return paper.citationClicked
@@ -177,23 +171,39 @@ export default {
   components: { search },
   setup() {
     const resultCnt = ref("3");
-    const value = ref("");
+    const sort = ref("star");
     const checkList = ref([]);
     const options = [
-      { value: "Option1", label: "按相关性" },
-      { value: "Option2", label: "按被引量" },
-      { value: "Option3", label: "按时间降序" },
+      { value: "star", label: "按Star数降序" },
+      { value: "fork", label: "按Fork数降序" },
+      { value: "help-wanted-issues", label: "按help-wanted-issues个数" },
+      { value: "updated", label: "按最新updated" },
     ];
     const timeButtons = [
       { text: "2024以来" },
       { text: "2023以来" },
       { text: "2022以来" },
     ];
-    const fieldButtons = [
-      { text: "cs.AR" },
-      { text: "cs.AI" },
-      { text: "cs.LG" },
+    const languages=[
+      {text:"Python",color:"#3572a5"},
+      {text:"Java",color:"#b07219"},
+      {text:"C",color:"#555555"},
+      {text:"C++",color:"#f34b7d"},
+      {text:"HTML",color:"#e34c26"},
+      {text:"Verilog",color:"#b2b7f8"},
+      {text:"JavaScript",color:"#f1e05a"},
+      {text:"Vue",color:"#41b883"},
     ];
+    const languageColor = new Map<string, string>([
+      ['Python', '#3572a5'], 
+      ['Java', '#b07219'],
+      ['C', '#555555'], 
+      ['C++', '#f34b7d'],
+      ['HTML', '#e34c26'], 
+      ['Verilog', '#b2b7f8'],
+      ['JavaScript', '#f1e05a'], 
+      ['Vue', '#41b883'],
+    ]);
     const FavoritesList = ref<{ text: string }[]>([
       { text: "收藏夹1" },
       { text: "收藏夹2" },
@@ -206,125 +216,84 @@ export default {
     const route=useRoute();
     
 
-    const papers=[
+    const projects=[
       {
         id: 1,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.AI"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
+        source:"github",
+        name: "tolangc: tolang compiler",
+        license:"MIT",
+        abstract:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。tolangc 即 tolang compiler，是 tolang 语言的样例编译器，可以为编译技术的学习者提供对编译器架构的初步认识。",
+        language:"C++",
+        updated:"last week",
+        link:"https://github.com/wokron/tolangc"
       },
       {
         id: 2,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
+        source:"github",
+        name: "项目名称2",
+        license:"Apache",
+        abstract:"这里是简介",
+        language:"Python",
+        updated:"2024-01-02",
+        link:"https://gitee.com/explore"
       },
       {
         id: 3,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AI","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
+        source:"gitee",
+        name: "项目名称3",
+        license:"Apache",
+        abstract:"这里是简介",
+        language:"Python",
+        updated:"2024-01-02",
+        link:"https://gitee.com/explore"
       },
-      {
-        id: 4,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.AI"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 5,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 6,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AI","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 7,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.AI"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 8,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AR","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      },
-      {
-        id: 9,
-        title: "Your Paper Title",
-        authors: "John Doe, Jane Smith",
-        abstract:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        submitted: "2023-10-31",
-        comments: "NeurlPS Workshop 2024",
-        type: ["cs.AI","cs.LG"],
-        citations: 10,
-        citationClicked:false,
-        collectionClicked:false,
-      }
     ];
+
+    const license = ref<string[]>([]);
+    const language = ref<string[]>([]);
+    const content = ref<string>('');
+
+    const clickEven=(val)=>{
+      console.log(val.license);// 一个数组，里面放的是license种类的名字
+      console.log(val.language);// 语言
+      console.log(val.content);// 搜索内容
+      license.value=val.license;
+      language.value=val.language;
+      content.value=val.content;
+      console.log(sort.value);
+      if(license.value[0]=='All')
+        license.value=[];
+      let param={
+        license:license.value,
+        language:language.value,
+        content:content.value
+      }
+      clickEvent(param);
+      // TODO: 在这里发请求，把值赋给projects
+
+    }
+    const clickEvent = async (val: { license: string[]; language: string[]; content: string }) => {
+      try {
+        const data = {
+          name: content.value,
+          in: 'name', // 根据需要调整
+          repo: '', // 根据需要调整
+          user: '', // 根据需要调整
+          org: '', // 根据需要调整
+          followers: '', // 根据需要调整
+          fork: '', // 根据需要调整
+          stars: '', // 根据需要调整
+          language: language.value[0],
+          license: license.value.join(','), // 如果GitHub API需要以逗号分隔的字符串
+          sort: sort.value,
+        };
+
+        const results = await searchRepos(data);
+        console.log(results);
+      } catch (error) {
+        console.error('请求失败:', error);
+      }
+    };
 
     const toggleCitation = (paper): void => {
       paper.citationClicked = !paper.citationClicked;
@@ -382,42 +351,26 @@ export default {
     const timeFilterRule = (): Array<any> => {
       if(timeIndex.value!=-1){
         if(timeIndex.value==0){
-          return papers.filter(paper => {
-            const submittedYear = new Date(paper.submitted).getFullYear();
+          return projects.filter(paper => {
+            const submittedYear = new Date(paper.updated).getFullYear();
             console.log(submittedYear);
             return submittedYear >= 2024;
           });
         }
         else if(timeIndex.value==1){
-          return papers.filter(paper => {
-            const submittedYear = new Date(paper.submitted).getFullYear();
+          return projects.filter(paper => {
+            const submittedYear = new Date(paper.updated).getFullYear();
             return submittedYear >= 2023;
           });
         }
         else if(timeIndex.value==2){
-          return papers.filter(paper => {
-            const submittedYear = new Date(paper.submitted).getFullYear();
+          return projects.filter(paper => {
+            const submittedYear = new Date(paper.updated).getFullYear();
             return submittedYear >= 2022;
           });
         }
       }
-      return papers;
-    };
-
-    // 筛选领域
-    const fieldFilter = (index): void =>{
-      filedIndex.value=index;
-      curPapers.value=fieldFilterRule();
-      console.log(curPapers.value);
-    }
-
-    const fieldFilterRule = (): Array<any> => {
-      if(filedIndex.value!=-1){
-        return papers.filter(paper=>{
-          return paper.type.includes(fieldButtons[filedIndex.value].text);
-        })
-      }
-      return papers;
+      return projects;
     };
     
     let curPapers = ref<any>([]);
@@ -432,10 +385,7 @@ export default {
     };
 
     const pagedRegions = () => {
-      const start =
-        (pagination.value.currentPage - 1) * pagination.value.pageSize;
-      const end = start + pagination.value.pageSize;
-      return curPapers.value.slice(start, end);
+      return projects;
     };
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
@@ -465,13 +415,13 @@ export default {
 
     return {
       resultCnt,
-      value,
+      sort,
       checkList,
       options,
       timeButtons,
       curPapers,
-      fieldButtons,
-      papers,
+      languages,
+      projects,
       toggleCitation,
       toggleCollection,
       getCitationIcon,
@@ -482,17 +432,18 @@ export default {
       pagination,
       receivedMessage,
       handleinputSend,
-      fieldFilter,
       pagedRegions,
       dialogVisible,
       radio3,
       newFavourite,
       addFavorite,
       FavoritesList,
+      clickEven,
+      languageColor
     };
   },
   
-};
+});
 </script>
 <style scoped>
 .top-bar {
@@ -500,7 +451,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1% 2% 1% 2%;
-  background-color: #003d74;
+  background-color: #dd7050;
   height: 5%;
 }
 
@@ -564,7 +515,7 @@ export default {
 }
 
 .sidebar {
-  min-width: 30%; 
+  min-width: 25%; 
   background-color: #f4f4f4; 
   min-height: 100vh;
 }
@@ -668,45 +619,100 @@ export default {
 }
 .paper-card {
   width: 100%;
-  margin: 10px auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.paper-card {
+  display: flex;
+  flex-direction: column;
+}
+.paper-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.title b,
-.authors b,
-.submitted b {
-  font-weight: bold;
+.paper-content {
+  flex: 0 0 70%; /* 左边占比80% */
 }
 
-.title,
-.authors,
-.abstract,
-.abstract-content,
-.submitted{
+.paper-image {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex: 0 0 20%; 
+  padding-right: 20px;
+}
+
+.paper-image img {
+  max-width: 50%;
+  height: auto;
+}
+.paper-header {
+  display: flex;
+  align-items: center;
+}
+
+.source-icon img {
+  width: 50px;
+  height: 50px; 
+  border-radius: 50%;
+}
+
+.project-name {
+  margin-left: 10px;
+}
+
+.project-info {
+  display: flex;
+  flex-wrap: wrap; /* 允许内容换行 */
+  align-items: flex-start; /* 左对齐 */
+}
+
+.description-license-language-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 垂直居中 */
+}
+
+.project-description, .project-license, .project-languages {
+  margin-right: 20px; 
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.label {
+  font-weight: bold; /* 加粗 */
+  margin-right: 5px; /* 标签和内容之间的间距 */
+}
+.label,
+.abstract-text {
   text-align: left;
-  margin: 5px auto;
+  margin-top: 5px;
+  width: 600px;
 }
 
-.title{
-  text-align: left;
-  font-size: 20px;
-  margin: 5px auto;
-}
-
-.author {
-  color: #2e59a7;
-  margin-left: 5px;
-}
-
-.abstract {
-  overflow: hidden;
-}
-
-.abstract-content {
+.abstract-text {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 
+.license-block {
+  display: inline-block;
+  background-color: #936735; /* 黄色背景 */
+  margin-right: 5px; /* 黄色块和文字之间的间距 */
+  padding: 5px 5px;
+  border-radius: 2px;
+  color:white;
+}
+
+.language-block {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px; /* 蓝色块和文字之间的间距 */
+}
 .submitted b{
   font-weight: bold;
   text-align: left;
@@ -731,22 +737,22 @@ export default {
 }
 
 .block {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 5px 10px;
   border-radius: 5px;
   margin: 5px;
+  background-color: #936735;
+  color: white;
+  font-size: 12px;
 }
 
 .first-block {
-  background-color: #003d74;
+  background-color: #936735;
   color: white;
   font-size: 12px;
 }
 
 .info-box {
-  background-color: #d4e5ef;
+  background-color: #f68f0a;
   color: black;
   font-size: 12px;
 }
@@ -771,7 +777,7 @@ export default {
   display: flex;
   align-items: center;
   font-size: 14px;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .citation-icon{
@@ -786,4 +792,14 @@ export default {
   font-size: 14px;
 }
 
+.button-box {
+  display: inline-flex;
+}
+
+.square {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
 </style>

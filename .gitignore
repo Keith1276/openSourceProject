@@ -22,4 +22,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 backend/src/main/resources/application.properties
-data/data.py
+data.py
