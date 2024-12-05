@@ -2,13 +2,22 @@
 import mysql.connector
 import ast
 import json
+import MySQLdb
+import sys
+import pymysql
 
-conn = mysql.connector.connect(
-    host='localhost',
-    user='',        # 账号
-    password='',    # 密码
-    database='open_source'
-)
+print("hello")
+sys.stdout.flush()
+try:
+    conn = pymysql.connect(
+        host='localhost',
+        user='root',
+        password='lyh20050316',
+        database='open_source'
+    )
+except MySQLdb.Error as err:
+    print("连接数据库出现错误: {}".format(err))
+print("abc")
 cursor = conn.cursor()
 
 cursor.execute('''

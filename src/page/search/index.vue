@@ -35,55 +35,45 @@
             <div class="content-top-left">
               <p style="color: #657166">开源项目({{ resultCnt }})</p>
             </div>
-            <div class="content-top-right">
-              <p style="color: #657166">排序</p>
-              <el-select
-                v-model="sort"
-                placeholder="按Star数"
-                style="width: 240px; padding-left: 20px"
-              >
-                <el-option
-                  v-for="(item, index) in options"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </div>
           </div>
           <!-- 文章块 -->
           <el-card style="width: 100%" shadow="always">
-            <el-card class="paper-card" shadow="hover" v-for="paper in pagedRegions()" :key="paper.id">
+            <el-card class="paper-card" shadow="hover" v-for="resposity in repositeries" :key="resposity.id">
               <div class="paper-container">
               <div class="paper-content">
                 <div class="paper-header">
-                  <div class="source-icon" v-if="paper.source === 'github'">
+                  <div class="source-icon">
                     <img src="@/asset/search/github.png">
                   </div>
-                  <div class="source-icon" v-if="paper.source === 'gitee'">
-                    <img src="@/asset/search/gitee-copy.png">
-                  </div>
                   <div class="project-name" :style="{ color: '#657166' }">
-                    {{ paper.name }}
+                    {{ resposity.name }}
                   </div>
                 </div>
                 <div class="description-license-language-row">
+                  <div class="project-license">
+                    <span class="label">开发者：</span>
+                    <span class="author-block">{{ resposity.owner_login }}</span>
+                  </div>
                   <div class="project-description">
                     <div class="label">项目简介：</div>
-                    <div class="abstract-text">{{ paper.abstract }}</div>
+                    <div class="abstract-text">{{ resposity.description }}</div>
+                  </div>
+                  <div class="project-description">
+                    <span class="label">最近更新时间</span>
+                    <div class="others-block">{{ resposity.updated_at }}</div>
                   </div>
                   <div class="project-license">
                     <span class="label">License：</span>
-                    <span class="license-block">{{ paper.license }}</span>
+                    <span class="license-block">{{ resposity.license }}</span>
                   </div>
                   <div class="project-languages">
                     <span class="label">Language：</span>
-                    <span :style="{'background-color': languageColor.get(paper.language)}" class="square"></span>{{ paper.language }}
+                    <span :style="{'background-color': languageColor.get(resposity.language)}" class="square"></span>{{ resposity.language }}
                   </div>
                 </div>
               </div>
               <div class="paper-image">
-                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
+                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
                   <img src="@/asset/search/跳转.png" alt="Project Logo">
                 </a>
               </div>
@@ -91,16 +81,28 @@
             <div class="line"></div>
             <div class="citation-container">
               <div class="citation">
-                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/search/star-fill.png" alt="" class="citation-icon">
+                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/github-star.png" alt="" class="citation-icon">
                 </a>
-                <span>Star</span>
+                <span>Star: {{ resposity.stargazer_count }}</span>
               </div>
               <div class="citation">
-                <a :href="paper.link" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/search/fork.png" alt="" class="citation-icon">
+                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/code-fork.png" alt="" class="citation-icon">
                 </a>
-                <span>Fork</span>
+                <span>Fork: {{ resposity.forks_count }}</span>
+              </div>
+              <div class="citation">
+                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/icon_github_issue.png" alt="" class="citation-icon">
+                </a>
+                <span>Issues: {{ resposity.has_issues }}</span>
+              </div>
+              <div class="citation">
+                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                  <img src="@/asset/search/watch.png" alt="" class="citation-icon">
+                </a>
+                <span>Watchers: {{ resposity.watchers_count }}</span>
               </div>
             </div>
             </el-card>
@@ -202,7 +204,53 @@ export default defineComponent({
 
     const route=useRoute();
     
-
+    const repositeries=[
+      {
+        id:0,
+        name:"project name",
+        owner_login:"owner name",
+        html_url: "url",
+        description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
+        updated_at:"2024-12-05",
+        stargazer_count:20,
+        watchers_count:15,
+        language:"Python",
+        has_issues:30,
+        has_discussion:10,
+        forks_count:1,
+        license:"MIT",
+      },
+      {
+        id:1,
+        name:"project name",
+        owner_login:"owner name",
+        html_url: "url",
+        description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
+        updated_at:"2024-12-05",
+        stargazer_count:20,
+        watchers_count:15,
+        language:"Python",
+        has_issues:30,
+        has_discussion:10,
+        forks_count:1,
+        license:"MIT",
+      },
+      {
+        id:2,
+        name:"project name",
+        owner_login:"owner name",
+        html_url: "url",
+        description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
+        updated_at:"2024-12-05",
+        stargazer_count:20,
+        watchers_count:15,
+        language:"Python",
+        has_issues:30,
+        has_discussion:10,
+        forks_count:1,
+        license:"MIT",
+      }
+    ]
     const projects=[
       {
         id: 1,
@@ -426,7 +474,8 @@ export default defineComponent({
       addFavorite,
       FavoritesList,
       clickEven,
-      languageColor
+      languageColor,
+      repositeries
     };
   },
   
@@ -692,6 +741,22 @@ export default defineComponent({
   padding: 5px 5px;
   border-radius: 2px;
   color:white;
+}
+
+.author-block {
+  display: inline-block;
+  background-color: #c9736a; /* 黄色背景 */
+  margin-right: 5px; /* 黄色块和文字之间的间距 */
+  padding: 5px 5px;
+  border-radius: 2px;
+  color:white;
+}
+
+.others-block{
+  display: inline-block;
+  margin-right: 5px; /* 黄色块和文字之间的间距 */
+  padding: 5px 5px;
+  border-radius: 2px;
 }
 
 .language-block {

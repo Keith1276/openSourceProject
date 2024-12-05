@@ -2,13 +2,15 @@
 import mysql.connector
 import json
 import ast
+import pymysql
 
-conn = mysql.connector.connect(
+conn = pymysql.connect(
     host='localhost',
-    user='',        # 账号
-    password='',    # 密码
-    database='open_source'
+    user='root',
+    password='lyh20050316',
+    database='open_source',
 )
+
 cursor = conn.cursor()
 
 cursor.execute('''
