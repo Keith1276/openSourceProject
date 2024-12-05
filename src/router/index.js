@@ -17,7 +17,9 @@ const router = createRouter({
             meta: {
                 title: '主页',
             }
-        }
+
+        },
+
         {
             path: '/scholarSearch',
             name: 'scholarSearch',
@@ -31,7 +33,7 @@ const router = createRouter({
             name: 'personal',
             component: defineAsyncComponent(() => import(`../page/personal/index.vue`)),
             meta: {
-                title: '学者详情',
+                title: '开发者详情',
             },
         },
         {
