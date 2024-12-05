@@ -13,7 +13,7 @@ const router = createRouter({
         {
             path:'/Board',
             name:'Board',
-            component: () => import('@/components/Board.vue'),
+            component: () => import('../page/Board/index.vue'),
             meta: {
                 title: '主页',
             }
