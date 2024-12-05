@@ -53,7 +53,7 @@
             >
               知行合一
             </p>
-            <el-button round color="#dd7050"
+            <el-button round color="#dd7050" @click="jumpBoard"
               ><p style="color: white">查看开发者情况统计</p></el-button
             >
           </div>
@@ -186,6 +186,10 @@ export default {
       console.log("jumpPersonal click success");
       router.push("/personal");
     };
+    const jumpBoard = () => {
+      console.log("jumpBoard click success");
+      router.push("/Board");
+    };
     const pagination = ref({
       total: 0,
       currentPage: 1,
@@ -220,6 +224,7 @@ export default {
       handleCurrentChange,
       handleSearch,
       jumpPersonal,
+      jumpBoard,
     };
   },
 };
