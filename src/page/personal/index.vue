@@ -63,6 +63,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import search from "./search.vue";
 import { ref, computed, onMounted, watch } from "vue";

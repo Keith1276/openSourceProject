@@ -13,11 +13,10 @@ const router = createRouter({
         {
             path:'/Board',
             name:'Board',
-            component: () => import('@/components/Board.vue'),
+            component: defineAsyncComponent(() => import(`../page/Board/index.vue`)),
             meta: {
                 title: '主页',
             }
-
         },
 
         {
