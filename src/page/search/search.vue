@@ -10,21 +10,29 @@
       </button>
     </div>
     <div class="search-container">
-      <input type="text" placeholder="Search..." class="search-input" v-model="searchQuery"/>
+      <input
+        type="text"
+        placeholder="Search..."
+        class="search-input"
+        v-model="searchQuery"
+      />
       <button class="search-button" @click="handleSearch">搜索一下</button>
       <el-popover
         ref="popover"
         v-model="visible"
         title="选项"
         width="400"
-        trigger="click" popper-append-to-body>
+        trigger="click"
+        popper-append-to-body
+      >
         <p>License</p>
         <el-checkbox-group v-model="license" label="License">
           <el-checkbox
             v-for="item in licenses"
             :key="item.value"
             :label="item.value"
-          >{{ item.value }}</el-checkbox>
+            >{{ item.value }}</el-checkbox
+          >
         </el-checkbox-group>
         <p>Language</p>
         <el-checkbox-group v-model="language" label="Language">
@@ -36,7 +44,9 @@
           <el-checkbox label="Go">Go</el-checkbox>
         </el-checkbox-group>
         <template #reference>
-          <el-button class="advanced-search" @click="togglePopover">高级搜索</el-button>
+          <el-button class="advanced-search" @click="togglePopover"
+            >高级搜索</el-button
+          >
         </template>
       </el-popover>
     </div>
@@ -56,8 +66,8 @@
 import { useStore } from "vuex";
 import { register, resetPassword, sendEmail } from "@/api/example";
 import { callSuccess, callError, callInfo, callWarning } from "@/call";
-import { defineComponent, ref, defineEmits } from 'vue';
-import { ElButton, ElPopover, ElCheckbox, ElCheckboxGroup } from 'element-plus';
+import { defineComponent, ref, defineEmits } from "vue";
+import { ElButton, ElPopover, ElCheckbox, ElCheckboxGroup } from "element-plus";
 import router from "@/router/index.js";
 
 export default defineComponent({
@@ -66,7 +76,7 @@ export default defineComponent({
     ElButton,
     ElPopover,
     ElCheckbox,
-    ElCheckboxGroup
+    ElCheckboxGroup,
   },
   setup(props, { emit }) {
     const jumpSearch = () => {
@@ -81,28 +91,28 @@ export default defineComponent({
     const checkedOptions = ref<string[]>([]);
     const license = ref([]);
     const language = ref([]);
-    const searchQuery = ref<string>('');
+    const searchQuery = ref<string>("");
 
-    const handleSearch=()=>{
-      let param={
-        license:license.value,
-        language:language.value,
-        content:searchQuery.value
-      }
-      emit('handleSearch',param)
-      license.value=[];
-      language.value=[];
-      searchQuery.value='';
-    }
+    const handleSearch = () => {
+      let param = {
+        license: license.value,
+        language: language.value,
+        content: searchQuery.value,
+      };
+      emit("handleSearch", param);
+      license.value = [];
+      language.value = [];
+      searchQuery.value = "";
+    };
 
-    const licenses=[
-      {value:"All"},
-      {value:"BSD Zero Clause License"},
-      {value:"MIT License"},
-      {value:"Apache License 2.0"},
-      {value:"Creative Commons"},
-      {value:"GNU General Public License"},
-    ]
+    const licenses = [
+      { value: "All" },
+      { value: "BSD Zero Clause License" },
+      { value: "MIT License" },
+      { value: "Apache License 2.0" },
+      { value: "Creative Commons" },
+      { value: "GNU General Public License" },
+    ];
 
     const togglePopover = () => {
       visible.value = !visible.value;
@@ -117,7 +127,7 @@ export default defineComponent({
       license,
       language,
       licenses,
-      searchQuery
+      searchQuery,
     };
   },
 });
@@ -173,7 +183,7 @@ export default defineComponent({
 
 .search-button:hover {
   background-color: #fde8d3;
-  color:black;
+  color: black;
 }
 
 .profile {
