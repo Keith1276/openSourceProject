@@ -7,7 +7,7 @@
           <el-avatar
             class="avatar"
             fit="fill"
-            :src="require('@/asset/scholarSearch/avatar.jpg')"
+            :src="require('@/asset/scholarSearch/lyh.jpg')"
           />
         </div>
         <div class="info-container">
