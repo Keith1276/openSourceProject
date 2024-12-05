@@ -1,14 +1,18 @@
 # 仓库数据转存
-import mysql.connector
+from aifc import Error
+
+import pymysql
 import json
 import ast
 
-conn = mysql.connector.connect(
+print('abc')
+conn = pymysql.connect(
     host='localhost',
-    user='root',        # 账号
-    password='87201910Zjq#',    # 密码
+    user='root',
+    password='15755083308abc',
     database='open_source'
 )
+print('aaaaa')
 cursor = conn.cursor()
 
 cursor.execute('''
