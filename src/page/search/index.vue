@@ -25,19 +25,6 @@
               </el-button>
             </div>
           </el-card>
-          <el-card style="width: 100%">
-            <p style="text-align: left; font-weight: bold">时间</p>
-            <div style="width: 100%" v-for="(button, index) in timeButtons">
-              <el-button
-                class="button-box"
-                :key="index"
-                @click="timeFilter(index)"
-                text
-              >
-                {{ button.text }}
-              </el-button>
-            </div>
-          </el-card>
         </div>
       </div>
       <!-- 右侧文章栏 -->
