@@ -1,14 +1,15 @@
 # 用户数据转存
-import mysql.connector
+import pymysql
 import ast
 import json
 
-conn = mysql.connector.connect(
+conn = pymysql.connect(
     host='localhost',
-    user='',        # 账号
-    password='',    # 密码
+    user='root',        # 账号
+    password='15755083308abc',    # 密码
     database='open_source'
 )
+
 cursor = conn.cursor()
 
 cursor.execute('''

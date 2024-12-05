@@ -11,11 +11,19 @@ const router = createRouter({
     routes: [
         //学者搜索页面路由
         {
+            path:'/Board',
+            name:'Board',
+            component: () => import('@/components/Board.vue'),
+            meta: {
+                title: '主页',
+            }
+        }
+        {
             path: '/scholarSearch',
             name: 'scholarSearch',
             component: defineAsyncComponent(() => import(`../page/scholarSearch/index.vue`)),
             meta: {
-                title: '学者搜索',
+                title: '开源开发者搜索',
             },
         },
         {
