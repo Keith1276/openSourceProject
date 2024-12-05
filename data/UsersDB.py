@@ -5,8 +5,8 @@ import json
 
 conn = mysql.connector.connect(
     host='localhost',
-    user='',        # 账号
-    password='',    # 密码
+    user='root',        # 账号
+    password='87201910Zjq#',    # 密码
     database='open_source'
 )
 cursor = conn.cursor()
