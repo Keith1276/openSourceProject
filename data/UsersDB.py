@@ -1,23 +1,15 @@
 # 用户数据转存
-import mysql.connector
+import pymysql
 import ast
 import json
-import MySQLdb
-import sys
-import pymysql
 
-print("hello")
-sys.stdout.flush()
-try:
-    conn = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='lyh20050316',
-        database='open_source'
-    )
-except MySQLdb.Error as err:
-    print("连接数据库出现错误: {}".format(err))
-print("abc")
+conn = pymysql.connect(
+    host='localhost',
+    user='root',        # 账号
+    password='15755083308abc',    # 密码
+    database='open_source'
+)
+
 cursor = conn.cursor()
 
 cursor.execute('''

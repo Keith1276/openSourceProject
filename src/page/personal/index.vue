@@ -7,7 +7,7 @@
           <el-avatar
             class="avatar"
             fit="fill"
-            :src="require('@/asset/scholarSearch/avatar.jpg')"
+            :src="require('@/asset/scholarSearch/lyh.jpg')"
           />
         </div>
         <div class="info-container">
@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="right-content">
-              <el-button type="info" style="width: 20%" text bg>Star</el-button>
+              <el-button type="info" style="width: 30%" text bg>Star</el-button>
             </div>
           </div>
           <el-divider />
