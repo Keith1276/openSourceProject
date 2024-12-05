@@ -23,3 +23,4 @@ pnpm-debug.log*
 *.sw?
 backend/src/main/resources/application.properties
 data.py
+backend/src/main/resources/application-dev.yml
