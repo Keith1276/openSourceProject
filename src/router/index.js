@@ -46,7 +46,7 @@ const router = createRouter({
         },
         {
             path: '/',
-            redirect: '/search',
+            redirect: '/Board',
         }
 
     ]

@@ -2,7 +2,10 @@
   <div class="top-bar">
     <div class="left-topbar">
       <img src="@/asset/search/开源.png" alt="Logo" class="logo" />
-      <button style="margin-right: 10%" @click="jumpSearch" class="jumpButton">
+      <button class="jumpButton" @click="jumpBoard">
+        <p style="color: aliceblue">首页</p>
+      </button>
+      <button @click="jumpSearch" class="jumpButton">
         <p style="color: aliceblue">项目搜索</p>
       </button>
       <button class="jumpButton" @click="jumpScholar">
@@ -87,6 +90,10 @@ export default defineComponent({
       console.log("jumpScholar click success");
       router.push("/scholarSearch");
     };
+    const jumpBoard = () => {
+      console.log("jumpBoard click success");
+      router.push("/Board");
+    };
     const visible = ref<boolean>(false);
     const checkedOptions = ref<string[]>([]);
     const license = ref([]);
@@ -107,11 +114,18 @@ export default defineComponent({
 
     const licenses = [
       { value: "All" },
-      { value: "BSD Zero Clause License" },
-      { value: "MIT License" },
-      { value: "Apache License 2.0" },
-      { value: "Creative Commons" },
-      { value: "GNU General Public License" },
+      { value: "Apache" },
+      { value: "GPL3" },
+      { value: "MIT" },
+      { value: "BSD2/BSD3" },
+      { value: "BSL" },
+      { value: "CCZ" },
+      { value: "EPL" },
+      { value: "AGPL" },
+      { value: "GPL2" },
+      { value: "LGPL" },
+      { value: "Mozilla" },
+      { value: "Unlicense" },
     ];
 
     const togglePopover = () => {
@@ -120,6 +134,7 @@ export default defineComponent({
     return {
       jumpSearch,
       jumpScholar,
+      jumpBoard,
       visible,
       checkedOptions,
       handleSearch,
@@ -145,9 +160,10 @@ export default defineComponent({
 
 .left-topbar {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
+  justify-content: space-between;
   align-items: center;
-  width: 250px;
+  width: 300px;
 }
 .right-topbar {
   width: 250px;
@@ -156,7 +172,7 @@ export default defineComponent({
 }
 .logo {
   height: 30px;
-  margin-right: 20%;
+  margin-right: 10%;
 }
 
 .search-container {
