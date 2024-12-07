@@ -1,23 +1,20 @@
 # 仓库数据转存
-from aifc import Error
-
 import pymysql
 import json
 import ast
 
-print('abc')
 conn = pymysql.connect(
     host='localhost',
     user='root',
-    password='15755083308abc',
+    password='22371468',
     database='open_source'
 )
-print('aaaaa')
 cursor = conn.cursor()
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS repository (
-    id INTEGER PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    repo_id INT,
     name TEXT,
     owner_id INTEGER,
     owner_login TEXT,
@@ -89,7 +86,7 @@ with open('data/Repos.txt', 'r', encoding='utf-8') as file:
             )
         cursor.execute('''
         INSERT INTO repository (
-            id, name, owner_id, owner_login, html_url, description, fork, created_at,
+            repo_id, name, owner_id, owner_login, html_url, description, fork, created_at,
             updated_at, pushed_at, stargazers_count, watchers_count, language,
             has_issues, has_discussions, forks_count, open_issues_count, license, allow_forking
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)

@@ -22,9 +22,14 @@ public class User implements Serializable {
     private Integer id;
 
     /**
-     * 账号
+     * 开发者id
      */
-    private String account;
+    private Integer userId;
+
+    /**
+     * 开发者名
+     */
+    private String login;
 
     /**
      * 头像url
@@ -50,6 +55,11 @@ public class User implements Serializable {
      * 公共仓库数量
      */
     private Integer publicRepos;
+
+    /**
+     * 分数
+     */
+    private Double score;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

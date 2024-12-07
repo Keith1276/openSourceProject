@@ -1,7 +1,11 @@
 package com.example.backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.backend.entity.Repository;
 import com.example.backend.entity.User;
+import com.example.backend.result.PageResult;
+
+import java.util.List;
 
 /**
  * @author zjh
@@ -9,15 +13,12 @@ import com.example.backend.entity.User;
  * @createDate 2024-12-5
  */
 public interface BackendService extends IService<User> {
-//    /**
-//     * 审核学术成果认证申请
-//     *
-//     * @param claimRequestId   申请id
-//     * @param userId           用户id
-//     * @param authorId         作者id
-//     * @param success          是否通过审核
-//     * @param reason           审核意见
-//     */
-//    Long claimRequestResult(Long claimRequestId, Long userId, Long authorId, boolean success, String reason);
-
+    /**
+     * 搜索仓库
+     *
+     * @param keywords  关键词
+     * @param pageNum   页号
+     * @param pageSize  页面大小
+     */
+    List<Repository> searchRepos(List<String> keywords, String language, Long pageNum, Long pageSize);
 }

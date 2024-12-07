@@ -19,7 +19,7 @@ spring:
     username: ${software.datasource.username}
     password: ${software.datasource.password}
   application:
-    name: systemServiceProvider
+    name: backendServiceProvider
   cloud:
     nacos:
       discovery:
@@ -78,7 +78,7 @@ logging:
 
 dubbo:
   application:
-    name: systemServiceProvider-dubbo
+    name: backendServiceProvider-dubbo
   protocol:
     name: dubbo
     port: -1
