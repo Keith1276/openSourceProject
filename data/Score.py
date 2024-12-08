@@ -24,6 +24,13 @@ column_names = [column[0] for column in columns]
 if 'score' not in column_names:
     cursor.execute('ALTER TABLE repository ADD COLUMN score FLOAT')
 
+# 为 user_id, repo_id, score 创建索引
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_user_id ON user(user_id);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_repo_id ON repository(repo_id);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_user_score ON user(score);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_repo_score ON repository(score);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_language ON repository(language(5));')
+
 # 取出原始数据
 cursor.execute('''
     SELECT user_id, followers, public_repos

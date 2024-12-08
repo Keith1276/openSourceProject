@@ -1,7 +1,9 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.SearchRepoRequest;
+import com.example.backend.dto.SearchUserRequest;
 import com.example.backend.entity.Repository;
+import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.result.BaseResponse;
 import com.example.backend.result.ErrorCode;
@@ -54,6 +56,30 @@ public class SystemController {
         Long pageSize = searchRepoRequest.getPageSize();
         try {
             List<Repository> result = systemService.searchRepos(keywords, language, pageNum, pageSize);
+            return ResultUtils.success(result);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResultUtils.error(ErrorCode.SYSTEM_ERROR, e.getMessage());
+        }
+    }
+
+    /**
+     * 搜索开发者
+     *
+     * @param searchUserRequest
+     * @return
+     */
+    @PostMapping("/search/users")
+    @Operation(summary = "搜索开发者")
+    public BaseResponse<List<User>> searchUsers(@RequestBody SearchUserRequest searchUserRequest) {
+        if (searchUserRequest == null) {
+            throw new BaseException("请求参数为空");
+        }
+        List<String> keywords = searchUserRequest.getKeywords();
+        Long pageNum = searchUserRequest.getPageNum();
+        Long pageSize = searchUserRequest.getPageSize();
+        try {
+            List<User> result = systemService.searchUsers(keywords, pageNum, pageSize);
             return ResultUtils.success(result);
         } catch (Exception e) {
             log.error(e.getMessage());

@@ -61,6 +61,12 @@ public class User implements Serializable {
      */
     private Double score;
 
+    /**
+     * 匹配度得分
+     */
+    @TableField(exist = false)
+    private Double matchScore;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
