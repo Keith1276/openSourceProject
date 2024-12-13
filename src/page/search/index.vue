@@ -180,13 +180,13 @@ export default defineComponent({
     ])
 
     const languageColor = new Map<string, string>([
-      ['Python', '#3572a5'], 
+      ['Python', '#3572a5'],
       ['Java', '#b07219'],
-      ['C', '#555555'], 
+      ['C', '#555555'],
       ['C++', '#f34b7d'],
-      ['HTML', '#e34c26'], 
+      ['HTML', '#e34c26'],
       ['Verilog', '#b2b7f8'],
-      ['JavaScript', '#f1e05a'], 
+      ['JavaScript', '#f1e05a'],
       ['Vue', '#41b883'],
     ]);
     const dialogVisible = ref(false)
@@ -194,7 +194,7 @@ export default defineComponent({
     const newFavourite = ref('')
 
     const route=useRoute();
-    
+
     const repositeries=[
       {
         id:0,
@@ -279,7 +279,7 @@ export default defineComponent({
           keywords: val.content,
           language: val.language,
           licenses: val.license,
-          pageNumber: val.pageNumber,
+          pageNum: val.pageNumber,
           pageSize: val.pageSize,
         };
         console.log(data)
@@ -316,9 +316,9 @@ export default defineComponent({
     const timeFilterRule = (): Array<any> => {
       return repositeries;
     };
-    
+
     let curPapers = ref<any>([]);
-    
+
     const pagination = ref({
       total: 100,
       currentPage: 1,
@@ -336,7 +336,7 @@ export default defineComponent({
         license:license.value,
         language:language.value,
         content:content.value,
-        pageNumber: pagination.value.currentPage,
+        pageNumber: pagenum + 1,
         pageSize: 10,
       }
       clickEvent(param);
@@ -353,7 +353,7 @@ export default defineComponent({
         // update papers
     };
 
-    
+
 
     onMounted(() => {
       curPapers.value=timeFilterRule();
@@ -387,7 +387,7 @@ export default defineComponent({
       languageFilter
     };
   },
-  
+
 });
 </script>
 <style scoped>
@@ -439,7 +439,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px; 
+  width: 40px;
   height: 40px;
   border-radius: 50%;
   background-color: #aed0ee;
@@ -460,8 +460,8 @@ export default defineComponent({
 }
 
 .sidebar {
-  min-width: 25%; 
-  background-color: #f4f4f4; 
+  min-width: 25%;
+  background-color: #f4f4f4;
   min-height: 100vh;
 }
 
@@ -538,7 +538,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 65px; 
+  width: 65px;
   height: 65px;
   border-radius: 50%;
   background-color: #aed0ee;
@@ -585,7 +585,7 @@ export default defineComponent({
   display: flex;
   justify-content: left;
   align-items: center;
-  flex: 0 0 20%; 
+  flex: 0 0 20%;
   padding-right: 20px;
 }
 
@@ -600,7 +600,7 @@ export default defineComponent({
 
 .source-icon img {
   width: 50px;
-  height: 50px; 
+  height: 50px;
   border-radius: 50%;
 }
 
@@ -621,7 +621,7 @@ export default defineComponent({
 }
 
 .project-description, .project-license, .project-languages {
-  margin-right: 20px; 
+  margin-right: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
 }
