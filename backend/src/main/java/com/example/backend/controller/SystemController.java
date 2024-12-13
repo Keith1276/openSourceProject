@@ -10,6 +10,8 @@ import com.example.backend.result.ErrorCode;
 import com.example.backend.result.PageResult;
 import com.example.backend.result.ResultUtils;
 import com.example.backend.service.BackendService;
+import com.example.backend.vo.RepoVO;
+import com.example.backend.vo.UserVO;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +49,7 @@ public class SystemController {
      */
     @PostMapping("/search/repos")
     @Operation(summary = "搜索仓库")
-    public BaseResponse<List<Repository>> searchRepos(@RequestBody SearchRepoRequest searchRepoRequest) {
+    public BaseResponse<RepoVO> searchRepos(@RequestBody SearchRepoRequest searchRepoRequest) {
         if (searchRepoRequest == null) {
             throw new BaseException("请求参数为空");
         }
@@ -57,7 +59,7 @@ public class SystemController {
         Long pageNum = searchRepoRequest.getPageNum();
         Long pageSize = searchRepoRequest.getPageSize();
         try {
-            List<Repository> result = systemService.searchRepos(keywords, languages, licenses, pageNum, pageSize);
+            RepoVO result = systemService.searchRepos(keywords, languages, licenses, pageNum, pageSize);
             return ResultUtils.success(result);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -73,7 +75,7 @@ public class SystemController {
      */
     @PostMapping("/search/users")
     @Operation(summary = "搜索开发者")
-    public BaseResponse<List<User>> searchUsers(@RequestBody SearchUserRequest searchUserRequest) {
+    public BaseResponse<UserVO> searchUsers(@RequestBody SearchUserRequest searchUserRequest) {
         if (searchUserRequest == null) {
             throw new BaseException("请求参数为空");
         }
@@ -81,7 +83,7 @@ public class SystemController {
         Long pageNum = searchUserRequest.getPageNum();
         Long pageSize = searchUserRequest.getPageSize();
         try {
-            List<User> result = systemService.searchUsers(keywords, pageNum, pageSize);
+            UserVO result = systemService.searchUsers(keywords, pageNum, pageSize);
             return ResultUtils.success(result);
         } catch (Exception e) {
             log.error(e.getMessage());
