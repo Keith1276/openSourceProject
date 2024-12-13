@@ -67,11 +67,7 @@
             </div>
           </div>
           <el-card style="width: 100%">
-            <div
-              v-for="(region, index) in pagedRegions()"
-              :key="index"
-              class="region"
-            >
+            <div v-for="(region, index) in regions" :key="index" class="region">
               <div class="region-top">
                 <button class="avatar">
                   <img
@@ -118,14 +114,14 @@
                           color: #4994c4;
                           font-size: small;
                         "
-                        >{{ region.publicRepos }}</b
+                        >{{ region.public_repos }}</b
                       >
                     </p>
                   </div>
                 </div>
                 <div class="region-top-end">
                   <a
-                    :href="region.htmlUrl"
+                    :href="region.html_url"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -174,21 +170,28 @@ export default {
 
     watchEffect(() => {
       const value = input3.value;
-      const tempArray = reactive(value.split(" ").filter(Boolean));
-      Keywords.value = tempArray;
+      if (value !== undefined) {
+        Keywords.value = value.split(" ").filter(Boolean);
+      } else {
+        Keywords.value = [];
+      }
     });
     const regions = ref([
       {
         id: 1,
-        userId: 1,
         login: "Coke_And_1ce",
-        avatarUrl: "",
-        htmlUrl: "https://github.com/",
         email: "skyshipwc@163.com",
         followers: 1,
-        publicRepos: 1,
-        score: 1,
-        matchScore: 1,
+        public_repos: 1,
+        html_url: "https://github.com/",
+      },
+      {
+        id: 2,
+        login: "Berry",
+        email: "skyshipwc@163.com",
+        followers: 1,
+        public_repos: 1,
+        html_url: "https://github.com/",
       },
     ]);
     const handleSearch = async () => {
@@ -199,6 +202,7 @@ export default {
       };
       try {
         const data = await getScholarData(condition);
+        regions.value = data;
         console.log(data);
       } catch (error) {
         console.error("Error fetching scholar data:", error);
@@ -214,21 +218,34 @@ export default {
       router.push("/Board");
     };
     const pagination = ref({
-      total: 0,
+      total: 1, //总页数？
       currentPage: 1,
       pageSize: 5,
     });
     const updateTotal = () => {
       pagination.value.total = regions.value.length;
     };
-    const pagedRegions = () => {
-      const start =
-        (pagination.value.currentPage - 1) * pagination.value.pageSize;
-      const end = start + pagination.value.pageSize;
-      return regions.value.slice(start, end);
-    };
-    const handleCurrentChange = (e) => {
+    // const pagedRegions = () => {
+    //   const start =
+    //     (pagination.value.currentPage - 1) * pagination.value.pageSize;
+    //   const end = start + pagination.value.pageSize;
+    //   return regions.value.slice(start, end);
+    // };
+    const handleCurrentChange = async (e) => {
       pagination.value.currentPage = e;
+      const condition = {
+        keywords: Keywords.value,
+        pageNum: pagination.value.currentPage,
+        pageSize: pagination.value.pageSize,
+      };
+      try {
+        const data = await getScholarData(condition);
+        regions.value = data;
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching scholar data:", error);
+        regions.value = [];
+      }
     };
     onMounted(() => {
       input3.value = route.params.input as string;
@@ -243,7 +260,7 @@ export default {
       input3,
       select,
       pagination,
-      pagedRegions,
+      // pagedRegions,
       handleCurrentChange,
       handleSearch,
       jumpPersonal,
