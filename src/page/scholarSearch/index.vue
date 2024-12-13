@@ -114,14 +114,14 @@
                           color: #4994c4;
                           font-size: small;
                         "
-                        >{{ region.publicRepos }}</b
+                        >{{ region.public_repos }}</b
                       >
                     </p>
                   </div>
                 </div>
                 <div class="region-top-end">
                   <a
-                    :href="region.htmlUrl"
+                    :href="region.html_url"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -170,21 +170,28 @@ export default {
 
     watchEffect(() => {
       const value = input3.value;
-      const tempArray = reactive(value.split(" ").filter(Boolean));
-      Keywords.value = tempArray;
+      if (value !== undefined) {
+        Keywords.value = value.split(" ").filter(Boolean);
+      } else {
+        Keywords.value = [];
+      }
     });
     const regions = ref([
       {
         id: 1,
-        userId: 1,
         login: "Coke_And_1ce",
-        avatarUrl: "",
-        htmlUrl: "https://github.com/",
         email: "skyshipwc@163.com",
         followers: 1,
-        publicRepos: 1,
-        score: 1,
-        matchScore: 1,
+        public_repos: 1,
+        html_url: "https://github.com/",
+      },
+      {
+        id: 2,
+        login: "Berry",
+        email: "skyshipwc@163.com",
+        followers: 1,
+        public_repos: 1,
+        html_url: "https://github.com/",
       },
     ]);
     const handleSearch = async () => {

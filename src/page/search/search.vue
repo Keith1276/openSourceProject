@@ -99,12 +99,14 @@ export default defineComponent({
     const license = ref([]);
     const language = ref([]);
     const searchQuery = ref<string>("");
+    const content= ref<string[]>([]);
 
     const handleSearch = () => {
+      content.value = searchQuery.value.split(' ');
       let param = {
         license: license.value,
         language: language.value,
-        content: searchQuery.value,
+        content: content.value,
       };
       emit("handleSearch", param);
       license.value = [];
@@ -115,18 +117,25 @@ export default defineComponent({
     const licenses = [
       { value: "All" },
       { value: "Apache" },
-      { value: "GPL3" },
       { value: "MIT" },
-      { value: "BSD2/BSD3" },
-      { value: "BSL" },
-      { value: "CCZ" },
-      { value: "EPL" },
-      { value: "AGPL" },
-      { value: "GPL2" },
-      { value: "LGPL" },
-      { value: "Mozilla" },
+      { value: "Other" },
       { value: "Unlicense" },
+      { value: "GNU" },
+      { value: "BSD3" },
+      { value: "BSD0" },
+      { value: "zlib" },
     ];
+
+    const licenseName=new Map<string,string>([
+      ['Apache','Apache License 2.0'],
+      ['MIT','MIT License'],
+      ['Other','Other'],
+      ['Unlicense','The Unlicense'],
+      ['GNU','GNU General Public License v3.0'],
+      ['BSD3','BSD 3-Clause \"New\" or \"Revised\" License'],
+      ['BSD0','BSD Zero Clause License'],
+      ['zlib','zlib License']
+    ])
 
     const togglePopover = () => {
       visible.value = !visible.value;

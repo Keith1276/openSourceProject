@@ -17,7 +17,7 @@
               <el-button
                 class="button-box"
                 :key="index"
-                @click="timeFilter(index)"
+                @click="languageFilter(index)"
                 text
               >
                 <span :style="{'background-color': button.color}" class="square"></span>
@@ -172,6 +172,18 @@ export default defineComponent({
       {text:"JavaScript",color:"#f1e05a"},
       {text:"Vue",color:"#41b883"},
     ];
+
+    const licenseName=new Map<string,string>([
+      ['Apache','Apache License 2.0'],
+      ['MIT','MIT License'],
+      ['Other','Other'],
+      ['Unlicense','The Unlicense'],
+      ['GNU','GNU General Public License v3.0'],
+      ['BSD3','BSD 3-Clause \"New\" or \"Revised\" License'],
+      ['BSD0','BSD Zero Clause License'],
+      ['zlib','zlib License']
+    ])
+
     const languageColor = new Map<string, string>([
       ['Python', '#3572a5'], 
       ['Java', '#b07219'],
@@ -238,9 +250,12 @@ export default defineComponent({
 
     const license = ref<string[]>([]);
     const language = ref<string[]>([]);
-    const content = ref<string>('');
+    const content = ref<string[]>([]);
+
+    var pagenum=1;
 
     const clickEven=(val)=>{
+      val.license = val.license.map(key => licenseName.get(key) || key);
       console.log(val.license);// 一个数组，里面放的是license种类的名字
       console.log(val.language);// 语言
       console.log(val.content);// 搜索内容
@@ -253,26 +268,23 @@ export default defineComponent({
       let param={
         license:license.value,
         language:language.value,
-        content:content.value
+        content:content.value,
+        pageNumber: 1,
+        pageSize: 10,
       }
       clickEvent(param);
       // TODO: 在这里发请求，把值赋给projects
 
     }
-    const clickEvent = async (val: { license: string[]; language: string[]; content: string }) => {
+    const clickEvent = async (val: { license: string[]; language: string[]; content: string[]; pageNumber: number; pageSize: number;}) => {
       try {
+        pagenum=val.pageNumber
         const data = {
-          name: content.value,
-          in: 'name', // 根据需要调整
-          repo: '', // 根据需要调整
-          user: '', // 根据需要调整
-          org: '', // 根据需要调整
-          followers: '', // 根据需要调整
-          fork: '', // 根据需要调整
-          stars: '', // 根据需要调整
-          language: language.value[0],
-          license: license.value.join(','), // 如果GitHub API需要以逗号分隔的字符串
-          sort: sort.value,
+          keywords: val.content,
+          language: val.language,
+          licenses: val.license,
+          pageNumber: val.pageNumber,
+          pageSize: val.pageSize,
         };
 
         const results = await searchRepos(data);
@@ -292,6 +304,19 @@ export default defineComponent({
       console.log(curPapers.value);
     }
 
+    const languageFilter = (index): void =>{
+      language.value=[]
+      language.value[0]=languages[index].text
+      let param={
+        license:license.value,
+        language:language.value,
+        content:content.value,
+        pageNumber: 1,
+        pageSize: 10,
+      }
+      clickEvent(param);
+    }
+
     const timeFilterRule = (): Array<any> => {
       return repositeries;
     };
@@ -299,9 +324,9 @@ export default defineComponent({
     let curPapers = ref<any>([]);
     
     const pagination = ref({
-      total: 0,
+      total: 10,
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 10,
     });
     const updateTotal = () => {
       pagination.value.total = curPapers.value.length;
@@ -309,6 +334,18 @@ export default defineComponent({
 
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
+      console.log(pagination.value.currentPage)
+      console.log(pagenum)
+      let param={
+        license:license.value,
+        language:language.value,
+        content:content.value,
+        pageNumber: pagination.value.currentPage,
+        pageSize: 10,
+      }
+      clickEvent(param);
+      pagination.value.total = (pagenum)*10
+      // pagination.value.currentPage = e;
     };
 
     // Receive message from searchbar
@@ -351,7 +388,8 @@ export default defineComponent({
       newFavourite,
       clickEven,
       languageColor,
-      repositeries
+      repositeries,
+      languageFilter
     };
   },
   
