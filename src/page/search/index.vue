@@ -340,7 +340,7 @@ export default defineComponent({
         license:license.value,
         language:language.value,
         content:content.value,
-        pageNumber: pagenum + 1,
+        pageNumber: pagination.value.currentPage,
         pageSize: 10,
       }
       clickEvent(param);
