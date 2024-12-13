@@ -1,11 +1,6 @@
 <template>
   <div class="main-contanier">
     <search @handleSearch="clickEven"></search>
-    <div class="result-container">
-      <p style="margin-left: 5%; color: #657166; font-size: 18px">
-        为您查询到 <b style="font-weight: bold">{{ resultCnt }}</b> 条结果
-      </p>
-    </div>
     <div class="content-container">
       <!-- 左侧筛选栏 -->
       <div class="sidebar">
@@ -325,7 +320,7 @@ export default defineComponent({
     let curPapers = ref<any>([]);
 
     const pagination = ref({
-      total: 10,
+      total: 100,
       currentPage: 1,
       pageSize: 10,
     });
@@ -345,7 +340,6 @@ export default defineComponent({
         pageSize: 10,
       }
       clickEvent(param);
-      pagination.value.total = (pagenum)*10
       // pagination.value.currentPage = e;
     };
 
