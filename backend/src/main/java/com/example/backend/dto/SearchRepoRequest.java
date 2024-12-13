@@ -15,7 +15,9 @@ public class SearchRepoRequest implements Serializable {
 
     private List<String> keywords;
 
-    private String language;
+    private List<String> languages;
+
+    private List<String> licenses;
 
     private Long pageNum;
 

@@ -17,11 +17,12 @@ public interface BackendService extends IService<User> {
      * 搜索仓库
      *
      * @param keywords  关键词
-     * @param language  语言
+     * @param languages  语言
+     * @param licenses   许可证
      * @param pageNum   页号
      * @param pageSize  页面大小
      */
-    List<Repository> searchRepos(List<String> keywords, String language, Long pageNum, Long pageSize);
+    List<Repository> searchRepos(List<String> keywords, List<String> language, List<String> licenses, Long pageNum, Long pageSize);
 
     /**
      * 搜索用户
