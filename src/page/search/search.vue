@@ -99,12 +99,14 @@ export default defineComponent({
     const license = ref([]);
     const language = ref([]);
     const searchQuery = ref<string>("");
+    const content= ref<string[]>([]);
 
     const handleSearch = () => {
+      content.value = searchQuery.value.split(' ');
       let param = {
         license: license.value,
         language: language.value,
-        content: searchQuery.value,
+        content: content.value,
       };
       emit("handleSearch", param);
       license.value = [];

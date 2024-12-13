@@ -24,7 +24,6 @@ export async function searchRepos(data : {
     licenses:string[],
     pageNumber:number,
     pageSize:number,
-
 } ) : Promise<void> {
     try {
 

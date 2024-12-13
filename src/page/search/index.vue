@@ -250,7 +250,9 @@ export default defineComponent({
 
     const license = ref<string[]>([]);
     const language = ref<string[]>([]);
-    const content = ref<string>('');
+    const content = ref<string[]>([]);
+
+    var pagenum=1;
 
     const clickEven=(val)=>{
       val.license = val.license.map(key => licenseName.get(key) || key);
@@ -266,26 +268,23 @@ export default defineComponent({
       let param={
         license:license.value,
         language:language.value,
-        content:content.value
+        content:content.value,
+        pageNumber: 1,
+        pageSize: 10,
       }
       clickEvent(param);
       // TODO: 在这里发请求，把值赋给projects
 
     }
-    const clickEvent = async (val: { license: string[]; language: string[]; content: string }) => {
+    const clickEvent = async (val: { license: string[]; language: string[]; content: string[]; pageNumber: number; pageSize: number;}) => {
       try {
+        pagenum=val.pageNumber
         const data = {
-          name: content.value,
-          in: 'name', // 根据需要调整
-          repo: '', // 根据需要调整
-          user: '', // 根据需要调整
-          org: '', // 根据需要调整
-          followers: '', // 根据需要调整
-          fork: '', // 根据需要调整
-          stars: '', // 根据需要调整
-          language: language.value[0],
-          license: license.value.join(','), // 如果GitHub API需要以逗号分隔的字符串
-          sort: sort.value,
+          keywords: val.content,
+          language: val.language,
+          licenses: val.license,
+          pageNumber: val.pageNumber,
+          pageSize: val.pageSize,
         };
 
         const results = await searchRepos(data);
@@ -311,7 +310,9 @@ export default defineComponent({
       let param={
         license:license.value,
         language:language.value,
-        content:content.value
+        content:content.value,
+        pageNumber: 1,
+        pageSize: 10,
       }
       clickEvent(param);
     }
@@ -323,9 +324,9 @@ export default defineComponent({
     let curPapers = ref<any>([]);
     
     const pagination = ref({
-      total: 0,
+      total: 10,
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 10,
     });
     const updateTotal = () => {
       pagination.value.total = curPapers.value.length;
@@ -333,6 +334,18 @@ export default defineComponent({
 
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
+      console.log(pagination.value.currentPage)
+      console.log(pagenum)
+      let param={
+        license:license.value,
+        language:language.value,
+        content:content.value,
+        pageNumber: pagenum + 1,
+        pageSize: 10,
+      }
+      clickEvent(param);
+      pagination.value.total = (pagenum)*10
+      // pagination.value.currentPage = e;
     };
 
     // Receive message from searchbar
