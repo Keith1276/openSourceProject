@@ -114,14 +114,14 @@
                           color: #4994c4;
                           font-size: small;
                         "
-                        >{{ region.public_repos }}</b
+                        >{{ region.publicRepos }}</b
                       >
                     </p>
                   </div>
                 </div>
                 <div class="region-top-end">
                   <a
-                    :href="region.html_url"
+                    :href="region.htmlUrl"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -182,16 +182,16 @@ export default {
         login: "Coke_And_1ce",
         email: "skyshipwc@163.com",
         followers: 1,
-        public_repos: 1,
-        html_url: "https://github.com/",
+        publicRepos: 1,
+        htmlUrl: "https://github.com/",
       },
       {
         id: 2,
         login: "Berry",
         email: "skyshipwc@163.com",
         followers: 1,
-        public_repos: 1,
-        html_url: "https://github.com/",
+        publicRepos: 1,
+        htmlUrl: "https://github.com/",
       },
     ]);
     const handleSearch = async () => {
