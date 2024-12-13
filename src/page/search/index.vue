@@ -59,7 +59,7 @@
                   </div>
                   <div class="project-license">
                     <span class="label">License：</span>
-                    <span class="license-block">{{ resposity.license['name'] }}</span>
+                    <span class="license-block">getlicense(resposity.license)</span>
                   </div>
                   <div class="project-languages">
                     <span class="label">Language：</span>
@@ -325,6 +325,12 @@ export default defineComponent({
       pagination.value.currentPage = e;
       console.log(pagination.value.currentPage)
       console.log(pagenum)
+      if(language.value==null)
+        language.value=[]
+      if(license.value==null)
+        license.value=[]
+      if(content.value==null)
+        content.value=[]
       let param={
         license:license.value,
         language:language.value,
@@ -344,6 +350,12 @@ export default defineComponent({
         console.log(timeIndex.value);
         // update papers
     };
+
+    const getlicense = (str): string =>{
+      const obj = JSON.parse(str);
+      const nameValue = obj.name;
+      return nameValue
+    }
 
 
 
