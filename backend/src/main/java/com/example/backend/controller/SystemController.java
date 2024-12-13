@@ -51,11 +51,12 @@ public class SystemController {
             throw new BaseException("请求参数为空");
         }
         List<String> keywords = searchRepoRequest.getKeywords();
-        String language = searchRepoRequest.getLanguage();
+        List<String> languages = searchRepoRequest.getLanguages();
+        List<String> licenses = searchRepoRequest.getLicenses();
         Long pageNum = searchRepoRequest.getPageNum();
         Long pageSize = searchRepoRequest.getPageSize();
         try {
-            List<Repository> result = systemService.searchRepos(keywords, language, pageNum, pageSize);
+            List<Repository> result = systemService.searchRepos(keywords, languages, licenses, pageNum, pageSize);
             return ResultUtils.success(result);
         } catch (Exception e) {
             log.error(e.getMessage());
