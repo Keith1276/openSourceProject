@@ -59,7 +59,7 @@
                   </div>
                   <div class="project-license">
                     <span class="label">License：</span>
-                    <span class="license-block">{{ resposity.license }}</span>
+                    <span class="license-block">{{ resposity.license['name'] }}</span>
                   </div>
                   <div class="project-languages">
                     <span class="label">Language：</span>
