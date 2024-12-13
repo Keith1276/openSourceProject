@@ -11,25 +11,24 @@
           />
         </div>
         <div class="info-container">
-          <h2>{{ name1 }}</h2>
-          <p style="color: gray; font-size: larger; margin-top: 0.2em">
-            {{ name2 }}
-          </p>
+          <h2 style="margin-bottom: 5%">{{ login }}</h2>
           <el-button type="info" text bg>Follow</el-button>
           <div class="follow-container">
             <el-icon><User /></el-icon>
             <p style="">
               <b style="font-weight: bold; color: #cca663">{{ followers }}</b>
-              follower •
-              <b style="font-weight: bold; color: #cca663">{{ followings }}</b>
-              following
+              followers
             </p>
           </div>
         </div>
       </div>
       <div class="right-container">
         <el-divider />
-        <div v-for="(region, index) in regions" :key="index" class="region">
+        <div
+          v-for="(region, index) in pagedRegions()"
+          :key="index"
+          class="region"
+        >
           <div class="content">
             <div class="left-content">
               <div class="name_and_state">
@@ -49,15 +48,33 @@
                   {{ region.language }}
                 </p>
                 <p style="font-size: smaller; color: gray; margin-left: 3%">
-                  Update {{ region.time }}
+                  Update {{ region.updated_at }}
                 </p>
               </div>
             </div>
             <div class="right-content">
-              <el-button type="info" style="width: 30%" text bg>Star</el-button>
+              <a
+                :href="region.html_url"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <el-button type="info" style="width: 30%" text bg
+                  >Star</el-button
+                >
+              </a>
             </div>
           </div>
           <el-divider />
+        </div>
+        <div class="page">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="pagination.total"
+            :current-page="pagination.currentPage"
+            :page-size="pagination.pageSize"
+            @update:current-page="handleCurrentChange"
+          />
         </div>
       </div>
     </div>
@@ -72,42 +89,89 @@ import { useRoute } from "vue-router";
 export default {
   components: { search },
   setup() {
-    const name1 = ref("Coke_And_Ice");
-    const name2 = ref("SpriteWithoutIce");
+    const login = ref("Coke_And_Ice");
     const followers = ref("100");
     const followings = ref("100");
+    const html_url = "https://github.com/ifduyue/http-getit";
     const regions = ref([
       {
         name: "Tutorial-2024",
-        time: "2 weeks ago",
+        updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
       },
       {
         name: "Dysphagia-Diagnostic",
-        time: "Nov 1",
+        updated_at: "Nov 1",
         language: "HTML",
         color: "red",
+        html_url: "https://github.com/",
       },
       {
         name: "Tutorial-2024",
-        time: "2 weeks ago",
+        updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
       },
       {
         name: "Tutorial-2024",
-        time: "2 weeks ago",
+        updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
+      },
+      {
+        name: "Tutorial-2024",
+        updated_at: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+        html_url: "https://github.com/",
+      },
+      {
+        name: "Tutorial-2024",
+        updated_at: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+        html_url: "https://github.com/",
       },
     ]);
+    const pagination = ref({
+      total: 0,
+      currentPage: 1,
+      pageSize: 4,
+    });
+    const updateTotal = () => {
+      pagination.value.total = regions.value.length;
+    };
+    const pagedRegions = () => {
+      const start =
+        (pagination.value.currentPage - 1) * pagination.value.pageSize;
+      const end = start + pagination.value.pageSize;
+      return regions.value.slice(start, end);
+    };
+    const handleCurrentChange = (e) => {
+      pagination.value.currentPage = e;
+    };
+    onMounted(() => {
+      updateTotal();
+      handleCurrentChange(1);
+    });
+    const jumpGit = (html_url) => {
+      console.log("jumpGit click success");
+      window.location.href = html_url;
+    };
     return {
-      name1,
-      name2,
+      login,
       followers,
       followings,
       regions,
+      pagedRegions,
+      pagination,
+      handleCurrentChange,
+      jumpGit,
+      html_url,
     };
   },
 };
@@ -227,5 +291,18 @@ export default {
   align-items: center;
   width: 30%;
   justify-content: flex-end;
+}
+.right-content a {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2%;
+  margin-bottom: 5%;
 }
 </style>

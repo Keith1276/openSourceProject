@@ -124,8 +124,14 @@
                   </div>
                 </div>
                 <div class="region-top-end">
-                  <el-button type="info" style="width: 30%" text bg
-                    >Follow</el-button
+                  <a
+                    :href="region.html_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <el-button type="info" style="width: 30%" text bg
+                      >Follow</el-button
+                    ></a
                   >
                 </div>
               </div>
@@ -170,6 +176,7 @@ export default {
         email: "skyshipwc@163.com",
         followers: 1,
         public_repos: 1,
+        html_url: "https://github.com/",
       },
       {
         id: 2,
@@ -177,6 +184,7 @@ export default {
         email: "skyshipwc@163.com",
         followers: 1,
         public_repos: 1,
+        html_url: "https://github.com/",
       },
     ]);
     const handleSearch = () => {
@@ -388,6 +396,11 @@ export default {
   width: 30%;
   justify-content: flex-end;
   margin-right: 5%;
+}
+.region-top-end a {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 .top-contanier {
   background-color: #f4f4f4;
