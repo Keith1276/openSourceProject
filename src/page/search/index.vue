@@ -258,6 +258,8 @@ export default defineComponent({
       language.value=val.language;
       content.value=val.content;
 
+      if(license.value==null)
+        license.value=[];
       if(license.value[0]=='All')
         license.value=[];
       let param={
