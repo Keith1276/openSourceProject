@@ -7,7 +7,7 @@ export async function getScholarData(data: {
   pageSize: number;
 }): Promise<Array<any>> {
   try {
-    const response = await axios.post('/search/users', data);
+    const response = await axios.post('http://localhost:8085/api/search/users', data);
     if (response.status === 200) {
       if (response.data.code === 0) {
         callSuccess('获取学者信息成功');

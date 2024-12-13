@@ -9,7 +9,6 @@ import vuetyped from 'vue3typed'
 import App from './App.vue'
 import router from './router'
 
-axios.defaults.baseURL = 'https://api.github.com' //axios请求默认URL
 // 这里的token应该要改一下，改成github令牌
 axios.interceptors.request.use(config => {
     config.headers['token'] = store.getters.getToken; //有效
