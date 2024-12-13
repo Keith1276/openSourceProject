@@ -289,6 +289,26 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
         userVO.setTotal(users.size());
         return userVO;
     }
+
+    @Override
+    public RepoVO userRepos(Integer userId, Long pageNum, Long pageSize) {
+        if (pageSize <= 0 || pageNum <= 0) {
+            throw new BaseException("pageSize,pageNum 必须为正整数");
+        }
+        QueryWrapper<Repository> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id", "repo_id", "name", "owner_id", "owner_login", "html_url", "description",
+                "stargazers_count", "language", "license", "forks_count", "open_issues_count", "score");
+        queryWrapper.eq("owner_id", userId);
+        queryWrapper.orderByDesc("score");
+        List<Repository> repositories = repositoryMapper.selectList(queryWrapper);
+        // 分页
+        int startIndex = (int) ((pageNum - 1) * pageSize);
+        int endIndex = (int) Math.min(startIndex + pageSize, repositories.size());
+        RepoVO repoVO = new RepoVO();
+        repoVO.setRepositories(repositories.subList(startIndex, endIndex));
+        repoVO.setTotal(repositories.size());
+        return repoVO;
+    }
 }
 
 
