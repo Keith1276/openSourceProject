@@ -49,7 +49,7 @@
                   {{ region.language }}
                 </p>
                 <p style="font-size: smaller; color: gray; margin-left: 3%">
-                  Update {{ region.time }}
+                  Update {{ region.updated_at }}
                 </p>
               </div>
             </div>
@@ -79,25 +79,25 @@ export default {
     const regions = ref([
       {
         name: "Tutorial-2024",
-        time: "2 weeks ago",
+        updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
       },
       {
         name: "Dysphagia-Diagnostic",
-        time: "Nov 1",
+        updated_at: "Nov 1",
         language: "HTML",
         color: "red",
       },
       {
         name: "Tutorial-2024",
-        time: "2 weeks ago",
+        updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
       },
       {
         name: "Tutorial-2024",
-        time: "2 weeks ago",
+        updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
       },
