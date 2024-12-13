@@ -22,7 +22,7 @@ export async function searchRepos(data : {
     keywords:string[],
     language:string[],
     licenses:string[],
-    pageNumber:number,
+    pageNum:number,
     pageSize:number,
 } ) : Promise<void> {
     try {
