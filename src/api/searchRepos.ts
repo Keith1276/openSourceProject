@@ -24,7 +24,7 @@ export async function searchRepos(data : {
     licenses:string[],
     pageNum:number,
     pageSize:number,
-} ) : Promise<void> {
+} ) : Promise<Array<any>> {
     try {
 
         const response = await axios.post('http://localhost:8085/api/search/repos',data);
@@ -32,22 +32,21 @@ export async function searchRepos(data : {
         if (response.status === 200) {
 
             callSuccess('请求成功');
-            const filteredItems = response.data.items.map(item => {
-                return fieldsToKeep.reduce((acc, field) => {
-                    acc[field] = item[field];
-                    return acc;
-                }, {});
-            });
-            return filteredItems;
+            const res=[{}]
+            res.push(response.data.repositories)
+            res.push(response.data.total)
+            return res;
 
         }
         else {
             callError('网络错误');
+            return [];
         }
     }
     catch (error)
     {
         //console.log('there are some errors in register');
+        return [];
     }
 
 }

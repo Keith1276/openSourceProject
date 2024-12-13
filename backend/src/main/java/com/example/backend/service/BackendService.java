@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.backend.entity.Repository;
 import com.example.backend.entity.User;
 import com.example.backend.result.PageResult;
+import com.example.backend.vo.RepoVO;
+import com.example.backend.vo.UserVO;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public interface BackendService extends IService<User> {
      * @param pageNum   页号
      * @param pageSize  页面大小
      */
-    List<Repository> searchRepos(List<String> keywords, List<String> language, List<String> licenses, Long pageNum, Long pageSize);
+    RepoVO searchRepos(List<String> keywords, List<String> languages, List<String> licenses, Long pageNum, Long pageSize);
 
     /**
      * 搜索用户
@@ -31,5 +33,5 @@ public interface BackendService extends IService<User> {
      * @param pageNum   页号
      * @param pageSize  页面大小
      */
-    List<User> searchUsers(List<String> keywords, Long pageNum, Long pageSize);
+    UserVO searchUsers(List<String> keywords, Long pageNum, Long pageSize);
 }
