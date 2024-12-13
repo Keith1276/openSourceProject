@@ -29,7 +29,11 @@
       </div>
       <div class="right-container">
         <el-divider />
-        <div v-for="(region, index) in regions" :key="index" class="region">
+        <div
+          v-for="(region, index) in pagedRegions()"
+          :key="index"
+          class="region"
+        >
           <div class="content">
             <div class="left-content">
               <div class="name_and_state">
@@ -58,6 +62,16 @@
             </div>
           </div>
           <el-divider />
+        </div>
+        <div class="page">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="pagination.total"
+            :current-page="pagination.currentPage"
+            :page-size="pagination.pageSize"
+            @update:current-page="handleCurrentChange"
+          />
         </div>
       </div>
     </div>
@@ -101,13 +115,49 @@ export default {
         language: "CSS",
         color: "green",
       },
+      {
+        name: "Tutorial-2024",
+        updated_at: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+      },
+      {
+        name: "Tutorial-2024",
+        updated_at: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+      },
     ]);
+    const pagination = ref({
+      total: 0,
+      currentPage: 1,
+      pageSize: 4,
+    });
+    const updateTotal = () => {
+      pagination.value.total = regions.value.length;
+    };
+    const pagedRegions = () => {
+      const start =
+        (pagination.value.currentPage - 1) * pagination.value.pageSize;
+      const end = start + pagination.value.pageSize;
+      return regions.value.slice(start, end);
+    };
+    const handleCurrentChange = (e) => {
+      pagination.value.currentPage = e;
+    };
+    onMounted(() => {
+      updateTotal();
+      handleCurrentChange(1);
+    });
     return {
       name1,
       name2,
       followers,
       followings,
       regions,
+      pagedRegions,
+      pagination,
+      handleCurrentChange,
     };
   },
 };
@@ -227,5 +277,13 @@ export default {
   align-items: center;
   width: 30%;
   justify-content: flex-end;
+}
+.page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2%;
+  margin-bottom: 5%;
 }
 </style>
