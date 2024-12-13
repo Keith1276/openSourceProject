@@ -202,10 +202,12 @@ export default {
       };
       try {
         const data = await getScholarData(condition);
-        regions.value = data[0];
-        resultCnt.value = data[1];
-        console.log(data[0]);
-        console.log(data[1]);
+        regions.value = data.users;
+        resultCnt.value = data.total;
+        // regions.value = data[0];
+        // resultCnt.value = data[1];
+        // console.log(data[0]);
+        // console.log(data[1]);
       } catch (error) {
         console.error("Error fetching scholar data:", error);
         regions.value = [];
