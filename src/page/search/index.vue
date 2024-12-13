@@ -286,8 +286,8 @@ export default defineComponent({
         };
         console.log(data)
         const results = await searchRepos(data);
-        repositeries.value=results[0]
-        pagination.value.total=results[1]
+        repositeries.value=results['repositories']
+        pagination.value.total=results['total']
         console.log(results);
       } catch (error) {
         console.error('请求失败:', error);

@@ -24,19 +24,14 @@ export async function searchRepos(data : {
     licenses:string[],
     pageNum:number,
     pageSize:number,
-} ) : Promise<Array<any>> {
+} ) : Promise<any> {
     try {
 
         const response = await axios.post('http://localhost:8085/api/search/repos',data);
         //const response = await axios.get('https://api.github.com/search/users', { params });
         if (response.status === 200) {
-
             callSuccess('请求成功');
-            const res=[{}]
-            res.push(response.data.repositories)
-            res.push(response.data.total)
-            return res;
-
+            return response.data;
         }
         else {
             callError('网络错误');
