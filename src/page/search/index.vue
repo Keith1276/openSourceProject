@@ -279,7 +279,7 @@ export default defineComponent({
         pagenum=val.pageNumber
         const data = {
           keywords: val.content,
-          language: val.language,
+          languages: val.language,
           licenses: val.license,
           pageNum: val.pageNumber,
           pageSize: val.pageSize,
