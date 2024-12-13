@@ -11,18 +11,13 @@
           />
         </div>
         <div class="info-container">
-          <h2>{{ name1 }}</h2>
-          <p style="color: gray; font-size: larger; margin-top: 0.2em">
-            {{ name2 }}
-          </p>
+          <h2 style="margin-bottom: 5%">{{ login }}</h2>
           <el-button type="info" text bg>Follow</el-button>
           <div class="follow-container">
             <el-icon><User /></el-icon>
             <p style="">
               <b style="font-weight: bold; color: #cca663">{{ followers }}</b>
-              follower •
-              <b style="font-weight: bold; color: #cca663">{{ followings }}</b>
-              following
+              followers
             </p>
           </div>
         </div>
@@ -58,7 +53,15 @@
               </div>
             </div>
             <div class="right-content">
-              <el-button type="info" style="width: 30%" text bg>Star</el-button>
+              <a
+                :href="region.html_url"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <el-button type="info" style="width: 30%" text bg
+                  >Star</el-button
+                >
+              </a>
             </div>
           </div>
           <el-divider />
@@ -86,46 +89,52 @@ import { useRoute } from "vue-router";
 export default {
   components: { search },
   setup() {
-    const name1 = ref("Coke_And_Ice");
-    const name2 = ref("SpriteWithoutIce");
+    const login = ref("Coke_And_Ice");
     const followers = ref("100");
     const followings = ref("100");
+    const html_url = "https://github.com/ifduyue/http-getit";
     const regions = ref([
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
       },
       {
         name: "Dysphagia-Diagnostic",
         updated_at: "Nov 1",
         language: "HTML",
         color: "red",
+        html_url: "https://github.com/",
       },
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
       },
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
       },
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
       },
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
         language: "CSS",
         color: "green",
+        html_url: "https://github.com/",
       },
     ]);
     const pagination = ref({
@@ -149,15 +158,20 @@ export default {
       updateTotal();
       handleCurrentChange(1);
     });
+    const jumpGit = (html_url) => {
+      console.log("jumpGit click success");
+      window.location.href = html_url;
+    };
     return {
-      name1,
-      name2,
+      login,
       followers,
       followings,
       regions,
       pagedRegions,
       pagination,
       handleCurrentChange,
+      jumpGit,
+      html_url,
     };
   },
 };
@@ -277,6 +291,9 @@ export default {
   align-items: center;
   width: 30%;
   justify-content: flex-end;
+}
+.right-content a {
+  width: 100%;
 }
 .page {
   width: 100%;
