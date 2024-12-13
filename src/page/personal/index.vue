@@ -41,9 +41,7 @@
               </div>
               <div class="lan_and_time">
                 <span
-                  :style="{
-                    'background-color': languageColor.get(region.language),
-                  }"
+                  :style="{ 'background-color': region.color }"
                   class="square"
                 ></span>
                 <p style="font-size: smaller; color: gray">
@@ -99,7 +97,7 @@ export default {
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
-        language: "JavaScript",
+        language: "CSS",
         color: "green",
         html_url: "https://github.com/",
       },
@@ -113,27 +111,31 @@ export default {
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
-        language: "JavaScript",
+        language: "CSS",
         color: "green",
         html_url: "https://github.com/",
       },
       {
         name: "Tutorial-2024",
         updated_at: "2 weeks ago",
-        language: "JavaScript",
+        language: "CSS",
         color: "green",
         html_url: "https://github.com/",
       },
-    ]);
-    const languageColor = new Map<string, string>([
-      ["Python", "#3572a5"],
-      ["Java", "#b07219"],
-      ["C", "#555555"],
-      ["C++", "#f34b7d"],
-      ["HTML", "#e34c26"],
-      ["Verilog", "#b2b7f8"],
-      ["JavaScript", "#f1e05a"],
-      ["Vue", "#41b883"],
+      {
+        name: "Tutorial-2024",
+        updated_at: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+        html_url: "https://github.com/",
+      },
+      {
+        name: "Tutorial-2024",
+        updated_at: "2 weeks ago",
+        language: "CSS",
+        color: "green",
+        html_url: "https://github.com/",
+      },
     ]);
     const pagination = ref({
       total: 0,
@@ -170,7 +172,6 @@ export default {
       handleCurrentChange,
       jumpGit,
       html_url,
-      languageColor,
     };
   },
 };

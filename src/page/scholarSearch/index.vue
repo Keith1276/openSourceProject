@@ -118,14 +118,14 @@
                           color: #4994c4;
                           font-size: small;
                         "
-                        >{{ region.publicRepos }}</b
+                        >{{ region.public_repos }}</b
                       >
                     </p>
                   </div>
                 </div>
                 <div class="region-top-end">
                   <a
-                    :href="region.htmlUrl"
+                    :href="region.html_url"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -158,10 +158,9 @@
 </template>
 <script lang="ts">
 import search from "./search.vue";
-import { ref, computed, onMounted, watch, watchEffect, reactive } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import router from "@/router/index.js";
 import { useRoute } from "vue-router";
-import { getScholarData } from "@/api/scholarSearch";
 export default {
   components: { search },
   setup() {
@@ -170,40 +169,26 @@ export default {
     const input3 = ref("");
     const select = ref("");
     const route = useRoute();
-    const Keywords = ref<string[]>([]);
-
-    watchEffect(() => {
-      const value = input3.value;
-      const tempArray = reactive(value.split(" ").filter(Boolean));
-      Keywords.value = tempArray;
-    });
     const regions = ref([
       {
         id: 1,
-        userId: 1,
         login: "Coke_And_1ce",
-        avatarUrl: "",
-        htmlUrl: "https://github.com/",
         email: "skyshipwc@163.com",
         followers: 1,
-        publicRepos: 1,
-        score: 1,
-        matchScore: 1,
+        public_repos: 1,
+        html_url: "https://github.com/",
+      },
+      {
+        id: 2,
+        login: "Berry",
+        email: "skyshipwc@163.com",
+        followers: 1,
+        public_repos: 1,
+        html_url: "https://github.com/",
       },
     ]);
-    const handleSearch = async () => {
-      const condition = {
-        keywords: Keywords.value,
-        pageNum: pagination.value.currentPage,
-        pageSize: pagination.value.pageSize,
-      };
-      try {
-        const data = await getScholarData(condition);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching scholar data:", error);
-        regions.value = [];
-      }
+    const handleSearch = () => {
+      console.log("click success");
     };
     const jumpPersonal = () => {
       console.log("jumpPersonal click success");
