@@ -294,6 +294,8 @@ export default {
 }
 .right-content a {
   width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 .page {
   width: 100%;
