@@ -161,7 +161,7 @@ import { getScholarData } from "@/api/scholarSearch";
 export default {
   components: { search },
   setup() {
-    const resultCnt = ref("3");
+    const resultCnt = ref(3);
     const value = ref("");
     const input3 = ref("");
     const select = ref("");
@@ -202,7 +202,8 @@ export default {
       };
       try {
         const data = await getScholarData(condition);
-        regions.value = data;
+        regions.value = data[0];
+        resultCnt.value = data[1];
         console.log(data);
       } catch (error) {
         console.error("Error fetching scholar data:", error);
@@ -218,7 +219,7 @@ export default {
       router.push("/Board");
     };
     const pagination = ref({
-      total: 1, //总页数？
+      total: 100, //总页数？
       currentPage: 1,
       pageSize: 5,
     });
@@ -240,7 +241,8 @@ export default {
       };
       try {
         const data = await getScholarData(condition);
-        regions.value = data;
+        regions.value = data[0];
+        resultCnt.value = data[1];
         console.log(data);
       } catch (error) {
         console.error("Error fetching scholar data:", error);
@@ -250,7 +252,7 @@ export default {
     onMounted(() => {
       input3.value = route.params.input as string;
       select.value = route.params.select as string;
-      updateTotal();
+      // updateTotal();
       handleCurrentChange(1);
     });
     return {
@@ -309,6 +311,7 @@ export default {
 .main-contanier {
   display: flex;
   flex-direction: column;
+  background-color: #f4f4f4;
   height: 100vh;
   width: 100vw;
 }

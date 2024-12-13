@@ -11,7 +11,11 @@ export async function getScholarData(data: {
     if (response.status === 200) {
       if (response.data.code === 0) {
         callSuccess('获取学者信息成功');
-        return response.data.data;
+        const resultArray = [{}];
+        resultArray.push(response.data.users);
+        resultArray.push(response.data.total);
+        return resultArray;
+        // return response.data.data.users;
       } else {
         callError(response.data.message);
         return [];
