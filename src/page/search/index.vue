@@ -146,12 +146,6 @@ export default defineComponent({
   },
   data(){
     return{
-      items: [
-        { shortName: '块1块1块1块1块1', fullName: '小块内容的全名1' },
-        { shortName: '块2', fullName: '小块内容的全名2' },
-        { shortName: '块3', fullName: '小块内容的全名3' },
-        // 更多小块...
-      ],
       currentInfoIndex: null,
       timeIndex: -1,
       filedIndex: -1.
@@ -167,11 +161,6 @@ export default defineComponent({
       { value: "fork", label: "按Fork数降序" },
       { value: "help-wanted-issues", label: "按help-wanted-issues个数" },
       { value: "updated", label: "按最新updated" },
-    ];
-    const timeButtons = [
-      { text: "2024以来" },
-      { text: "2023以来" },
-      { text: "2022以来" },
     ];
     const languages=[
       {text:"Python",color:"#3572a5"},
@@ -193,11 +182,6 @@ export default defineComponent({
       ['JavaScript', '#f1e05a'], 
       ['Vue', '#41b883'],
     ]);
-    const FavoritesList = ref<{ text: string }[]>([
-      { text: "收藏夹1" },
-      { text: "收藏夹2" },
-      { text: "收藏夹3" },
-    ]);
     const dialogVisible = ref(false)
     const radio3 = ref('1')
     const newFavourite = ref('')
@@ -209,7 +193,7 @@ export default defineComponent({
         id:0,
         name:"project name",
         owner_login:"owner name",
-        html_url: "url",
+        html_url: "https://github.com/",
         description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
         updated_at:"2024-12-05",
         stargazer_count:20,
@@ -224,7 +208,7 @@ export default defineComponent({
         id:1,
         name:"project name",
         owner_login:"owner name",
-        html_url: "url",
+        html_url: "https://github.com/",
         description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
         updated_at:"2024-12-05",
         stargazer_count:20,
@@ -239,7 +223,7 @@ export default defineComponent({
         id:2,
         name:"project name",
         owner_login:"owner name",
-        html_url: "url",
+        html_url: "https://github.com/",
         description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
         updated_at:"2024-12-05",
         stargazer_count:20,
@@ -251,38 +235,6 @@ export default defineComponent({
         license:"MIT",
       }
     ]
-    const projects=[
-      {
-        id: 1,
-        source:"github",
-        name: "tolangc: tolang compiler",
-        license:"MIT",
-        abstract:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。tolangc 即 tolang compiler，是 tolang 语言的样例编译器，可以为编译技术的学习者提供对编译器架构的初步认识。",
-        language:"C++",
-        updated:"last week",
-        link:"https://github.com/wokron/tolangc"
-      },
-      {
-        id: 2,
-        source:"github",
-        name: "项目名称2",
-        license:"Apache",
-        abstract:"这里是简介",
-        language:"Python",
-        updated:"2024-01-02",
-        link:"https://gitee.com/explore"
-      },
-      {
-        id: 3,
-        source:"gitee",
-        name: "项目名称3",
-        license:"Apache",
-        abstract:"这里是简介",
-        language:"Python",
-        updated:"2024-01-02",
-        link:"https://gitee.com/explore"
-      },
-    ];
 
     const license = ref<string[]>([]);
     const language = ref<string[]>([]);
@@ -330,49 +282,6 @@ export default defineComponent({
       }
     };
 
-    const toggleCitation = (paper): void => {
-      paper.citationClicked = !paper.citationClicked;
-      console.log(paper.citationClicked)
-    };
-
-    const toggleCollection = (paper): void =>{
-      paper.collectionClicked = !paper.collectionClicked;
-      if(paper.collectionClicked==true){
-      }
-      console.log(paper.collectionClicked)
-    }
-
-    const changeCollection = (message: string) => {
-      ElMessage({
-        message: message,
-        type: 'success',
-      })
-    }
-
-    // 触发函数，添加收藏夹
-    const addFavorite = (value: string) => {
-      if (value.trim() === '' || FavoritesList.value.some(item => item.text === value)) {
-        ElMessage({
-          type: 'error',
-          message: '收藏夹名字不能为空且不能重复',
-        });
-        return;
-      }
-      FavoritesList.value.push({ text: value });
-      console.log('更新后的收藏夹列表:', FavoritesList);
-    };
-    
-    const getCitationIcon = (paper): string =>{
-      return paper.citationClicked
-      ? require('@/asset/search/yinyong_1.png')
-      : require('@/asset/search/yinyong.png');
-    }
-
-    const getCollection = (paper): string =>{
-      return paper.collectionClicked
-      ? require('@/asset/search/shoucang_1.png') 
-      : require('@/asset/search/shoucang.png');
-    }
     var timeIndex = ref(-1);
     var filedIndex = ref(-1);
 
@@ -384,28 +293,7 @@ export default defineComponent({
     }
 
     const timeFilterRule = (): Array<any> => {
-      if(timeIndex.value!=-1){
-        if(timeIndex.value==0){
-          return projects.filter(paper => {
-            const submittedYear = new Date(paper.updated).getFullYear();
-            console.log(submittedYear);
-            return submittedYear >= 2024;
-          });
-        }
-        else if(timeIndex.value==1){
-          return projects.filter(paper => {
-            const submittedYear = new Date(paper.updated).getFullYear();
-            return submittedYear >= 2023;
-          });
-        }
-        else if(timeIndex.value==2){
-          return projects.filter(paper => {
-            const submittedYear = new Date(paper.updated).getFullYear();
-            return submittedYear >= 2022;
-          });
-        }
-      }
-      return projects;
+      return repositeries;
     };
     
     let curPapers = ref<any>([]);
@@ -419,9 +307,6 @@ export default defineComponent({
       pagination.value.total = curPapers.value.length;
     };
 
-    const pagedRegions = () => {
-      return projects;
-    };
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
     };
@@ -453,26 +338,17 @@ export default defineComponent({
       sort,
       checkList,
       options,
-      timeButtons,
       curPapers,
       languages,
-      projects,
-      toggleCitation,
-      toggleCollection,
-      getCitationIcon,
-      getCollection,
       timeFilter,
       timeFilterRule,
       handleCurrentChange,
       pagination,
       receivedMessage,
       handleinputSend,
-      pagedRegions,
       dialogVisible,
       radio3,
       newFavourite,
-      addFavorite,
-      FavoritesList,
       clickEven,
       languageColor,
       repositeries
