@@ -287,7 +287,6 @@ export default createStore({
         //     return 1;
         // },
 
-
         //登出，清除token
         logout({ commit }) {
             try {
@@ -297,10 +296,7 @@ export default createStore({
                 //console.log('there are some errors in logout');
             }
         },
-
-
     },
-
     //本地存储插件
     plugins: [vuexLocal.plugin]
 });

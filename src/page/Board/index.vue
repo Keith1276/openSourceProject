@@ -1,13 +1,14 @@
 <template>
   <div class="main-contanier">
     <search></search>
-    <h2 style="color: #dd7050; margin-bottom: 30px">buaa开源项目地图</h2>
+    <h2 style="color: #dd7050; margin-bottom: 30px">BUAA开源项目地图</h2>
     <div class="intro-container">
       <div v-for="(region, index) in regions" :key="index" class="box">
         <div class="icon_and_title">
-          <el-icon style="margin-right: 10px"><Search /></el-icon>
+          <el-icon style="margin-right: 10px; margin-top: 7%"><Search /></el-icon>
           <p>{{ region.title }}</p>
         </div>
+
         <p>{{ region.content }}</p>
       </div>
     </div>
@@ -54,15 +55,15 @@ export default {
     const regions = ref([
       {
         title: "检索开源项目",
-        content: "请写介绍",
+        content: "XXXX会根据开源项目的star数目、fork等指标对开源项目进行排序，学者输入开源项目内容相关信息后即可进行精确检索",
       },
       {
         title: "检索开发者",
-        content: "请写介绍",
+        content: "用户可以对开发者的方向和信息进行搜索，XXXX监控开发者的仓库更新，搜索开发者名称或开发者方向均会结合开发者影响力和开发者相关程度给出结果",
       },
       {
         title: "获取开发者项目列表",
-        content: "请写介绍",
+        content: "用户能够获取开发者的个人主页，xxxx会自动聚合开发者的项目成果，以列表的形式展示其概要信息，用户只需要点击相应项目即可查看项目详情。",
       },
     ]);
     const repoData = ref([
@@ -132,19 +133,28 @@ export default {
   margin-right: 10%;
   margin-bottom: 3%;
 }
-.box {
+.box
+{
   height: 100%;
   width: 30%;
   border: 1px solid #fbf1e5;
   background-color: #fffdf9;
+}
+.box p
+{
+  //text-indent: 2em; /* 设置首行缩进，2em 相当于两个 'M' 字符的宽度 */
+  padding-left: 2em; /* 设置左边距 */
+  padding-right: 2em; /* 设置右边距 */
 }
 .icon_and_title {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 27%;
 }
 .icon_and_title p {
+  margin-top: 12%;
   font-size: large;
 }
 .list-container {
