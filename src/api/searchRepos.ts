@@ -31,7 +31,7 @@ export async function searchRepos(data : {
         //const response = await axios.get('https://api.github.com/search/users', { params });
         if (response.status === 200) {
             callSuccess('请求成功');
-            return response.data;
+            return response.data.data;
         }
         else {
             callError('网络错误');
