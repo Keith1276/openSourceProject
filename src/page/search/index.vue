@@ -272,6 +272,7 @@ export default defineComponent({
         pageNumber: 1,
         pageSize: 10,
       }
+      console.log(param)
       clickEvent(param);
       // TODO: 在这里发请求，把值赋给projects
 
@@ -286,7 +287,7 @@ export default defineComponent({
           pageNumber: val.pageNumber,
           pageSize: val.pageSize,
         };
-
+        console.log(data)
         const results = await searchRepos(data);
         console.log(results);
       } catch (error) {
