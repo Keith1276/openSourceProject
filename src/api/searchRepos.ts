@@ -20,7 +20,7 @@ const fieldsToKeep = ['id', 'name', 'description', 'stargazers_count', 'forks_co
 
 export async function searchRepos(data : {
     keywords:string[],
-    language:string[],
+    languages:string[],
     licenses:string[],
     pageNum:number,
     pageSize:number,
