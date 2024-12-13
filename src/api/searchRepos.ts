@@ -27,7 +27,7 @@ export async function searchRepos(data : {
 } ) : Promise<void> {
     try {
 
-        const response = await axios.post('https://api.github.com/search/repositories',data);
+        const response = await axios.post('http://localhost:8085/api/search/repos',data);
         //const response = await axios.get('https://api.github.com/search/users', { params });
         if (response.status === 200) {
 
