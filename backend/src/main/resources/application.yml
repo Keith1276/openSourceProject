@@ -19,7 +19,7 @@ spring:
     username: ${software.datasource.username}
     password: ${software.datasource.password}
   application:
-    name: systemServiceProvider
+    name: backendServiceProvider
   cloud:
     nacos:
       discovery:
@@ -33,7 +33,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
   global-config:
     db-config:
       logic-delete-field: isDelete # ????????????
@@ -78,7 +78,7 @@ logging:
 
 dubbo:
   application:
-    name: systemServiceProvider-dubbo
+    name: backendServiceProvider-dubbo
   protocol:
     name: dubbo
     port: -1

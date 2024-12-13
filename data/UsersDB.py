@@ -6,7 +6,7 @@ import json
 conn = pymysql.connect(
     host='localhost',
     user='root',        # 账号
-    password='15755083308abc',    # 密码
+    password='22371468',    # 密码
     database='open_source'
 )
 
@@ -14,7 +14,8 @@ cursor = conn.cursor()
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS user (
-    id INTEGER PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
     login TEXT,
     avatar_url TEXT,
     html_url TEXT,
@@ -38,7 +39,7 @@ with open('data/Users.txt', 'r', encoding='utf-8') as file:
         )
         cursor.execute('''
         INSERT INTO user (
-            id, login, avatar_url, html_url, email, followers, public_repos
+            user_id, login, avatar_url, html_url, email, followers, public_repos
         ) VALUES (%s, %s, %s, %s, %s, %s, %s)
         ''', user_data)
 

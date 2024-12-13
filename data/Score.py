@@ -24,14 +24,21 @@ column_names = [column[0] for column in columns]
 if 'score' not in column_names:
     cursor.execute('ALTER TABLE repository ADD COLUMN score FLOAT')
 
+# 为 user_id, repo_id, score 创建索引
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_user_id ON user(user_id);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_repo_id ON repository(repo_id);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_user_score ON user(score);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_repo_score ON repository(score);')
+cursor.execute('CREATE INDEX IF NOT EXISTS idx_language ON repository(language(5));')
+
 # 取出原始数据
 cursor.execute('''
-    SELECT id, followers, public_repos
+    SELECT user_id, followers, public_repos
     FROM user
 ''')
 users = cursor.fetchall()
 cursor.execute('''
-    SELECT id, owner_id, stargazers_count, forks_count, open_issues_count, license
+    SELECT repo_id, owner_id, stargazers_count, forks_count, open_issues_count, license
     FROM repository
 ''')
 repositories = cursor.fetchall()
@@ -110,15 +117,16 @@ for i, (user_id, user_score) in enumerate(user_scores):
     cursor.execute('''
     UPDATE user
     SET score = %s
-    WHERE id = %s
+    WHERE user_id = %s
     ''', (user_score, user_id))
+print("222")
 
 # 更新仓库得分
 for i, (repo_id, repo_score) in enumerate(repo_scores):
     cursor.execute('''
     UPDATE repository
     SET score = %s
-    WHERE id = %s
+    WHERE repo_id = %s
     ''', (repo_score, repo_id))
 
 conn.commit()

@@ -22,6 +22,11 @@ public class Repository implements Serializable {
     private Integer id;
 
     /**
+     * 仓库id
+     */
+    private Integer repoId;
+
+    /**
      * 仓库名
      */
     private String name;
@@ -110,6 +115,17 @@ public class Repository implements Serializable {
      * 是否允许fork
      */
     private Boolean allowForking;
+
+    /**
+     * 分数
+     */
+    private Double score;
+
+    /**
+     * 匹配度得分
+     */
+    @TableField(exist = false)
+    private Double matchScore;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

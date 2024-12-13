@@ -6,15 +6,17 @@
 
     <resultMap id="BaseResultMap" type="com.example.backend.entity.User">
             <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
             <result property="login" column="login" jdbcType="VARCHAR"/>
             <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
             <result property="htmlUrl" column="html_url" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="followers" column="followers" jdbcType="INTEGER"/>
             <result property="publicRepos" column="public_repos" jdbcType="INTEGER"/>
+            <result property="score" column="score" jdbcType="FLOAT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,login,avatar_url,html_url,email,followers,public_repos
+        id,user_id,login,avatar_url,html_url,email,followers,public_repos,score
     </sql>
 </mapper>
