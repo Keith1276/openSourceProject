@@ -17,7 +17,7 @@
               <el-button
                 class="button-box"
                 :key="index"
-                @click="timeFilter(index)"
+                @click="languageFilter(index)"
                 text
               >
                 <span :style="{'background-color': button.color}" class="square"></span>
@@ -172,6 +172,18 @@ export default defineComponent({
       {text:"JavaScript",color:"#f1e05a"},
       {text:"Vue",color:"#41b883"},
     ];
+
+    const licenseName=new Map<string,string>([
+      ['Apache','Apache License 2.0'],
+      ['MIT','MIT License'],
+      ['Other','Other'],
+      ['Unlicense','The Unlicense'],
+      ['GNU','GNU General Public License v3.0'],
+      ['BSD3','BSD 3-Clause \"New\" or \"Revised\" License'],
+      ['BSD0','BSD Zero Clause License'],
+      ['zlib','zlib License']
+    ])
+
     const languageColor = new Map<string, string>([
       ['Python', '#3572a5'], 
       ['Java', '#b07219'],
@@ -241,6 +253,7 @@ export default defineComponent({
     const content = ref<string>('');
 
     const clickEven=(val)=>{
+      val.license = val.license.map(key => licenseName.get(key) || key);
       console.log(val.license);// 一个数组，里面放的是license种类的名字
       console.log(val.language);// 语言
       console.log(val.content);// 搜索内容
@@ -290,6 +303,17 @@ export default defineComponent({
       timeIndex.value=index;
       curPapers.value=timeFilterRule();
       console.log(curPapers.value);
+    }
+
+    const languageFilter = (index): void =>{
+      language.value=[]
+      language.value[0]=languages[index].text
+      let param={
+        license:license.value,
+        language:language.value,
+        content:content.value
+      }
+      clickEvent(param);
     }
 
     const timeFilterRule = (): Array<any> => {
@@ -351,7 +375,8 @@ export default defineComponent({
       newFavourite,
       clickEven,
       languageColor,
-      repositeries
+      repositeries,
+      languageFilter
     };
   },
   
