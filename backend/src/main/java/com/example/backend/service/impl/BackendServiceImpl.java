@@ -10,11 +10,14 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.mapper.RepositoryMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.BackendService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.refresh.RefreshScopeLifecycle;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -30,19 +33,18 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private RepositoryMapper repositoryMapper;
+    @Autowired
+    private RefreshScopeLifecycle refreshScopeLifecycle;
 
     @Override
-    public List<Repository> searchRepos(List<String> keywords, String language, Long pageNum, Long pageSize) {
+    public List<Repository> searchRepos(List<String> keywords, List<String> languages, List<String> licenses, Long pageNum, Long pageSize) {
         if (pageSize <= 0 || pageNum <= 0) {
             throw new BaseException("pageSize,pageNum 必须为正整数");
         }
         // 关键词匹配
         QueryWrapper<Repository> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("id", "repo_id", "name", "owner_id", "owner_login", "html_url", "description",
-                                    "stargazers_count", "language", "forks_count", "open_issues_count", "score");
-        if (!language.isEmpty()) {
-            queryWrapper.eq("language", language);
-        }
+                                    "stargazers_count", "language", "license", "forks_count", "open_issues_count", "score");
         if (!keywords.isEmpty()) {
             for (int i = 0; i < keywords.size(); i++) {
                 String keyword = keywords.get(i);
@@ -58,12 +60,70 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
                 }
             }
         } else {
+            if (!languages.isEmpty()) {
+                queryWrapper.in("language", languages);
+            }
             queryWrapper.orderByDesc("score");
-            Page<Repository> page = new Page<>(pageNum, pageSize);
-            Page<Repository> repositoryPage = repositoryMapper.selectPage(page, queryWrapper);
-            return repositoryPage.getRecords();
+            List<Repository> repositories = repositoryMapper.selectList(queryWrapper);
+            List<Repository> result = new ArrayList<>();
+            if (!licenses.isEmpty()) {
+                for (Repository repository: repositories) {
+                    String repoLicense = repository.getLicense();
+                    if (repoLicense != null) {
+                        for (String license: licenses) {
+                            if (repoLicense.contains(license)) {
+                                result.add(repository);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            // 分页
+            int startIndex = (int) ((pageNum - 1) * pageSize);
+            int endIndex = (int) Math.min(startIndex + pageSize, result.size());
+            return result.subList(startIndex, endIndex);
         }
         List<Repository> repositories = repositoryMapper.selectList(queryWrapper);
+        List<Repository> result = new ArrayList<>();
+        boolean filter = false;
+        if (!languages.isEmpty()) {
+            for (Repository repository : repositories) {
+                String repoLanguage = repository.getLanguage();
+                if (repoLanguage != null) {
+                    for (String language: languages) {
+                        if (repoLanguage.equals(language)) {
+                            result.add(repository);
+                            break;
+                        }
+                    }
+                }
+            }
+            filter = true;
+        }
+        if (filter) {
+            repositories = new ArrayList<>(result);
+            result = new ArrayList<>();
+        }
+        filter = false;
+        if (!licenses.isEmpty()) {
+            for (Repository repository : repositories) {
+                String repoLicense = repository.getLicense();
+                if (repoLicense != null) {
+                    for (String license: licenses) {
+                        if (repoLicense.contains(license)) {
+                            result.add(repository);
+                            break;
+                        }
+                    }
+                }
+            }
+            filter = true;
+        }
+        if (filter) {
+            repositories = new ArrayList<>(result);
+            result = new ArrayList<>();
+        }
         // 匹配度得分
         double[] keywordWeights = {1.0, 0.8, 0.6, 0.4, 0.2};
         for (Repository repo : repositories) {
