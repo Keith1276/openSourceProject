@@ -24,7 +24,7 @@
       </div>
       <div class="right-container">
         <el-divider />
-        <div v-for="(region, index) in regions" :key="index" class="region">
+        <div v-for="(region, index) in regions_get" :key="index" class="region">
           <div class="content">
             <div class="left-content">
               <div class="name_and_state">
@@ -46,13 +46,13 @@
                   {{ region.language }}
                 </p>
                 <p style="font-size: smaller; color: gray; margin-left: 3%">
-                  Update {{ region.updated_at }}
+                  Update {{ region.updatedAt }}
                 </p>
               </div>
             </div>
             <div class="right-content">
               <a
-                :href="region.html_url"
+                :href="region.htmlUrl"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -98,31 +98,15 @@ export default {
     const regions = ref([
       {
         name: "Tutorial-2024",
-        updated_at: "2 weeks ago",
+        updatedAt: "2 weeks ago",
         language: "JavaScript",
-        color: "green",
-        html_url: "https://github.com/",
+        htmlUrl: "https://github.com/",
       },
       {
         name: "Dysphagia-Diagnostic",
-        updated_at: "Nov 1",
+        updatedAt: "Nov 1",
         language: "HTML",
-        color: "red",
-        html_url: "https://github.com/",
-      },
-      {
-        name: "Tutorial-2024",
-        updated_at: "2 weeks ago",
-        language: "JavaScript",
-        color: "green",
-        html_url: "https://github.com/",
-      },
-      {
-        name: "Tutorial-2024",
-        updated_at: "2 weeks ago",
-        language: "JavaScript",
-        color: "green",
-        html_url: "https://github.com/",
+        htmlUrl: "https://github.com/",
       },
     ]);
     const languageColor = new Map<string, string>([
@@ -149,6 +133,7 @@ export default {
           pagination.value.pageSize
         );
         console.log(regions_get.value);
+        //pagination.value.total = data.total;
       } catch (error) {
         console.error("Failed to load repos:", error);
       }
