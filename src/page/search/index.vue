@@ -77,7 +77,7 @@
                     <div class="project-license">
                       <span class="label">License：</span>
                       <span class="license-block"
-                        >getlicense(resposity.license)</span
+                        >{{ getlicense(resposity.license) }}</span
                       >
                     </div>
                     <div class="project-languages">
@@ -449,6 +449,7 @@ export default defineComponent({
       repositeries,
       languageFilter,
       jumpPersonal,
+      getlicense
     };
   },
 });
