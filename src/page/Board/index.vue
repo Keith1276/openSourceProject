@@ -49,6 +49,7 @@
 <script lang="ts">
 import search from "./search.vue";
 import { ref, computed, onMounted, watch } from "vue";
+import {get_hot_person, get_hot_repos} from "@/api/board";
 export default {
   components: { search },
   setup() {
@@ -67,54 +68,61 @@ export default {
       },
     ]);
     const repoData = ref([
-      {
-        number: "1",
-        name: "the most perfect repo named by zqs",
-        owner_login: "Dujltqzv",
-        stargazers_count: "11762",
-        forks_count: "1467",
-      },
-      {
-        number: "2",
-        name: "Books-Free-Books",
-        owner_login: "lTbgykio",
-        stargazers_count: "10613",
-        forks_count: "1137",
-      },
-      {
-        number: "3",
-        name: "x86-bare-metal-examples",
-        owner_login: "cirosantilli",
-        stargazers_count: "4850",
-        forks_count: "408",
-      },
+      // {
+      //   number: "1",
+      //   name: "the most perfect repo named by zqs",
+      //   owner_login: "Dujltqzv",
+      //   stargazers_count: "11762",
+      //   forks_count: "1467",
+      // },
+      // {
+      //   number: "2",
+      //   name: "Books-Free-Books",
+      //   owner_login: "lTbgykio",
+      //   stargazers_count: "10613",
+      //   forks_count: "1137",
+      // },
+      // {
+      //   number: "3",
+      //   name: "x86-bare-metal-examples",
+      //   owner_login: "cirosantilli",
+      //   stargazers_count: "4850",
+      //   forks_count: "408",
+      // },
     ]);
     const personData = ref([
-      {
-        number: "1",
-        login: "jindongwang",
-        followers: "5070",
-        public_repos: "59",
-      },
-      {
-        number: "2",
-        login: "numbbbbb",
-        followers: "4687",
-        public_repos: "99",
-      },
-      {
-        number: "3",
-        login: "hiyouga",
-        followers: "2524",
-        public_repos: "55",
-      },
+      // {
+      //   number: "1",
+      //   login: "jindongwang",
+      //   followers: "5070",
+      //   public_repos: "59",
+      // },
+      // {
+      //   number: "2",
+      //   login: "numbbbbb",
+      //   followers: "4687",
+      //   public_repos: "99",
+      // },
+      // {
+      //   number: "3",
+      //   login: "hiyouga",
+      //   followers: "2524",
+      //   public_repos: "55",
+      // },
     ]);
+    onMounted(async () => {
+      const hot_repo_data = await get_hot_repos();
+      const hot_person_data=await  get_hot_person();
+      personData.value=hot_person_data;
+      repoData.value=hot_repo_data;
+    });
     return {
       regions,
       repoData,
       personData,
     };
   },
+
 };
 </script>
 <style scoped>

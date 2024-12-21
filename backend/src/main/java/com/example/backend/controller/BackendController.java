@@ -90,7 +90,7 @@ public class BackendController {
     }
 
     /**
-     * 开发者仓库
+     * 开发者个人页面
      *
      * @param userId
      * @param pageNum
@@ -105,6 +105,40 @@ public class BackendController {
         }
         try {
             UserPageVO result = backendService.userPage(userId, pageNum, pageSize);
+            return ResultUtils.success(result);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResultUtils.error(ErrorCode.SYSTEM_ERROR, e.getMessage());
+        }
+    }
+
+    /**
+     * 优秀仓库
+     *
+     * @return
+     */
+    @GetMapping("/good/repos")
+    @Operation(summary = "优秀仓库")
+    public BaseResponse<RepoVO> goodRepos() {
+        try {
+            RepoVO result = backendService.goodRepos();
+            return ResultUtils.success(result);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResultUtils.error(ErrorCode.SYSTEM_ERROR, e.getMessage());
+        }
+    }
+
+    /**
+     * 优秀开发者
+     *
+     * @return
+     */
+    @GetMapping("/good/users")
+    @Operation(summary = "搜索开发者")
+    public BaseResponse<UserVO> goodUsers() {
+        try {
+            UserVO result = backendService.goodUsers();
             return ResultUtils.success(result);
         } catch (Exception e) {
             log.error(e.getMessage());
