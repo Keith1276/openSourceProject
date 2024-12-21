@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-@CrossOrigin("http://localhost:5653")
+@CrossOrigin("http://localhost:8086")
 public class SystemController {
     @Resource
     private BackendService backendService;
