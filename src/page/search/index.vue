@@ -73,16 +73,16 @@
                     <div class="project-license">
                       <!-- zjq快来 zjq写好了但测不了 -->
                       <span class="label">开发者：</span>
-                      <a href="/balabala/{{ resposity.ownerLogin }}">
-                        <button
-                          @click="jumpPersonal(resposity.ownerId)"
-                          class="jumpButton"
-                        >
-                          <span class="author-block">{{
-                            resposity.ownerLogin
-                          }}</span>
-                        </button>
-                      </a>
+                      <!-- <a href="/balabala/{{ resposity.ownerLogin }}"> -->
+                      <button
+                        @click="jumpPersonal(resposity.ownerId)"
+                        class="jumpButton"
+                      >
+                        <span class="author-block">{{
+                          resposity.ownerLogin
+                        }}</span>
+                      </button>
+                      <!-- </a> -->
                     </div>
                     <div class="project-description">
                       <div class="label">项目简介：</div>
