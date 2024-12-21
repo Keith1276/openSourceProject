@@ -413,8 +413,8 @@ export default defineComponent({
     const getlicense = (str): string => {
       var obj,nameValue;
       if(str!="null"){
-        obj = JSON.parse(str);
-        nameValue.value = obj.name;
+        obj = JSON.parse('{"license": ' + str + '}');
+        nameValue.value = obj.license.name;
       }
       nameValue.value="NULL"
       return nameValue.value;
