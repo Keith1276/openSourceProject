@@ -23,6 +23,23 @@
               </el-button>
             </div>
           </el-card>
+          <el-card style="width: 100%">
+            <p style="text-align: left; font-weight: bold">License</p>
+            <div style="width: 100%" v-for="(button, index) in licenses">
+              <el-button
+                class="button-box"
+                :key="index"
+                @click="licenseFilter(index)"
+                text
+              >
+                <span
+                  :style="{ 'background-color': button.color }"
+                  class="square"
+                ></span>
+                {{ button.text }}
+              </el-button>
+            </div>
+          </el-card>
         </div>
       </div>
       <!-- 右侧文章栏 -->
@@ -77,7 +94,7 @@
                     <div class="project-license">
                       <span class="label">License：</span>
                       <span class="license-block"
-                        >{{ getlicense(resposity.license) }}</span
+                        >{{ resposity.license }}</span
                       >
                     </div>
                     <div class="project-languages">
@@ -231,6 +248,17 @@ export default defineComponent({
       { text: "Vue", color: "#41b883" },
     ];
 
+    const licenses=[
+      { text: "Apache", color: "#3572a5" },
+      { text: "MIT", color: "#b07219" },
+      { text: "Other", color: "#555555" },
+      { text: "Unlicense", color: "#f34b7d" },
+      { text: "GNU", color: "#e34c26" },
+      { text: "BSD3", color: "#b2b7f8" },
+      { text: "BSD0", color: "#f1e05a" },
+      { text: "zlib", color: "#41b883" },
+    ]
+
     const licenseName = new Map<string, string>([
       ["Apache", "Apache License 2.0"],
       ["MIT", "MIT License"],
@@ -376,6 +404,20 @@ export default defineComponent({
       clickEvent(param);
     };
 
+    const licenseFilter = (index): void => {
+      license.value = [];
+      license.value[0] = licenses[index].text;
+      license.value = license.value.map((key) => licenseName.get(key) || key);
+      let param = {
+        license: license.value,
+        language: language.value,
+        content: content.value,
+        pageNumber: 1,
+        pageSize: 10,
+      };
+      clickEvent(param);
+    };
+
     let curPapers = ref<any>([]);
 
     const pagination = ref({
@@ -450,7 +492,9 @@ export default defineComponent({
       repositeries,
       languageFilter,
       jumpPersonal,
-      getlicense
+      getlicense,
+      licenses,
+      licenseFilter
     };
   },
 });

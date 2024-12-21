@@ -1,5 +1,6 @@
 package com.example.backend.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -80,6 +81,14 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
             }
             if (filter) {
                 repositories = new ArrayList<>(result);
+            }
+            for (Repository repo: repositories) {
+                String lincense = repo.getLicense();
+                if (!lincense.equals("null")) {
+                    JSONObject licenseJson = JSONObject.parseObject(lincense);
+                    String licenseName = licenseJson.getString("name");
+                    repo.setLicense(licenseName);
+                }
             }
             // 分页
             int startIndex = (int) ((pageNum - 1) * pageSize);
@@ -185,6 +194,12 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
                 normalizedMatchScore = 0;
             }
             repo.setMatchScore(normalizedMatchScore);
+            String lincense = repo.getLicense();
+            if (!lincense.equals("null")) {
+                JSONObject licenseJson = JSONObject.parseObject(lincense);
+                String licenseName = licenseJson.getString("name");
+                repo.setLicense(licenseName);
+            }
         }
         // 按搜索得分排序
         repositories.sort((r1, r2) -> Double.compare(70 * r2.getMatchScore() + 0.3 * r2.getScore(), 70 * r1.getMatchScore() + 0.3 * r1.getScore()));
