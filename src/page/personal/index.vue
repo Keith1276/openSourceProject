@@ -132,7 +132,7 @@ export default {
           pagination.value.currentPage,
           pagination.value.pageSize
         );
-        console.log(regions_get.value);
+        console.log(data.value);
         pagination.value.total = data.repoVO.total;
         regions.value = data.repoVO.repositories;
         login.value = data.user.login;
