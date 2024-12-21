@@ -28,7 +28,7 @@ const router = createRouter({
             },
         },
         {
-            path: '/personal',
+            path: '/personal/:id',
             name: 'personal',
             component: defineAsyncComponent(() => import(`../page/personal/index.vue`)),
             meta: {
