@@ -85,7 +85,6 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
             for (Repository repo: repositories) {
                 String lincense = repo.getLicense();
                 if (!lincense.equals("null")) {
-                    System.out.println(lincense);
                     JSONObject licenseJson = JSONObject.parseObject(lincense);
                     String licenseName = licenseJson.getString("name");
                     repo.setLicense(licenseName);
@@ -197,7 +196,6 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
             repo.setMatchScore(normalizedMatchScore);
             String lincense = repo.getLicense();
             if (!lincense.equals("null")) {
-                System.out.println(lincense);
                 JSONObject licenseJson = JSONObject.parseObject(lincense);
                 String licenseName = licenseJson.getString("name");
                 repo.setLicense(licenseName);
