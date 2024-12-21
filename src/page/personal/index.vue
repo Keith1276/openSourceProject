@@ -127,12 +127,15 @@ export default {
     const handleCurrentChange = async (e) => {
       pagination.value.currentPage = e;
       try {
-        regions_get.value = await get_repo_list(
+        const data = await get_repo_list(
           id.value,
           pagination.value.currentPage,
           pagination.value.pageSize
         );
-        console.log(regions_get.value);
+        console.log(data.value);
+        pagination.value.total = data.repoVO.total;
+        regions.value = data.repoVO.repositories;
+        login.value = data.user.login;
       } catch (error) {
         console.error("Failed to load repos:", error);
       }
