@@ -4,11 +4,7 @@
     <div class="content-container">
       <div class="left-container">
         <div class="img-container">
-          <el-avatar
-            class="avatar"
-            fit="fill"
-            :src="require('@/asset/scholarSearch/lyh.jpg')"
-          />
+          <el-avatar class="avatar" fit="fill" :src="avatarUrl" />
         </div>
         <div class="info-container">
           <h2 style="margin-bottom: 5%">{{ login }}</h2>
@@ -92,6 +88,7 @@ export default {
     const followers = ref("100");
     const followings = ref("100");
     const html_url = "https://github.com/ifduyue/http-getit";
+    const avatarUrl = ref("");
     const route = useRoute();
     const id = ref(1);
     const regions_get = ref([]);
@@ -136,6 +133,8 @@ export default {
         pagination.value.total = data.repoVO.total;
         regions.value = data.repoVO.repositories;
         login.value = data.user.login;
+        followers.value = data.user.followers;
+        avatarUrl.value = data.user.avatarUrl;
       } catch (error) {
         console.error("Failed to load repos:", error);
       }
@@ -161,6 +160,7 @@ export default {
       route,
       id,
       regions_get,
+      avatarUrl,
     };
   },
 };
