@@ -106,7 +106,7 @@
               <el-pagination
                 background
                 layout="prev, pager, next"
-                :total="pagination.total"
+                :total="10*pagination.total"
                 :current-page="pagination.currentPage"
                 :page-size="pagination.pageSize"
                 @update:current-page="handleCurrentChange"
@@ -287,7 +287,7 @@ export default defineComponent({
         console.log(data)
         const results = await searchRepos(data);
         repositeries.value=results['repositories']
-        pagination.value.total=results['total']
+        pagination.value.total=results['total']/10;
         console.log(results);
       } catch (error) {
         console.error('请求失败:', error);
@@ -313,7 +313,7 @@ export default defineComponent({
     let curPapers = ref<any>([]);
 
     const pagination = ref({
-      total: 100,
+      total: 10,
       currentPage: 1,
       pageSize: 10,
     });
@@ -324,7 +324,6 @@ export default defineComponent({
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
       console.log(pagination.value.currentPage)
-      console.log(pagenum)
       if(language.value==null)
         language.value=[]
       if(license.value==null)
