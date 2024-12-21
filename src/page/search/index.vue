@@ -47,7 +47,7 @@
                 <div class="description-license-language-row">
                   <div class="project-license">
                     <span class="label">开发者：</span>
-                    <span class="author-block">{{ resposity.owner_login }}</span>
+                    <span class="author-block">{{ resposity.ownerLogin }}</span>
                   </div>
                   <div class="project-description">
                     <div class="label">项目简介：</div>
@@ -55,11 +55,11 @@
                   </div>
                   <div class="project-description">
                     <span class="label">最近更新时间</span>
-                    <div class="others-block">{{ resposity.updated_at }}</div>
+                    <div class="others-block">{{ resposity.updatedAt }}</div>
                   </div>
                   <div class="project-license">
                     <span class="label">License：</span>
-                    <span class="license-block">{{ resposity.license }}</span>
+                    <span class="license-block">getlicense(resposity.license)</span>
                   </div>
                   <div class="project-languages">
                     <span class="label">Language：</span>
@@ -68,7 +68,7 @@
                 </div>
               </div>
               <div class="paper-image">
-                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
                   <img src="@/asset/search/跳转.png" alt="Project Logo">
                 </a>
               </div>
@@ -76,28 +76,28 @@
             <div class="line"></div>
             <div class="citation-container">
               <div class="citation">
-                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
                   <img src="@/asset/search/github-star.png" alt="" class="citation-icon">
                 </a>
-                <span>Star: {{ resposity.stargazer_count }}</span>
+                <span>Star: {{ resposity.stargazersCount }}</span>
               </div>
               <div class="citation">
-                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
                   <img src="@/asset/search/code-fork.png" alt="" class="citation-icon">
                 </a>
-                <span>Fork: {{ resposity.forks_count }}</span>
+                <span>Fork: {{ resposity.forksCount }}</span>
               </div>
               <div class="citation">
-                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
                   <img src="@/asset/search/icon_github_issue.png" alt="" class="citation-icon">
                 </a>
-                <span>Issues: {{ resposity.has_issues }}</span>
+                <span>Issues: {{ resposity.hasIssues }}</span>
               </div>
               <div class="citation">
-                <a :href="resposity.html_url" target="_blank" rel="noopener noreferrer">
+                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
                   <img src="@/asset/search/watch.png" alt="" class="citation-icon">
                 </a>
-                <span>Watchers: {{ resposity.watchers_count }}</span>
+                <span>Watchers: {{ resposity.watchersCount }}</span>
               </div>
             </div>
             </el-card>
@@ -195,53 +195,53 @@ export default defineComponent({
 
     const route=useRoute();
 
-    const repositeries=[
+    const repositeries=ref([
       {
         id:0,
         name:"project name",
-        owner_login:"owner name",
-        html_url: "https://github.com/",
+        ownerLogin:"owner name",
+        htmlUrl: "https://github.com/",
         description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
-        updated_at:"2024-12-05",
-        stargazer_count:20,
-        watchers_count:15,
+        updatedAt:"2024-12-05",
+        stargazersCount:20,
+        watchersCount:15,
         language:"Python",
-        has_issues:30,
-        has_discussion:10,
-        forks_count:1,
+        hasIssues:30,
+        hasDiscussions:10,
+        forksCount:1,
         license:"MIT",
       },
       {
         id:1,
         name:"project name",
-        owner_login:"owner name",
-        html_url: "https://github.com/",
+        ownerLogin:"owner name",
+        htmlUrl: "https://github.com/",
         description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
-        updated_at:"2024-12-05",
-        stargazer_count:20,
-        watchers_count:15,
+        updatedAt:"2024-12-05",
+        stargazersCount:20,
+        watchersCount:15,
         language:"Python",
-        has_issues:30,
-        has_discussion:10,
-        forks_count:1,
+        hasIssues:30,
+        hasDiscussions:10,
+        forksCount:1,
         license:"MIT",
       },
       {
         id:2,
         name:"project name",
-        owner_login:"owner name",
-        html_url: "https://github.com/",
+        ownerLogin:"owner name",
+        htmlUrl: "https://github.com/",
         description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
-        updated_at:"2024-12-05",
-        stargazer_count:20,
-        watchers_count:15,
+        updatedAt:"2024-12-05",
+        stargazersCount:20,
+        watchersCount:15,
         language:"Python",
-        has_issues:30,
-        has_discussion:10,
-        forks_count:1,
+        hasIssues:30,
+        hasDiscussions:10,
+        forksCount:1,
         license:"MIT",
       }
-    ]
+    ])
 
     const license = ref<string[]>([]);
     const language = ref<string[]>([]);
@@ -257,7 +257,9 @@ export default defineComponent({
       license.value=val.license;
       language.value=val.language;
       content.value=val.content;
-      console.log(sort.value);
+
+      if(license.value==null)
+        license.value=[];
       if(license.value[0]=='All')
         license.value=[];
       let param={
@@ -277,13 +279,15 @@ export default defineComponent({
         pagenum=val.pageNumber
         const data = {
           keywords: val.content,
-          language: val.language,
+          languages: val.language,
           licenses: val.license,
           pageNum: val.pageNumber,
           pageSize: val.pageSize,
         };
         console.log(data)
         const results = await searchRepos(data);
+        repositeries.value=results['repositories']
+        pagination.value.total=results['total']
         console.log(results);
       } catch (error) {
         console.error('请求失败:', error);
@@ -292,13 +296,6 @@ export default defineComponent({
 
     var timeIndex = ref(-1);
     var filedIndex = ref(-1);
-
-    // 筛选时间
-    const timeFilter = (index): void =>{
-      timeIndex.value=index;
-      curPapers.value=timeFilterRule();
-      console.log(curPapers.value);
-    }
 
     const languageFilter = (index): void =>{
       language.value=[]
@@ -312,10 +309,6 @@ export default defineComponent({
       }
       clickEvent(param);
     }
-
-    const timeFilterRule = (): Array<any> => {
-      return repositeries;
-    };
 
     let curPapers = ref<any>([]);
 
@@ -332,6 +325,12 @@ export default defineComponent({
       pagination.value.currentPage = e;
       console.log(pagination.value.currentPage)
       console.log(pagenum)
+      if(language.value==null)
+        language.value=[]
+      if(license.value==null)
+        license.value=[]
+      if(content.value==null)
+        content.value=[]
       let param={
         license:license.value,
         language:language.value,
@@ -348,16 +347,19 @@ export default defineComponent({
     const handleinputSend = (message) => {
         receivedMessage.value = message;
         console.log('Received message from Child: ', receivedMessage.value);
-        timeFilterRule();
         console.log(timeIndex.value);
         // update papers
     };
 
+    const getlicense = (str): string =>{
+      const obj = JSON.parse(str);
+      const nameValue = obj.name;
+      return nameValue
+    }
+
 
 
     onMounted(() => {
-      curPapers.value=timeFilterRule();
-      updateTotal();
       handleCurrentChange(1);
     });
 
@@ -372,8 +374,6 @@ export default defineComponent({
       options,
       curPapers,
       languages,
-      timeFilter,
-      timeFilterRule,
       handleCurrentChange,
       pagination,
       receivedMessage,

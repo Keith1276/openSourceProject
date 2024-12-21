@@ -114,14 +114,14 @@
                           color: #4994c4;
                           font-size: small;
                         "
-                        >{{ region.public_repos }}</b
+                        >{{ region.publicRepos }}</b
                       >
                     </p>
                   </div>
                 </div>
                 <div class="region-top-end">
                   <a
-                    :href="region.html_url"
+                    :href="region.htmlUrl"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -161,7 +161,7 @@ import { getScholarData } from "@/api/scholarSearch";
 export default {
   components: { search },
   setup() {
-    const resultCnt = ref("3");
+    const resultCnt = ref(3);
     const value = ref("");
     const input3 = ref("");
     const select = ref("");
@@ -182,19 +182,20 @@ export default {
         login: "Coke_And_1ce",
         email: "skyshipwc@163.com",
         followers: 1,
-        public_repos: 1,
-        html_url: "https://github.com/",
+        publicRepos: 1,
+        htmlUrl: "https://github.com/",
       },
       {
         id: 2,
         login: "Berry",
         email: "skyshipwc@163.com",
         followers: 1,
-        public_repos: 1,
-        html_url: "https://github.com/",
+        publicRepos: 1,
+        htmlUrl: "https://github.com/",
       },
     ]);
     const handleSearch = async () => {
+      pagination.value.currentPage = 1;
       const condition = {
         keywords: Keywords.value,
         pageNum: pagination.value.currentPage,
@@ -202,8 +203,13 @@ export default {
       };
       try {
         const data = await getScholarData(condition);
-        regions.value = data;
-        console.log(data);
+        regions.value = data.users;
+        resultCnt.value = data.total;
+        pagination.value.total = data.total;
+        // regions.value = data[0];
+        // resultCnt.value = data[1];
+        // console.log(data[0]);
+        // console.log(data[1]);
       } catch (error) {
         console.error("Error fetching scholar data:", error);
         regions.value = [];
@@ -218,7 +224,7 @@ export default {
       router.push("/Board");
     };
     const pagination = ref({
-      total: 1, //总页数？
+      total: 100,
       currentPage: 1,
       pageSize: 5,
     });
@@ -240,8 +246,9 @@ export default {
       };
       try {
         const data = await getScholarData(condition);
-        regions.value = data;
-        console.log(data);
+        regions.value = data.users;
+        resultCnt.value = data.total;
+        pagination.value.total = data.total;
       } catch (error) {
         console.error("Error fetching scholar data:", error);
         regions.value = [];
@@ -250,7 +257,7 @@ export default {
     onMounted(() => {
       input3.value = route.params.input as string;
       select.value = route.params.select as string;
-      updateTotal();
+      // updateTotal();
       handleCurrentChange(1);
     });
     return {
@@ -309,6 +316,7 @@ export default {
 .main-contanier {
   display: flex;
   flex-direction: column;
+  background-color: #f4f4f4;
   height: 100vh;
   width: 100vw;
 }

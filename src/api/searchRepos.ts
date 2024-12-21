@@ -20,28 +20,28 @@ const fieldsToKeep = ['id', 'name', 'description', 'stargazers_count', 'forks_co
 
 export async function searchRepos(data : {
     keywords:string[],
-    language:string[],
+    languages:string[],
     licenses:string[],
     pageNum:number,
     pageSize:number,
-} ) : Promise<void> {
+} ) : Promise<any> {
     try {
 
         const response = await axios.post('http://localhost:8085/api/search/repos',data);
         //const response = await axios.get('https://api.github.com/search/users', { params });
         if (response.status === 200) {
-
             callSuccess('请求成功');
             return response.data.data;
-
         }
         else {
             callError('网络错误');
+            return [];
         }
     }
     catch (error)
     {
         //console.log('there are some errors in register');
+        return [];
     }
 
 }

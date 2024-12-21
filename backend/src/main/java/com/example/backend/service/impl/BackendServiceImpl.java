@@ -10,14 +10,13 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.mapper.RepositoryMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.BackendService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.refresh.RefreshScopeLifecycle;
+import com.example.backend.vo.RepoVO;
+import com.example.backend.vo.UserVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -33,11 +32,9 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private RepositoryMapper repositoryMapper;
-    @Autowired
-    private RefreshScopeLifecycle refreshScopeLifecycle;
 
     @Override
-    public List<Repository> searchRepos(List<String> keywords, List<String> languages, List<String> licenses, Long pageNum, Long pageSize) {
+    public RepoVO searchRepos(List<String> keywords, List<String> languages, List<String> licenses, Long pageNum, Long pageSize) {
         if (pageSize <= 0 || pageNum <= 0) {
             throw new BaseException("pageSize,pageNum 必须为正整数");
         }
@@ -66,6 +63,7 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
             queryWrapper.orderByDesc("score");
             List<Repository> repositories = repositoryMapper.selectList(queryWrapper);
             List<Repository> result = new ArrayList<>();
+            boolean filter = false;
             if (!licenses.isEmpty()) {
                 for (Repository repository: repositories) {
                     String repoLicense = repository.getLicense();
@@ -78,11 +76,18 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
                         }
                     }
                 }
+                filter = true;
+            }
+            if (filter) {
+                repositories = new ArrayList<>(result);
             }
             // 分页
             int startIndex = (int) ((pageNum - 1) * pageSize);
-            int endIndex = (int) Math.min(startIndex + pageSize, result.size());
-            return result.subList(startIndex, endIndex);
+            int endIndex = (int) Math.min(startIndex + pageSize, repositories.size());
+            RepoVO repoVO = new RepoVO();
+            repoVO.setRepositories(repositories.subList(startIndex, endIndex));
+            repoVO.setTotal(repositories.size());
+            return repoVO;
         }
         List<Repository> repositories = repositoryMapper.selectList(queryWrapper);
         List<Repository> result = new ArrayList<>();
@@ -186,11 +191,14 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
         // 分页
         int startIndex = (int) ((pageNum - 1) * pageSize);
         int endIndex = (int) Math.min(startIndex + pageSize, repositories.size());
-        return repositories.subList(startIndex, endIndex);
+        RepoVO repoVO = new RepoVO();
+        repoVO.setRepositories(repositories.subList(startIndex, endIndex));
+        repoVO.setTotal(repositories.size());
+        return repoVO;
     }
 
     @Override
-    public List<User> searchUsers(List<String> keywords, Long pageNum, Long pageSize) {
+    public UserVO searchUsers(List<String> keywords, Long pageNum, Long pageSize) {
         if (pageSize <= 0 || pageNum <= 0) {
             throw new BaseException("pageSize,pageNum 必须为正整数");
         }
@@ -212,9 +220,14 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
             }
         } else {
             queryWrapper.orderByDesc("score");
-            Page<User> page = new Page<>(pageNum, pageSize);
-            Page<User> userPage = userMapper.selectPage(page, queryWrapper);
-            return userPage.getRecords();
+            List<User> users = userMapper.selectList(queryWrapper);
+            // 分页
+            int startIndex = (int) ((pageNum - 1) * pageSize);
+            int endIndex = (int) Math.min(startIndex + pageSize, users.size());
+            UserVO userVO = new UserVO();
+            userVO.setUsers(users.subList(startIndex, endIndex));
+            userVO.setTotal(users.size());
+            return userVO;
         }
         List<User> users = userMapper.selectList(queryWrapper);
         // 匹配度得分
@@ -271,7 +284,30 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
         // 分页
         int startIndex = (int) ((pageNum - 1) * pageSize);
         int endIndex = (int) Math.min(startIndex + pageSize, users.size());
-        return users.subList(startIndex, endIndex);
+        UserVO userVO = new UserVO();
+        userVO.setUsers(users.subList(startIndex, endIndex));
+        userVO.setTotal(users.size());
+        return userVO;
+    }
+
+    @Override
+    public RepoVO userRepos(Integer userId, Long pageNum, Long pageSize) {
+        if (pageSize <= 0 || pageNum <= 0) {
+            throw new BaseException("pageSize,pageNum 必须为正整数");
+        }
+        QueryWrapper<Repository> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id", "repo_id", "name", "owner_id", "owner_login", "html_url", "description",
+                "stargazers_count", "language", "license", "forks_count", "open_issues_count", "score");
+        queryWrapper.eq("owner_id", userId);
+        queryWrapper.orderByDesc("score");
+        List<Repository> repositories = repositoryMapper.selectList(queryWrapper);
+        // 分页
+        int startIndex = (int) ((pageNum - 1) * pageSize);
+        int endIndex = (int) Math.min(startIndex + pageSize, repositories.size());
+        RepoVO repoVO = new RepoVO();
+        repoVO.setRepositories(repositories.subList(startIndex, endIndex));
+        repoVO.setTotal(repositories.size());
+        return repoVO;
     }
 }
 
