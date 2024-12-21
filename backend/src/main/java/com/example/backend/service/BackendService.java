@@ -34,4 +34,13 @@ public interface BackendService extends IService<User> {
      * @param pageSize  页面大小
      */
     UserVO searchUsers(List<String> keywords, Long pageNum, Long pageSize);
+
+    /**
+     * 开发者仓库
+     *
+     * @param userId    开发者
+     * @param pageNum   页号
+     * @param pageSize  页面大小
+     */
+    RepoVO userRepos(Integer userId, Long pageNum, Long pageSize);
 }

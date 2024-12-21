@@ -195,6 +195,7 @@ export default {
       },
     ]);
     const handleSearch = async () => {
+      pagination.value.currentPage = 1;
       const condition = {
         keywords: Keywords.value,
         pageNum: pagination.value.currentPage,
@@ -204,6 +205,7 @@ export default {
         const data = await getScholarData(condition);
         regions.value = data.users;
         resultCnt.value = data.total;
+        pagination.value.total = data.total;
         // regions.value = data[0];
         // resultCnt.value = data[1];
         // console.log(data[0]);
@@ -222,7 +224,7 @@ export default {
       router.push("/Board");
     };
     const pagination = ref({
-      total: 100, //总页数？
+      total: 100,
       currentPage: 1,
       pageSize: 5,
     });
@@ -244,9 +246,9 @@ export default {
       };
       try {
         const data = await getScholarData(condition);
-        regions.value = data[0];
-        resultCnt.value = data[1];
-        console.log(data);
+        regions.value = data.users;
+        resultCnt.value = data.total;
+        pagination.value.total = data.total;
       } catch (error) {
         console.error("Error fetching scholar data:", error);
         regions.value = [];

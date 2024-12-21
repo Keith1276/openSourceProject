@@ -55,21 +55,21 @@ export default {
     const regions = ref([
       {
         title: "检索开源项目",
-        content: "XXXX会根据开源项目的star数目、fork等指标对开源项目进行排序，学者输入开源项目内容相关信息后即可进行精确检索",
+        content: "航链开源会根据开源项目的star数目、fork等指标对开源项目进行排序，学者输入开源项目内容相关信息后即可进行精确检索",
       },
       {
         title: "检索开发者",
-        content: "用户可以对开发者的方向和信息进行搜索，XXXX监控开发者的仓库更新，搜索开发者名称或开发者方向均会结合开发者影响力和开发者相关程度给出结果",
+        content: "用户可以对开发者的方向和信息进行搜索，航链开源监控开发者的仓库更新，搜索开发者名称或开发者方向均会结合开发者影响力和开发者相关程度给出结果",
       },
       {
         title: "获取开发者项目列表",
-        content: "用户能够获取开发者的个人主页，xxxx会自动聚合开发者的项目成果，以列表的形式展示其概要信息，用户只需要点击相应项目即可查看项目详情。",
+        content: "用户能够获取开发者的个人主页，航链开源会自动聚合开发者的项目成果，以列表的形式展示其概要信息，用户只需要点击相应项目即可查看项目详情。",
       },
     ]);
     const repoData = ref([
       {
         number: "1",
-        name: "Some-Many-Books",
+        name: "the most perfect repo named by zqs",
         owner_login: "Dujltqzv",
         stargazers_count: "11762",
         forks_count: "1467",
