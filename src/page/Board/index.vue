@@ -68,13 +68,13 @@ export default {
       },
     ]);
     const repoData = ref([
-      // {
-      //   id: "2",
-      //   name: "the most perfect repo named by zqs",
-      //   owner_login: "Dujltqzv",
-      //   stargazers_count: "11762",
-      //   forks_count: "1467",
-      // },
+      {
+        id: "",
+        name: "",
+        owner_login: "",
+        stargazers_count: "",
+        forks_count: "",
+      },
       // {
       //   id: "2",
       //   name: "Books-Free-Books",
@@ -91,20 +91,20 @@ export default {
       // },
     ]);
     const personData = ref([
+      {
+        id: "",
+        login: "",
+        followers: "",
+        public_repos: "",
+      },
       // {
-      //   number: "1",
-      //   login: "jindongwang",
-      //   followers: "5070",
-      //   public_repos: "59",
-      // },
-      // {
-      //   number: "2",
+      //   id: "2",
       //   login: "numbbbbb",
       //   followers: "4687",
       //   public_repos: "99",
       // },
       // {
-      //   number: "3",
+      //   id: "3",
       //   login: "hiyouga",
       //   followers: "2524",
       //   public_repos: "55",
@@ -113,17 +113,17 @@ export default {
     onMounted(async () => {
       const hot_repo_data = await get_hot_repos();
       const hot_person_data = await get_hot_person();
+
       personData.value = hot_person_data;
-      personData.value[0].id="1";
-      personData.value[1].id="2";
-      personData.value[2].id="3";
-      personData.value[3].id="4";
+      // personData.value[0].id="1";
+      // personData.value[1].id="2";
+      // personData.value[2].id="3";
+      // personData.value[3].id="4";
 
       repoData.value = hot_repo_data;
-
-      repoData.value[0].id = "1"; // 将第一个元素的 id 字段赋值为 1
-      repoData.value[1].id = "2";
-      repoData.value[2].id = "3";
+      // repoData.value[0].id = "1"; // 将第一个元素的 id 字段赋值为 1
+      // repoData.value[1].id = "2";
+      // repoData.value[2].id = "3";
     });
     return {
       regions,
