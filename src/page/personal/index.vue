@@ -24,11 +24,7 @@
       </div>
       <div class="right-container">
         <el-divider />
-        <div
-          v-for="(region, index) in pagedRegions()"
-          :key="index"
-          class="region"
-        >
+        <div v-for="(region, index) in regions" :key="index" class="region">
           <div class="content">
             <div class="left-content">
               <div class="name_and_state">
@@ -88,6 +84,7 @@ import search from "./search.vue";
 import { ref, computed, onMounted, watch } from "vue";
 import router from "@/router/index.js";
 import { useRoute } from "vue-router";
+import { get_repo_list } from "@/api/personal";
 export default {
   components: { search },
   setup() {
@@ -95,6 +92,9 @@ export default {
     const followers = ref("100");
     const followings = ref("100");
     const html_url = "https://github.com/ifduyue/http-getit";
+    const route = useRoute();
+    const id = ref(1);
+    const regions_get = ref([]);
     const regions = ref([
       {
         name: "Tutorial-2024",
@@ -140,20 +140,21 @@ export default {
       currentPage: 1,
       pageSize: 4,
     });
-    const updateTotal = () => {
-      pagination.value.total = regions.value.length;
-    };
-    const pagedRegions = () => {
-      const start =
-        (pagination.value.currentPage - 1) * pagination.value.pageSize;
-      const end = start + pagination.value.pageSize;
-      return regions.value.slice(start, end);
-    };
-    const handleCurrentChange = (e) => {
+    const handleCurrentChange = async (e) => {
       pagination.value.currentPage = e;
+      try {
+        regions_get.value = await get_repo_list(
+          id.value,
+          pagination.value.currentPage,
+          pagination.value.pageSize
+        );
+        console.log(regions_get.value);
+      } catch (error) {
+        console.error("Failed to load repos:", error);
+      }
     };
     onMounted(() => {
-      updateTotal();
+      id.value = Number(route.params.id as string);
       handleCurrentChange(1);
     });
     const jumpGit = (html_url) => {
@@ -165,12 +166,14 @@ export default {
       followers,
       followings,
       regions,
-      pagedRegions,
       pagination,
       handleCurrentChange,
       jumpGit,
       html_url,
       languageColor,
+      route,
+      id,
+      regions_get,
     };
   },
 };

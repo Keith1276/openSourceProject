@@ -79,7 +79,7 @@
                 <div class="region-top-middle">
                   <button
                     style="margin-right: 10%"
-                    @click="jumpPersonal"
+                    @click="jumpPersonal(region.id)"
                     class="jumpButton"
                   >
                     <p
@@ -215,9 +215,9 @@ export default {
         regions.value = [];
       }
     };
-    const jumpPersonal = () => {
+    const jumpPersonal = (id) => {
       console.log("jumpPersonal click success");
-      router.push("/personal");
+      router.push("/personal" + id);
     };
     const jumpBoard = () => {
       console.log("jumpBoard click success");
