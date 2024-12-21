@@ -46,8 +46,11 @@
                 </div>
                 <div class="description-license-language-row">
                   <div class="project-license">
-                    <span class="label">开发者：</span>
-                    <span class="author-block">{{ resposity.ownerLogin }}</span>
+                    <!-- zjq快来 -->
+                    <a href="/balabala/{{ resposity.ownerLogin }}">
+                      <span class="label">开发者：</span>
+                      <span class="author-block">{{ resposity.ownerLogin }}</span>
+                    </a>
                   </div>
                   <div class="project-description">
                     <div class="label">项目简介：</div>
