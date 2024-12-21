@@ -115,15 +115,15 @@ export default {
       const hot_person_data = await get_hot_person();
 
       personData.value = hot_person_data;
-      // personData.value[0].id="1";
-      // personData.value[1].id="2";
-      // personData.value[2].id="3";
-      // personData.value[3].id="4";
+      personData.value[0].id="1";
+      personData.value[1].id="2";
+      personData.value[2].id="3";
+      personData.value[3].id="4";
 
       repoData.value = hot_repo_data;
-      // repoData.value[0].id = "1"; // 将第一个元素的 id 字段赋值为 1
-      // repoData.value[1].id = "2";
-      // repoData.value[2].id = "3";
+      repoData.value[0].id = "1"; // 将第一个元素的 id 字段赋值为 1
+      repoData.value[1].id = "2";
+      repoData.value[2].id = "3";
     });
     return {
       regions,
