@@ -74,7 +74,10 @@
                       <!-- zjq快来 zjq写好了但测不了 -->
                       <span class="label">开发者：</span>
                       <a href="/balabala/{{ resposity.ownerLogin }}">
-                        <button @click="jumpPersonal" class="jumpButton">
+                        <button
+                          @click="jumpPersonal(resposity.ownerId)"
+                          class="jumpButton"
+                        >
                           <span class="author-block">{{
                             resposity.ownerLogin
                           }}</span>
@@ -93,9 +96,7 @@
                     </div>
                     <div class="project-license">
                       <span class="label">License：</span>
-                      <span class="license-block"
-                        >{{ resposity.license }}</span
-                      >
+                      <span class="license-block">{{ resposity.license }}</span>
                     </div>
                     <div class="project-languages">
                       <span class="label">Language：</span>
@@ -248,7 +249,7 @@ export default defineComponent({
       { text: "Vue", color: "#41b883" },
     ];
 
-    const licenses=[
+    const licenses = [
       { text: "Apache", color: "#3572a5" },
       { text: "MIT", color: "#b07219" },
       { text: "Other", color: "#555555" },
@@ -257,7 +258,7 @@ export default defineComponent({
       { text: "BSD3", color: "#b2b7f8" },
       { text: "BSD0", color: "#f1e05a" },
       { text: "zlib", color: "#41b883" },
-    ]
+    ];
 
     const licenseName = new Map<string, string>([
       ["Apache", "Apache License 2.0"],
@@ -301,6 +302,7 @@ export default defineComponent({
         hasDiscussions: 10,
         forksCount: 1,
         license: "MIT",
+        ownerId: 1,
       },
       {
         id: 1,
@@ -316,6 +318,7 @@ export default defineComponent({
         hasDiscussions: 10,
         forksCount: 1,
         license: "MIT",
+        ownerId: 1,
       },
       {
         id: 2,
@@ -331,6 +334,7 @@ export default defineComponent({
         hasDiscussions: 10,
         forksCount: 1,
         license: "MIT",
+        ownerId: 1,
       },
     ]);
 
@@ -453,17 +457,17 @@ export default defineComponent({
     };
 
     const getlicense = (str): string => {
-      var obj,nameValue;
-      if(str!="null"){
-        obj = JSON.parse('{"license": ' + str + '}');
+      var obj, nameValue;
+      if (str != "null") {
+        obj = JSON.parse('{"license": ' + str + "}");
         nameValue.value = obj.license.name;
       }
-      nameValue.value="NULL"
+      nameValue.value = "NULL";
       return nameValue.value;
     };
-    const jumpPersonal = () => {
+    const jumpPersonal = (id) => {
       console.log("jumpPersonal click success");
-      router.push("/personal");
+      router.push("/personal/" + id);
     };
     onMounted(() => {
       handleCurrentChange(1);
@@ -494,7 +498,7 @@ export default defineComponent({
       jumpPersonal,
       getlicense,
       licenses,
-      licenseFilter
+      licenseFilter,
     };
   },
 });
