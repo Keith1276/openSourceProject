@@ -55,8 +55,8 @@
                   <div class="description-license-language-row">
                     <div class="project-license">
                       <!-- zjq快来 zjq写好了但测不了 -->
+                      <span class="label">开发者：</span>
                       <a href="/balabala/{{ resposity.ownerLogin }}">
-                        <span class="label">开发者：</span>
                         <button @click="jumpPersonal" class="jumpButton">
                           <span class="author-block">{{
                             resposity.ownerLogin
@@ -383,9 +383,6 @@ export default defineComponent({
       currentPage: 1,
       pageSize: 10,
     });
-    const updateTotal = () => {
-      pagination.value.total = curPapers.value.length;
-    };
 
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
@@ -414,9 +411,13 @@ export default defineComponent({
     };
 
     const getlicense = (str): string => {
-      const obj = JSON.parse(str);
-      const nameValue = obj.name;
-      return nameValue;
+      var obj,nameValue;
+      if(str!="null"){
+        obj = JSON.parse(str);
+        nameValue.value = obj.name;
+      }
+      nameValue.value="NULL"
+      return nameValue.value;
     };
     const jumpPersonal = () => {
       console.log("jumpPersonal click success");
