@@ -217,7 +217,7 @@ export default {
     };
     const jumpPersonal = (id) => {
       console.log("jumpPersonal click success");
-      router.push("/personal" + id);
+      router.push("/personal/" + id);
     };
     const jumpBoard = () => {
       console.log("jumpBoard click success");
