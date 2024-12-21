@@ -20,18 +20,18 @@
           <el-table-column prop="name" label="项目名" width="170" />
           <el-table-column prop="ownerLogin" label="开发者" width="110" />
           <el-table-column
-            prop="stargazers_count"
+            prop="stargazersCount"
             label="Star"
             sortable
             width="100"
           />
-          <el-table-column prop="forks_count" label="Fork" sortable />
+          <el-table-column prop="forksCount" label="Fork" sortable />
         </el-table>
       </div>
       <div class="person-list">
         <p style="font-size: large; font-weight: bold">热门开发者排行</p>
         <el-table :data="personData" style="width: 100%">
-          <el-table-column prop="number" label="排行" width="80" />
+          <el-table-column prop="id" label="排行" width="80" />
           <el-table-column prop="login" label="开发者" width="170" />
           <el-table-column
             prop="followers"
@@ -39,7 +39,7 @@
             width="110"
             sortable
           />
-          <el-table-column prop="public_repos" label="公开项目数" sortable />
+          <el-table-column prop="publicRepos" label="公开项目数" sortable />
         </el-table>
       </div>
     </div>
@@ -68,27 +68,27 @@ export default {
       },
     ]);
     const repoData = ref([
-      {
-        id: "2",
-        name: "the most perfect repo named by zqs",
-        owner_login: "Dujltqzv",
-        stargazers_count: "11762",
-        forks_count: "1467",
-      },
-      {
-        id: "2",
-        name: "Books-Free-Books",
-        owner_login: "lTbgykio",
-        stargazers_count: "10613",
-        forks_count: "1137",
-      },
-      {
-        id: "3",
-        name: "x86-bare-metal-examples",
-        owner_login: "cirosantilli",
-        stargazers_count: "4850",
-        forks_count: "408",
-      },
+      // {
+      //   id: "2",
+      //   name: "the most perfect repo named by zqs",
+      //   owner_login: "Dujltqzv",
+      //   stargazers_count: "11762",
+      //   forks_count: "1467",
+      // },
+      // {
+      //   id: "2",
+      //   name: "Books-Free-Books",
+      //   owner_login: "lTbgykio",
+      //   stargazers_count: "10613",
+      //   forks_count: "1137",
+      // },
+      // {
+      //   id: "3",
+      //   name: "x86-bare-metal-examples",
+      //   owner_login: "cirosantilli",
+      //   stargazers_count: "4850",
+      //   forks_count: "408",
+      // },
     ]);
     const personData = ref([
       // {
@@ -114,6 +114,11 @@ export default {
       const hot_repo_data = await get_hot_repos();
       const hot_person_data = await get_hot_person();
       personData.value = hot_person_data;
+      personData.value[0].id="1";
+      personData.value[1].id="2";
+      personData.value[2].id="3";
+      personData.value[3].id="4";
+
       repoData.value = hot_repo_data;
 
       repoData.value[0].id = "1"; // 将第一个元素的 id 字段赋值为 1
