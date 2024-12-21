@@ -79,7 +79,7 @@
                 <div class="region-top-middle">
                   <button
                     style="margin-right: 10%"
-                    @click="jumpPersonal(region.id)"
+                    @click="jumpPersonal(region.userId)"
                     class="jumpButton"
                   >
                     <p
@@ -178,7 +178,7 @@ export default {
     });
     const regions = ref([
       {
-        id: 1,
+        userId: 1,
         login: "Coke_And_1ce",
         email: "skyshipwc@163.com",
         followers: 1,
@@ -186,7 +186,7 @@ export default {
         htmlUrl: "https://github.com/",
       },
       {
-        id: 2,
+        userId: 2,
         login: "Berry",
         email: "skyshipwc@163.com",
         followers: 1,

@@ -3,7 +3,7 @@ import { callSuccess, callError, callInfo, callWarning } from "@/call";
 
 export async function get_repo_list(userId,pageNum,pageSize): Promise<any>{ 
     try {
-          const response = await axios.get(`/user/page?userId=${userId}&pageNum=${pageNum}&pageSize=${pageSize}`);
+          const response = await axios.get(`http://localhost:8085/api/user/page?userId=${userId}&pageNum=${pageNum}&pageSize=${pageSize}`);
           if (response.status === 200) {
             callSuccess('获取个人项目列表成功');
             return response.data.data;
