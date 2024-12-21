@@ -1,7 +1,6 @@
 package com.example.backend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.example.backend.entity.Repository;
@@ -11,6 +10,7 @@ import com.example.backend.mapper.RepositoryMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.service.BackendService;
 import com.example.backend.vo.RepoVO;
+import com.example.backend.vo.UserPageVO;
 import com.example.backend.vo.UserVO;
 import org.springframework.stereotype.Service;
 
@@ -291,7 +291,7 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public RepoVO userRepos(Integer userId, Long pageNum, Long pageSize) {
+    public UserPageVO userPage(Integer userId, Long pageNum, Long pageSize) {
         if (pageSize <= 0 || pageNum <= 0) {
             throw new BaseException("pageSize,pageNum 必须为正整数");
         }
@@ -307,7 +307,13 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
         RepoVO repoVO = new RepoVO();
         repoVO.setRepositories(repositories.subList(startIndex, endIndex));
         repoVO.setTotal(repositories.size());
-        return repoVO;
+        UserPageVO userPageVO = new UserPageVO();
+        userPageVO.setRepoVO(repoVO);
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_id", userId);
+        User user = userMapper.selectOne(userQueryWrapper);
+        userPageVO.setUser(user);
+        return userPageVO;
     }
 }
 

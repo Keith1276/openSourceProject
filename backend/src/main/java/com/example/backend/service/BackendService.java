@@ -5,6 +5,7 @@ import com.example.backend.entity.Repository;
 import com.example.backend.entity.User;
 import com.example.backend.result.PageResult;
 import com.example.backend.vo.RepoVO;
+import com.example.backend.vo.UserPageVO;
 import com.example.backend.vo.UserVO;
 
 import java.util.List;
@@ -42,5 +43,5 @@ public interface BackendService extends IService<User> {
      * @param pageNum   页号
      * @param pageSize  页面大小
      */
-    RepoVO userRepos(Integer userId, Long pageNum, Long pageSize);
+    UserPageVO userPage(Integer userId, Long pageNum, Long pageSize);
 }
