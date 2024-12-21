@@ -5,7 +5,7 @@ export async function get_hot_repos(): Promise<any>{
     try {
         const response = await axios.get(`/api/good/repos`);
         if (response.status === 200) {
-            return response.data.data.users;
+            return response.data.data.repositories;
         }
     } catch (error) {
         console.log('there are some errors in get_hot_repos');
