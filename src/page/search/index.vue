@@ -15,7 +15,10 @@
                 @click="languageFilter(index)"
                 text
               >
-                <span :style="{'background-color': button.color}" class="square"></span>
+                <span
+                  :style="{ 'background-color': button.color }"
+                  class="square"
+                ></span>
                 {{ button.text }}
               </el-button>
             </div>
@@ -33,89 +36,145 @@
           </div>
           <!-- 文章块 -->
           <el-card style="width: 100%" shadow="always">
-            <el-card class="paper-card" shadow="hover" v-for="resposity in repositeries" :key="resposity.id">
+            <el-card
+              class="paper-card"
+              shadow="hover"
+              v-for="resposity in repositeries"
+              :key="resposity.id"
+            >
               <div class="paper-container">
-              <div class="paper-content">
-                <div class="paper-header">
-                  <div class="source-icon">
-                    <img src="@/asset/search/github.png">
+                <div class="paper-content">
+                  <div class="paper-header">
+                    <div class="source-icon">
+                      <img src="@/asset/search/github.png" />
+                    </div>
+                    <div class="project-name" :style="{ color: '#657166' }">
+                      {{ resposity.name }}
+                    </div>
                   </div>
-                  <div class="project-name" :style="{ color: '#657166' }">
-                    {{ resposity.name }}
+                  <div class="description-license-language-row">
+                    <div class="project-license">
+                      <!-- zjq快来 zjq写好了但测不了 -->
+                      <a href="/balabala/{{ resposity.ownerLogin }}">
+                        <span class="label">开发者：</span>
+                        <button @click="jumpPersonal" class="jumpButton">
+                          <span class="author-block">{{
+                            resposity.ownerLogin
+                          }}</span>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="project-description">
+                      <div class="label">项目简介：</div>
+                      <div class="abstract-text">
+                        {{ resposity.description }}
+                      </div>
+                    </div>
+                    <div class="project-description">
+                      <span class="label">最近更新时间</span>
+                      <div class="others-block">{{ resposity.updatedAt }}</div>
+                    </div>
+                    <div class="project-license">
+                      <span class="label">License：</span>
+                      <span class="license-block"
+                        >getlicense(resposity.license)</span
+                      >
+                    </div>
+                    <div class="project-languages">
+                      <span class="label">Language：</span>
+                      <span
+                        :style="{
+                          'background-color': languageColor.get(
+                            resposity.language
+                          ),
+                        }"
+                        class="square"
+                      ></span
+                      >{{ resposity.language }}
+                    </div>
                   </div>
                 </div>
-                <div class="description-license-language-row">
-                  <div class="project-license">
-                    <!-- zjq快来 -->
-                    <a href="/balabala/{{ resposity.ownerLogin }}">
-                      <span class="label">开发者：</span>
-                      <span class="author-block">{{ resposity.ownerLogin }}</span>
-                    </a>
-                  </div>
-                  <div class="project-description">
-                    <div class="label">项目简介：</div>
-                    <div class="abstract-text">{{ resposity.description }}</div>
-                  </div>
-                  <div class="project-description">
-                    <span class="label">最近更新时间</span>
-                    <div class="others-block">{{ resposity.updatedAt }}</div>
-                  </div>
-                  <div class="project-license">
-                    <span class="label">License：</span>
-                    <span class="license-block">getlicense(resposity.license)</span>
-                  </div>
-                  <div class="project-languages">
-                    <span class="label">Language：</span>
-                    <span :style="{'background-color': languageColor.get(resposity.language)}" class="square"></span>{{ resposity.language }}
-                  </div>
+                <div class="paper-image">
+                  <a
+                    :href="resposity.htmlUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src="@/asset/search/跳转.png" alt="Project Logo" />
+                  </a>
                 </div>
               </div>
-              <div class="paper-image">
-                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/search/跳转.png" alt="Project Logo">
-                </a>
+              <div class="line"></div>
+              <div class="citation-container">
+                <div class="citation">
+                  <a
+                    :href="resposity.htmlUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="@/asset/search/github-star.png"
+                      alt=""
+                      class="citation-icon"
+                    />
+                  </a>
+                  <span>Star: {{ resposity.stargazersCount }}</span>
+                </div>
+                <div class="citation">
+                  <a
+                    :href="resposity.htmlUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="@/asset/search/code-fork.png"
+                      alt=""
+                      class="citation-icon"
+                    />
+                  </a>
+                  <span>Fork: {{ resposity.forksCount }}</span>
+                </div>
+                <div class="citation">
+                  <a
+                    :href="resposity.htmlUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="@/asset/search/icon_github_issue.png"
+                      alt=""
+                      class="citation-icon"
+                    />
+                  </a>
+                  <span>Issues: {{ resposity.hasIssues }}</span>
+                </div>
+                <div class="citation">
+                  <a
+                    :href="resposity.htmlUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="@/asset/search/watch.png"
+                      alt=""
+                      class="citation-icon"
+                    />
+                  </a>
+                  <span>Watchers: {{ resposity.watchersCount }}</span>
+                </div>
               </div>
-            </div>
-            <div class="line"></div>
-            <div class="citation-container">
-              <div class="citation">
-                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/search/github-star.png" alt="" class="citation-icon">
-                </a>
-                <span>Star: {{ resposity.stargazersCount }}</span>
-              </div>
-              <div class="citation">
-                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/search/code-fork.png" alt="" class="citation-icon">
-                </a>
-                <span>Fork: {{ resposity.forksCount }}</span>
-              </div>
-              <div class="citation">
-                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/search/icon_github_issue.png" alt="" class="citation-icon">
-                </a>
-                <span>Issues: {{ resposity.hasIssues }}</span>
-              </div>
-              <div class="citation">
-                <a :href="resposity.htmlUrl" target="_blank" rel="noopener noreferrer">
-                  <img src="@/asset/search/watch.png" alt="" class="citation-icon">
-                </a>
-                <span>Watchers: {{ resposity.watchersCount }}</span>
-              </div>
-            </div>
             </el-card>
 
             <div class="page">
               <el-pagination
                 background
                 layout="prev, pager, next"
-                :total="10*pagination.total"
+                :total="10 * pagination.total"
                 :current-page="pagination.currentPage"
                 :page-size="pagination.pageSize"
                 @update:current-page="handleCurrentChange"
               />
             </div>
-
           </el-card>
         </div>
       </div>
@@ -127,27 +186,28 @@ import search from "./search.vue";
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { setNav } from "@/nav/set";
-import { ElMessageBox, ElMessage } from 'element-plus'
-import { defineComponent, defineEmits } from 'vue';
+import { ElMessageBox, ElMessage } from "element-plus";
+import { defineComponent, defineEmits } from "vue";
 import { color } from "echarts";
 import { searchRepos } from "@/api/searchRepos";
+import router from "@/router/index.js";
 export default defineComponent({
-  methods:{
+  methods: {
     getCitationIcon(paper) {
       return paper.citationClicked
-        ? require('@/asset/search/yinyong_1.png')
-        : require('@/asset/search/yinyong.png');
+        ? require("@/asset/search/yinyong_1.png")
+        : require("@/asset/search/yinyong.png");
     },
     toggleCollection(paper) {
       paper.citationClicked = !paper.citationClicked;
-    }
+    },
   },
-  data(){
-    return{
+  data() {
+    return {
       currentInfoIndex: null,
       timeIndex: -1,
-      filedIndex: -1.
-    }
+      filedIndex: -1,
+    };
   },
   components: { search },
   setup() {
@@ -160,126 +220,129 @@ export default defineComponent({
       { value: "help-wanted-issues", label: "按help-wanted-issues个数" },
       { value: "updated", label: "按最新updated" },
     ];
-    const languages=[
-      {text:"Python",color:"#3572a5"},
-      {text:"Java",color:"#b07219"},
-      {text:"C",color:"#555555"},
-      {text:"C++",color:"#f34b7d"},
-      {text:"HTML",color:"#e34c26"},
-      {text:"Verilog",color:"#b2b7f8"},
-      {text:"JavaScript",color:"#f1e05a"},
-      {text:"Vue",color:"#41b883"},
+    const languages = [
+      { text: "Python", color: "#3572a5" },
+      { text: "Java", color: "#b07219" },
+      { text: "C", color: "#555555" },
+      { text: "C++", color: "#f34b7d" },
+      { text: "HTML", color: "#e34c26" },
+      { text: "Verilog", color: "#b2b7f8" },
+      { text: "JavaScript", color: "#f1e05a" },
+      { text: "Vue", color: "#41b883" },
     ];
 
-    const licenseName=new Map<string,string>([
-      ['Apache','Apache License 2.0'],
-      ['MIT','MIT License'],
-      ['Other','Other'],
-      ['Unlicense','The Unlicense'],
-      ['GNU','GNU General Public License v3.0'],
-      ['BSD3','BSD 3-Clause \"New\" or \"Revised\" License'],
-      ['BSD0','BSD Zero Clause License'],
-      ['zlib','zlib License']
-    ])
+    const licenseName = new Map<string, string>([
+      ["Apache", "Apache License 2.0"],
+      ["MIT", "MIT License"],
+      ["Other", "Other"],
+      ["Unlicense", "The Unlicense"],
+      ["GNU", "GNU General Public License v3.0"],
+      ["BSD3", 'BSD 3-Clause "New" or "Revised" License'],
+      ["BSD0", "BSD Zero Clause License"],
+      ["zlib", "zlib License"],
+    ]);
 
     const languageColor = new Map<string, string>([
-      ['Python', '#3572a5'],
-      ['Java', '#b07219'],
-      ['C', '#555555'],
-      ['C++', '#f34b7d'],
-      ['HTML', '#e34c26'],
-      ['Verilog', '#b2b7f8'],
-      ['JavaScript', '#f1e05a'],
-      ['Vue', '#41b883'],
+      ["Python", "#3572a5"],
+      ["Java", "#b07219"],
+      ["C", "#555555"],
+      ["C++", "#f34b7d"],
+      ["HTML", "#e34c26"],
+      ["Verilog", "#b2b7f8"],
+      ["JavaScript", "#f1e05a"],
+      ["Vue", "#41b883"],
     ]);
-    const dialogVisible = ref(false)
-    const radio3 = ref('1')
-    const newFavourite = ref('')
+    const dialogVisible = ref(false);
+    const radio3 = ref("1");
+    const newFavourite = ref("");
 
-    const route=useRoute();
+    const route = useRoute();
 
-    const repositeries=ref([
+    const repositeries = ref([
       {
-        id:0,
-        name:"project name",
-        ownerLogin:"owner name",
+        id: 0,
+        name: "project name",
+        ownerLogin: "owner name",
         htmlUrl: "https://github.com/",
-        description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
-        updatedAt:"2024-12-05",
-        stargazersCount:20,
-        watchersCount:15,
-        language:"Python",
-        hasIssues:30,
-        hasDiscussions:10,
-        forksCount:1,
-        license:"MIT",
+        description: "tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
+        updatedAt: "2024-12-05",
+        stargazersCount: 20,
+        watchersCount: 15,
+        language: "Python",
+        hasIssues: 30,
+        hasDiscussions: 10,
+        forksCount: 1,
+        license: "MIT",
       },
       {
-        id:1,
-        name:"project name",
-        ownerLogin:"owner name",
+        id: 1,
+        name: "project name",
+        ownerLogin: "owner name",
         htmlUrl: "https://github.com/",
-        description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
-        updatedAt:"2024-12-05",
-        stargazersCount:20,
-        watchersCount:15,
-        language:"Python",
-        hasIssues:30,
-        hasDiscussions:10,
-        forksCount:1,
-        license:"MIT",
+        description: "tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
+        updatedAt: "2024-12-05",
+        stargazersCount: 20,
+        watchersCount: 15,
+        language: "Python",
+        hasIssues: 30,
+        hasDiscussions: 10,
+        forksCount: 1,
+        license: "MIT",
       },
       {
-        id:2,
-        name:"project name",
-        ownerLogin:"owner name",
+        id: 2,
+        name: "project name",
+        ownerLogin: "owner name",
         htmlUrl: "https://github.com/",
-        description:"tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
-        updatedAt:"2024-12-05",
-        stargazersCount:20,
-        watchersCount:15,
-        language:"Python",
-        hasIssues:30,
-        hasDiscussions:10,
-        forksCount:1,
-        license:"MIT",
-      }
-    ])
+        description: "tolang 指 “toy lang”，是一款用于教学目的的简单编程语言。",
+        updatedAt: "2024-12-05",
+        stargazersCount: 20,
+        watchersCount: 15,
+        language: "Python",
+        hasIssues: 30,
+        hasDiscussions: 10,
+        forksCount: 1,
+        license: "MIT",
+      },
+    ]);
 
     const license = ref<string[]>([]);
     const language = ref<string[]>([]);
     const content = ref<string[]>([]);
 
-    var pagenum=1;
+    var pagenum = 1;
 
-    const clickEven=(val)=>{
-      val.license = val.license.map(key => licenseName.get(key) || key);
-      console.log(val.license);// 一个数组，里面放的是license种类的名字
-      console.log(val.language);// 语言
-      console.log(val.content);// 搜索内容
-      license.value=val.license;
-      language.value=val.language;
-      content.value=val.content;
+    const clickEven = (val) => {
+      val.license = val.license.map((key) => licenseName.get(key) || key);
+      console.log(val.license); // 一个数组，里面放的是license种类的名字
+      console.log(val.language); // 语言
+      console.log(val.content); // 搜索内容
+      license.value = val.license;
+      language.value = val.language;
+      content.value = val.content;
 
-      if(license.value==null)
-        license.value=[];
-      if(license.value[0]=='All')
-        license.value=[];
-      let param={
-        license:license.value,
-        language:language.value,
-        content:content.value,
+      if (license.value == null) license.value = [];
+      if (license.value[0] == "All") license.value = [];
+      let param = {
+        license: license.value,
+        language: language.value,
+        content: content.value,
         pageNumber: 1,
         pageSize: 10,
-      }
-      console.log(param)
+      };
+      console.log(param);
       clickEvent(param);
       // TODO: 在这里发请求，把值赋给projects
-
-    }
-    const clickEvent = async (val: { license: string[]; language: string[]; content: string[]; pageNumber: number; pageSize: number;}) => {
+    };
+    const clickEvent = async (val: {
+      license: string[];
+      language: string[];
+      content: string[];
+      pageNumber: number;
+      pageSize: number;
+    }) => {
       try {
-        pagenum=val.pageNumber
+        pagenum = val.pageNumber;
         const data = {
           keywords: val.content,
           languages: val.language,
@@ -287,31 +350,31 @@ export default defineComponent({
           pageNum: val.pageNumber,
           pageSize: val.pageSize,
         };
-        console.log(data)
+        console.log(data);
         const results = await searchRepos(data);
-        repositeries.value=results['repositories']
-        pagination.value.total=results['total']/10;
+        repositeries.value = results["repositories"];
+        pagination.value.total = results["total"] / 10;
         console.log(results);
       } catch (error) {
-        console.error('请求失败:', error);
+        console.error("请求失败:", error);
       }
     };
 
     var timeIndex = ref(-1);
     var filedIndex = ref(-1);
 
-    const languageFilter = (index): void =>{
-      language.value=[]
-      language.value[0]=languages[index].text
-      let param={
-        license:license.value,
-        language:language.value,
-        content:content.value,
+    const languageFilter = (index): void => {
+      language.value = [];
+      language.value[0] = languages[index].text;
+      let param = {
+        license: license.value,
+        language: language.value,
+        content: content.value,
         pageNumber: 1,
         pageSize: 10,
-      }
+      };
       clickEvent(param);
-    }
+    };
 
     let curPapers = ref<any>([]);
 
@@ -326,48 +389,46 @@ export default defineComponent({
 
     const handleCurrentChange = (e) => {
       pagination.value.currentPage = e;
-      console.log(pagination.value.currentPage)
-      if(language.value==null)
-        language.value=[]
-      if(license.value==null)
-        license.value=[]
-      if(content.value==null)
-        content.value=[]
-      let param={
-        license:license.value,
-        language:language.value,
-        content:content.value,
+      console.log(pagination.value.currentPage);
+      if (language.value == null) language.value = [];
+      if (license.value == null) license.value = [];
+      if (content.value == null) content.value = [];
+      let param = {
+        license: license.value,
+        language: language.value,
+        content: content.value,
         pageNumber: pagenum + 1,
         pageSize: 10,
-      }
+      };
       clickEvent(param);
       // pagination.value.currentPage = e;
     };
 
     // Receive message from searchbar
-    const receivedMessage = ref('');
+    const receivedMessage = ref("");
     const handleinputSend = (message) => {
-        receivedMessage.value = message;
-        console.log('Received message from Child: ', receivedMessage.value);
-        console.log(timeIndex.value);
-        // update papers
+      receivedMessage.value = message;
+      console.log("Received message from Child: ", receivedMessage.value);
+      console.log(timeIndex.value);
+      // update papers
     };
 
-    const getlicense = (str): string =>{
+    const getlicense = (str): string => {
       const obj = JSON.parse(str);
       const nameValue = obj.name;
-      return nameValue
-    }
-
-
-
+      return nameValue;
+    };
+    const jumpPersonal = () => {
+      console.log("jumpPersonal click success");
+      router.push("/personal");
+    };
     onMounted(() => {
       handleCurrentChange(1);
     });
 
-    onUnmounted(() =>{
+    onUnmounted(() => {
       setNav(false);
-    })
+    });
 
     return {
       resultCnt,
@@ -386,10 +447,10 @@ export default defineComponent({
       clickEven,
       languageColor,
       repositeries,
-      languageFilter
+      languageFilter,
+      jumpPersonal,
     };
   },
-
 });
 </script>
 <style scoped>
@@ -454,7 +515,6 @@ export default defineComponent({
   height: 20px;
 }
 
-
 .main-container {
   display: flex;
   flex-direction: column;
@@ -491,49 +551,49 @@ export default defineComponent({
 .content-container {
   display: flex;
   flex-direction: row;
-  width:100%;
+  width: 100%;
 }
-.result-container{
+.result-container {
   display: flex;
-  height:80px;
+  height: 80px;
   align-items: center;
   background-color: #f4f4f4;
 }
-.content-top{
-  width:100%;
+.content-top {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center; /* 如果需要垂直居中 */
 }
-.content-top-right{
+.content-top-right {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.check-box{
-  width:100%;
+.check-box {
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 .el-card {
   display: flex;
   flex-direction: column;
-  width:100%;
+  width: 100%;
 }
-.region{
-  height:20vh;
-  width:100%;
+.region {
+  height: 20vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
-.region-top{
-  width:100%;
+.region-top {
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  height:100%;
+  height: 100%;
 }
-.el-divider{
+.el-divider {
   margin-top: auto;
 }
 .avatar {
@@ -546,21 +606,21 @@ export default defineComponent({
   background-color: #aed0ee;
   border: none;
   cursor: pointer;
-  margin-left:3%;
-  margin-right:3%;
+  margin-left: 3%;
+  margin-right: 3%;
 }
-.region-top-middle{
-  width:60%;
+.region-top-middle {
+  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-.fields{
+.fields {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-.region-top-end{
+.region-top-end {
   display: flex;
   flex-direction: row;
 }
@@ -622,7 +682,9 @@ export default defineComponent({
   align-items: flex-start; /* 垂直居中 */
 }
 
-.project-description, .project-license, .project-languages {
+.project-description,
+.project-license,
+.project-languages {
   margin-right: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -651,7 +713,7 @@ export default defineComponent({
   margin-right: 5px; /* 黄色块和文字之间的间距 */
   padding: 5px 5px;
   border-radius: 2px;
-  color:white;
+  color: white;
 }
 
 .author-block {
@@ -660,10 +722,10 @@ export default defineComponent({
   margin-right: 5px; /* 黄色块和文字之间的间距 */
   padding: 5px 5px;
   border-radius: 2px;
-  color:white;
+  color: white;
 }
 
-.others-block{
+.others-block {
   display: inline-block;
   margin-right: 5px; /* 黄色块和文字之间的间距 */
   padding: 5px 5px;
@@ -676,7 +738,7 @@ export default defineComponent({
   height: 10px;
   margin-right: 5px; /* 蓝色块和文字之间的间距 */
 }
-.submitted b{
+.submitted b {
   font-weight: bold;
   text-align: left;
 }
@@ -686,11 +748,11 @@ export default defineComponent({
   white-space: normal;
   overflow: visible;
 }
-.button-box{
+.button-box {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width:100%;
+  width: 100%;
 }
 
 .label-container {
@@ -743,13 +805,13 @@ export default defineComponent({
   justify-content: space-around;
 }
 
-.citation-icon{
+.citation-icon {
   width: 20px;
   height: 20px;
   margin-right: 5px;
 }
 
-.citation{
+.citation {
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -764,5 +826,16 @@ export default defineComponent({
   width: 10px;
   height: 10px;
   margin-right: 5px;
+}
+.jumpButton {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  color: aliceblue;
+  font-family: inherit;
+  font-size: inherit;
 }
 </style>
