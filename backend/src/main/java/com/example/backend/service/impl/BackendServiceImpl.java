@@ -330,6 +330,32 @@ public class BackendServiceImpl extends ServiceImpl<UserMapper, User>
         userPageVO.setUser(user);
         return userPageVO;
     }
+
+    @Override
+    public RepoVO goodRepos() {
+        QueryWrapper<Repository> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("score");
+        queryWrapper.last("LIMIT 3");
+        List<Repository> repositories = repositoryMapper.selectList(queryWrapper);
+        // 分页
+        RepoVO repoVO = new RepoVO();
+        repoVO.setRepositories(repositories);
+        repoVO.setTotal(repositories.size());
+        return repoVO;
+    }
+
+    @Override
+    public UserVO goodUsers() {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("score");
+        queryWrapper.last("LIMIT 4");
+        List<User> users = userMapper.selectList(queryWrapper);
+        // 分页
+        UserVO userVO = new UserVO();
+        userVO.setUsers(users);
+        userVO.setTotal(users.size());
+        return userVO;
+    }
 }
 
 

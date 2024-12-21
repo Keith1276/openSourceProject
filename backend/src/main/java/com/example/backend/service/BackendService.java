@@ -44,4 +44,15 @@ public interface BackendService extends IService<User> {
      * @param pageSize  页面大小
      */
     UserPageVO userPage(Integer userId, Long pageNum, Long pageSize);
+
+    /**
+     * 优秀仓库
+     */
+    RepoVO goodRepos();
+
+    /**
+     * 优秀开发者
+     *
+     */
+    UserVO goodUsers();
 }
