@@ -24,7 +24,7 @@
       </div>
       <div class="right-container">
         <el-divider />
-        <div v-for="(region, index) in regions_get" :key="index" class="region">
+        <div v-for="(region, index) in regions" :key="index" class="region">
           <div class="content">
             <div class="left-content">
               <div class="name_and_state">
@@ -133,7 +133,6 @@ export default {
           pagination.value.pageSize
         );
         console.log(regions_get.value);
-        //pagination.value.total = data.total;
       } catch (error) {
         console.error("Failed to load repos:", error);
       }
