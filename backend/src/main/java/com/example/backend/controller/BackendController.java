@@ -8,6 +8,7 @@ import com.example.backend.result.ErrorCode;
 import com.example.backend.result.ResultUtils;
 import com.example.backend.service.BackendService;
 import com.example.backend.vo.RepoVO;
+import com.example.backend.vo.UserPageVO;
 import com.example.backend.vo.UserVO;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ import java.util.List;
 @RequestMapping("/api")
 @Slf4j
 @CrossOrigin("http://localhost:8086")
-public class SystemController {
+public class BackendController {
     @Resource
     private BackendService backendService;
 
@@ -92,16 +93,18 @@ public class SystemController {
      * 开发者仓库
      *
      * @param userId
+     * @param pageNum
+     * @param pageSize
      * @return
      */
-    @GetMapping("/user/repos")
-    @Operation(summary = "开发者仓库")
-    public BaseResponse<RepoVO> userRepos(@RequestParam Integer userId, @RequestParam Long pageNum, @RequestParam Long pageSize) {
+    @GetMapping("/user/page")
+    @Operation(summary = "开发者个人页面")
+    public BaseResponse<UserPageVO> userPage(@RequestParam Integer userId, @RequestParam Long pageNum, @RequestParam Long pageSize) {
         if (userId == null) {
             throw new BaseException("请求参数为空");
         }
         try {
-            RepoVO result = backendService.userRepos(userId, pageNum, pageSize);
+            UserPageVO result = backendService.userPage(userId, pageNum, pageSize);
             return ResultUtils.success(result);
         } catch (Exception e) {
             log.error(e.getMessage());
